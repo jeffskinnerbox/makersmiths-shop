@@ -1,0 +1,24 @@
+# software use case
+
+---
+
+use-case:
+  id: UC-001
+  title: User Login
+  actor: Registered User
+  description: A user logs in using valid credentials.
+  pre-conditions:
+    - User is on the login page
+    - User has an active account
+  main-flow:
+    - 1. User enters username
+    - 2. User enters password
+    - 3. User clicks "Login"
+    - 4. System validates credentials
+    - 5. System redirects to homepage
+  alternatives:
+    - step: 4
+      description: Invalid password, system displays error
+  post-conditions:
+    - User is logged in
+    - Session is created

@@ -1,0 +1,55 @@
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      0.0.0
+#
+# DESCRIPTION
+#   lossly follows this diagram: https://makersmiths.org/locations/leesburg
+#                                https://makersmiths.org/locations/purcellville
+#
+# TESTING
+#    YAML linter to spot syntax errors
+#        yamllint *.yaml
+#        yamllint stewards-list.yaml
+
+---
+
+stewards:
+  - id: 1d94e640-2b18-11f1-8025-8bf565b9b5b0
+    name: John Carter
+    slack: John Carter
+    ms_email: ???
+    personal_email: ???
+    mobile: 503-901-0389
+  - id: x
+    name: Mike Dewan
+  - id: x
+    name: Brad Hess
+  - id: x
+    name: Jonathan White
+  - id: x
+    name: Scott Silvers
+  - id: x
+    name: Robert Johnson
+  - id: x
+    name: Ralph Pugh
+  - id: x
+    name: Chris Chatfield
+  - id: x
+    name: Jonathan White
+  - id: x
+    name: Bryan Boston
+  - id: x
+    name: Ken Fuentecilla
+  - id: x
+    name: Jessee Maloney
+  - id: x
+    name: Erin Werling
+  - id: x
+    name: Diane Bollinger
+  - id: x
+    name: Dana Eddy
+  - id: x
+    name: Lane Waldron
+  - id: x
+    name: Isaac Bowser
+  - id: x
+    name: Oliver Arend

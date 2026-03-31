@@ -1,0 +1,24 @@
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      0.0.0
+#
+# DESCRIPTION
+#   lossly follows this diagram: https://makersmiths.org/locations/leesburg
+#                                https://makersmiths.org/locations/purcellville
+#
+# TESTING
+#    YAML linter to spot syntax errors
+#        yamllint *.yaml
+#        yamllint shops-list.yaml
+
+---
+
+shops_list:
+  shops:
+    - id: x
+      name: Lessburg Makersmiths (LMS)
+      address: 106 Royal St SW, Leesburg, VA 20175
+      steward: John Carter
+    - id: x
+      name: Purcellville Makersmiths (PMS)
+      address: 785 S. 20th St, Purcellville, VA 20132
+      steward: ???

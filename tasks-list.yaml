@@ -1,0 +1,167 @@
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      0.0.0
+#
+# DESCRIPTION
+#   lossly follows this diagram: https://makersmiths.org/locations/leesburg
+#                                https://makersmiths.org/locations/purcellville
+#
+#   Data Model
+#      shop --------> area --------> location --------> work_tasks --------> task
+#   
+#   Examples
+#       LMS, PMS    Main Floor,     Leatherworking Shop,   Dust & Wipe Down Machines
+#                   Basement,       Downstairs Bathroom,
+#                   Outside, etc.   Garden Area, etc.
+#
+# TESTING
+#    YAML linter to spot syntax errors
+#        yamllint *.yaml
+#        yamllint tasks-list.yaml
+#
+#    # format tasks-list.yaml into a markdown file
+#    python3 parse-tasks.py tasks-list.yaml tasks-list.md
+#
+#    # convert markdown file to MS Word .docx
+#    pandoc -f gfm tasks-list.md -o tasks-list.docx
+#
+#    # convert yaml format to json format
+#    python yaml-to-json.py tasks-list.yaml | jq -C '.'
+
+---
+
+tasks_list:
+  shop:
+    name: Lessburg Makersmiths (LMS)
+    address: 106 Royal St SW, Leesburg, VA 20175
+    steward: John Carter
+    area:
+      - name: Main Level
+        location:
+          - name: 3D Printing
+            steward: Bryan Daniels, Scott Silvers
+            task:
+              - name: Dust & Wipe Down Machines
+              - name: Clean-Off & Organize Tabletops
+              - name: Remove Anything That is Not 3D Printing and Put Away
+              - name: Vaccum Floor & Clean-Up Filament Srapes
+              - name: Clean Resin Wash Station
+              - name: ReSpool Red PLA
+
+          - name: BN2-20 Vinyl Cutter
+            steward: Diane Bollinger
+            task:
+              - name: This is a Test
+                frequency: Weekly
+                completion_date: NA
+                purpose: Keep Shop Orderly & Safe
+                instructions: test instructions
+
+          - name: Classroom
+            steward: Oliver Arend
+            task:
+
+          - name: CO2 Lasercutter
+            steward: Jonathon White, Ralph Pugh, Chris Chatfield
+            task:
+
+          - name: Cosplay & Propmaking
+            steward: Madeline Waldron, Isaac Bowser
+            task:
+
+          - name: Fume Room
+            steward: Mike Brady
+            task:
+
+          - name: Leatherworking
+            steward: Diane Bollinger
+            task:
+
+          - name: Metalshop
+            steward: Brad Hess
+            task:
+              - name: Clean Out Tormach
+              - name: Wipe Down Powder Coat Booth
+              - name: Sweep
+              - name: Wet Swiffer
+              - name: Dust & Wipe Down Machine
+              - name: Clear Off & Organize Tabletops
+              - name: Remove Anything That is Not CNC and Put Away
+              - name: Vaccum Floor
+              - name: Check Dust Collection and Empty if Needed
+              - name: Empty Shop Vac
+              - name: Empty Saw Dust
+
+          - name: Printmaking
+            steward: John Carter
+            task:
+
+          - name: Sewing & Crafts
+            steward: Amy Copley, Erin Werling
+            task:
+
+          - name: Sublimation Printing
+            steward: Diane Bollinger
+            task:
+
+          - name: UV Printer
+            steward: Dana Eddy, Diane Bollinger
+            task:
+
+          - name: Woodshop
+            steward: Mike Dewan
+            task:
+              - name: This is a Test
+                frequency: Weekly
+                completion_date: NA
+                purpose: Keep Shop Orderly & Safe
+                instructions: test instructions
+
+          - name: Woodturning
+            steward: Ken Fuentecilla, Bryan Boston
+            task:
+
+          - name: General Work Room
+            steward: ???
+            task:
+
+          - name: Reception Area
+            steward: ???
+            task:
+
+      - name: Basement Level
+        location:
+          - name: Electronics
+            steward: Oliver Arend
+            task:
+
+          - name: Downstairs Bathroom
+            steward: ???
+            task:
+              - name: Wipe Down Sink
+              - name: Swiffer / Mop Floor
+              - name: Replace Toilet Papar & Paper Towels
+              - name: Empty Waste Basket
+
+          - name: Member Storage
+            steward: ???
+            task:
+
+      - name: Outside
+        location:
+          - name: Main Enterance of MakerSmiths
+            steward: ???
+            task:
+
+          - name: Garden Area of MakerSmiths
+            steward: ???
+            task:
+
+      - name: Cloud
+        location:
+          - name: Website
+            steward: ???
+            task:
+
+          - name: Wiki
+            steward: ???
+            task:

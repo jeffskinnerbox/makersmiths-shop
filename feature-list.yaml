@@ -1,0 +1,53 @@
+# software feature definition
+
+---
+
+features:
+  - id: FEAT-001
+    title: User Authentication
+    description: Allow users to log in using OAuth2.
+    priority: High                     # options: High, Medium, Low
+    status: Backlog                    # options: Backlog, In Progress, Done
+    owner: Dev Team A
+    estimates:
+      points: 5
+      hours: 12
+    acceptance_criteria:
+      - User can login with Google
+      - User can login with GitHub
+      - Error message on wrong password
+    tags: [security, auth]
+
+  - id: FEAT-002
+    title: Dashboard Export
+    description: Export dashboard data to CSV
+    priority: Medium                   # options: High, Medium, Low
+    status: Backlog                    # options: Backlog, In Progress, Done
+    owner: Dev Team B
+    acceptance_criteria:
+      - Button exists on dashboard
+      - CSV includes user, action, and timestamp
+    tags: [reporting, ui]
+
+  - id: x
+    title: Google Sheets data repository
+    description: Application data will be held in a Google Sheets repository for reporting of results
+    priority: High                     # options: High, Medium, Low
+    status: Backlog                    # options: Backlog, In Progress, Done
+    owner: Dev Team A                  # options: "Dev Team A"
+    acceptance_criteria:
+      - automatic loading of data gathered from xxx
+      - ability for user to create all standard reports
+      - ability for user to create a manual report
+    tags: [reporting, ui]
+
+  - id: x
+    title: Agentic user (Claude) has an account on Slack
+    description: Agentic user can dialog with other Slack users perfrom tasks concerning the oppertunities feature
+    priority: High                     # options: High, Medium, Low
+    status: Backlog                    # options: Backlog, In Progress, Done
+    owner: Dev Team A                  # options: "Dev Team A"
+    acceptance_criteria:
+      - agentic users is Claude
+      - agentic user can give instructions on how to use the oppertunities feature
+    tags: [agency, ui]

@@ -1,0 +1,92 @@
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      0.0.0
+#
+# DESCRIPTION
+#   lossly follows this diagram: https://makersmiths.org/locations/leesburg
+#                                https://makersmiths.org/locations/purcellville
+#
+#   Data Model
+#      shop --------> area --------> location --------> work_tasks --------> task
+#   
+#   Examples
+#       LMS, PMS    Main Floor,     Leatherworking Shop,   Dust & Wipe Down Machines
+#                   Basement,       Downstairs Bathroom,
+#                   Outside, etc.   Garden Area, etc.
+#
+# TESTING
+#    YAML linter to spot syntax errors
+#        yamllint *.yaml
+#        yamllint metalshop-volunteer_opportunity.yaml
+#
+#    Create sign-up sheet
+#        python3 metalshop-volunteer-opportunity.yaml metalshop-task-list.md
+#        pandoc -f gfm metalshop-task-list.md -o metalshop-signup-sheet.docx
+#
+# TESTING
+#    YAML linter to spot syntax errors
+#        yamllint *.yaml
+#        yamllint tasks-list.yaml
+#
+#    # format tasks-list.yaml into a markdown file
+#    python3 parse-tasks.py tasks-list.yaml tasks-list.md
+#
+#    # convert markdown file to MS Word .docx
+#    pandoc -f gfm tasks-list.md -o tasks-list.docx
+#
+#    # convert yaml format to json format
+#    python yaml-to-json.py tasks-list.yaml | jq -C '.'
+
+---
+
+opportunity:
+  shop:
+    name: Lessburg Makersmiths (LMS)
+    address: 106 Royal St SW, Leesburg, VA 20175
+    steward: John Carter
+    area:
+      - name: Main Level
+        location:
+          - name: Metalshop
+            steward: Brad Hess
+            work_tasks:
+              - task: Dust & Wipe Down Machine
+                frequency: Weekly
+                purpose: Keep shop clean, safe, and easy for all to use
+                instructions: Do not use any cleaning solvant. Just a dry or damp cloth should be used.
+                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+
+              - task: Clear Off & Organize Tabletops
+                frequency: Daily
+                purpose: Keep the work area as open & free of object for safety
+                instructions: Every CNC / Big Red thing has its place, so place it there.
+                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+
+              - task: Remove Anything That is Not CNC and Put Away
+                frequency: Daily
+                purpose: Keep the work area as open & free of object for safety
+                instructions: Every CNC / Big Red thing has its place, so please it there.
+                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+
+              - task: Vaccum Floor
+                frequency: Daily
+                purpose: Keeping the floor clean is important for safety
+                instructions: If there is significant dust on the floor, sweap / vaccum it up.
+                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+
+              - task: Check Dust Collection and Empty if Needed
+                frequency: Weekly
+                purpose: Keep shop clean, safe, and easy for all to use.
+                instructions: Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.
+                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+
+              - task: Empty Shop Vac
+                frequency: Bi-Weekly
+                purpose: As the Vac fills up, it losses power and not nearly as effective when clean.
+                instructions: Dump its contents in the dumpster in the back of the building.
+                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+
+              - task: Empty Saw Dust
+                frequency: Bi-Weekly
+                purpose: This helps keep the machine from clogging up while in use.
+                instructions: On the front of the machine, remove the small basket and put in the dumpster.
+                last_date: NA                                     # last date this task was completed (this information supplied via automation)

@@ -1,0 +1,223 @@
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      0.0.0
+#
+# DESCRIPTION
+#
+# TESTING
+#    YAML linter to spot syntax errors
+#        yamllint volunteer_opportunities.yaml
+
+---
+
+event:
+  - opportunity: Weekly Cleanup
+    address: 106 Royal St SW, Leesburg, VA 20175
+    area:
+      - area_name: Main Level
+        location:
+          - name: Woodshop
+            steward: Mike Dewan & ???
+            work_tasks:
+              - task: This is a Test
+                frequency: Weekly
+                purpose: Keep Shop Orderly & Safe
+                instructions: test instructions
+
+          - name: CNC / Big Red
+            steward: Brad Hess & Jonathan White
+            work_tasks:
+              - task: Dust & Wipe Down Machine
+                frequency: Weekly
+                purpose: Keep Shop Orderly & Safe
+                instructions: NA
+              - task: Clear Off & Organize Tabletops
+              - task: Remove Anything That is Not CNC and Put Away
+              - task: Vaccum Floor
+              - task: Check Dust Collection and Empty if Needed
+              - task: Empty Shop Vac
+              - task: Empty Saw Dust
+
+          - name: 3D Printing
+            steward: Scott Silvers & Robert Johnson
+            work_tasks:
+              - task: Dust & Wipe Down Machines
+              - task: Clean-Off & Organize Tabletops
+              - task: Remove Anything That is Not 3D Printing and Put Away
+              - task: Vaccum Floor & Clean-Up Filament Srapes
+              - task: Clean Resin Wash Station
+              - task: ReSpool Red PLA
+
+          - name: Laser Cutting
+            steward: Ralph Pugh, Chris Chatfield, & Jonathan White
+            work_tasks:
+              - task: ???
+
+          - name: Woodturning
+            steward: Bryan Boston & Ken Fuentecilla
+            work_tasks:
+              - task: ???
+
+          - name: Metal Shop
+            steward: Brad Hess & ???
+            work_tasks:
+              - task: Clean Out Tormach
+              - task: Wipe Down Powder Coat Booth
+              - task: Sweep
+              - task: Wet Swiffer
+
+          - name: Arts, Crafts & Sewing Tool
+            steward: Jessee Maloney & Erin Werling
+            work_tasks:
+              - task: ???
+
+          - name: Roland UV Printer
+            steward: Diane Bollinger & Dana Eddy
+            work_tasks:
+              - task: ???
+
+          - name: Sublimation Printer
+            steward: Diane Bollinger & ???
+            work_tasks:
+              - task: ???
+
+          - name: BN2-20 Printer/Cutter
+            steward: Diane Bollinger & ???
+            work_tasks:
+              - task: ???
+
+          - name: Cosplay Area
+            steward: Lane Waldron & Isaac Bowser
+            work_tasks:
+              - task: ???
+
+          - name: Leatherworking Shop
+            steward: Diane Bollinger & ???
+            work_tasks:
+              - task: ???
+
+          - name: Electronics
+            steward: Oliver Arend & ???
+            work_tasks:
+              - task: ???
+
+          - name: Classroom
+            steward: Oliver Arend & ???
+            work_tasks:
+              - task: ???
+
+          - name: Tormach
+            steward: Brad Hess & ???
+            work_tasks:
+              - task: ???
+
+          - name: CNC / Big Red
+            steward: Brad Hess & Jonathan White
+            work_tasks:
+              - task: Dust & Wipe Down Machine
+              - task: Clear Off & Organize Tabletops
+              - task: Remove Anything That is Not CNC and Put Away
+              - task: Vaccum Floor
+              - task: Check Dust Collection and Empty if Needed
+              - task: Empty Shop Vac
+              - task: Empty Saw Dust
+
+          - name: General Work Room
+            steward: ???
+            work_tasks:
+              - task: ???
+
+          - name: Reception Area
+            steward: ???
+            work_tasks:
+              - task: ???
+
+      - area_name: Basement Level
+        location:
+          - name: Downstairs Bathroom
+            steward: ???
+            work_tasks:
+              - task: Wipe Down Sink
+                volunteers:
+                  name: Joe Blow
+                  date: 03/25/26
+              - task: Clean Toilet
+                volunteer:
+                  name: Billy Kid
+                  date: 04/08/26
+              - task: Swiffer / Mop Floor
+              - task: Replace Toilet Papar & Paper Towels
+              - task: Empty Waste Basket
+
+          - name: Member Storage
+            steward: ???
+            work_tasks:
+              - task: ???
+
+          - name: Electronics Storage & Shelfs
+            steward: ???
+            work_tasks:
+              - task: ???
+
+  - opportunity: Monthly Maintenance
+    address: 106 Royal St SW, Leesburg, VA 20175
+    frequency: Monthly
+    purpose: Replenish Supplies
+    area:
+      - area_name: Outside
+        location:
+          - name: Main Enterance of MakerSmiths
+            steward: ???
+            work_tasks:
+              - task: ???
+          - name: Garden Area of MakerSmiths
+            steward: ???
+            work_tasks:
+              - task: ???
+
+  - opportunity: Spring Cleanup
+    address: 106 Royal St SW, Leesburg, VA 20175
+    frequency: April
+    purpose: Keep Grounds Presentable to Neighborhood
+    area:
+      - area_name: Outside
+        location:
+          - name: Main Enterance of MakerSmiths
+            steward: ???
+            work_tasks:
+              - task: ???
+          - name: Garden Area of MakerSmiths
+            steward: ???
+            work_tasks:
+              - task: ???
+
+  - opportunity: Fall Cleanup
+    address: 106 Royal St SW, Leesburg, VA 20175
+    frequency: October
+    purpose: Keep Grounds Presentable to Neighborhood
+    area:
+      - area_name: Outside
+        location:
+          - name: Main Enterance of MakerSmiths
+            steward: ???
+            work_tasks:
+              - task: ???
+          - name: Garden Area of MakerSmiths
+            steward: ???
+            work_tasks:
+              - task: ???
+
+  - opportunity: Website & Wiki
+    address: 106 Royal St SW, Leesburg, VA 20175
+    frequency: As Needed
+    purpose: Make updates to content
+    area:
+      - area_name: Cloud
+        location:
+          - name: Website
+            steward: ???
+            work_tasks:
+              - task: ???
+          - name: Wiki
+            steward: ???
+            work_tasks:
+              - task: ???
