@@ -1,0 +1,132 @@
+
+#-------------------------------------------------------------------------------
+#
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      1.2.0
+#
+# DESCRIPTION:
+#    This file specifies intentionally untracked files that Git should ignore.
+#
+#    Each line in this .gitignore file specifies a regular expression pattern
+#    that, when matched, the corresponding file will NOT be include in Git processing.
+#
+# DOCUMENTATION:
+#    Some basic rules to help you to set up your .gitignore file correctly:
+#
+#      * Any line that starts with a hash (#) is a comment.
+#      * The \ character escapes special characters.
+#      * The / character means that the rule applies only to files and folders located in the same folder.
+#      * An asterisk (*) means any number of characters (zero or more).
+#      * Two asterisks (**) specify any number of subdirectories.
+#      * A question mark (?) replaces zero or one character.
+#      * An exclamation sign (!) designates the inversion rule
+#        (i.e., it includes any file that was excluded by a previous pattern).
+#      * Blank lines are ignored, so you can use them to add space and make your file easier to read.
+#      * Adding / on the end ignores entire directory paths.
+#
+# TESTING:
+#    This command will simply output the filename if it's ignored by your .gitignore rules and no output if it's not.
+#      git check-ignore <filename>
+#    The -v flag provides verbose output, showing the matching pattern from your .gitignore file
+#    and the line number that caused the file to be ignored.
+#      git check-ignore -v <filename>
+#    You can specify multiple files to check their ignore status simultaneously.
+#      git check-ignore -v <file1> <file2> <file3>
+#    This command will check all files and directories in the current repository and output any that are being ignored by your .gitignore rules.
+#      git check-ignore -v **/*#
+#
+# SOURCE:
+#    https://git-scm.com/docs/gitignore
+#    https://git-scm.com/docs/git-check-ignore
+#
+#-------------------------------------------------------------------------------
+
+
+### --------------------------- Project Specific --------------------------- ###
+# claude's backup files
+*.bak
+
+# photos and images that I'm using to guide development
+signup_sheets/
+*.png 
+*.jpg 
+*.jpeg 
+
+# this directory is just a "scrach pad" form my brainstorming with claude
+brain_storming/
+
+
+### ------------------------------- General -------------------------------- ###
+
+### Compiled Source ###
+*.pyc
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.bin
+*.elf
+
+### Packages ###
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+### Unit test / linters & formaters / coverage reports ###
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+.mypy_cache
+.ruff_cache
+
+### Files containing secrets ###
+secret*
+secrets*
+settings.toml
+
+### Logs & Databases ###
+*.log
+*.sql
+*.sqlite
+*.dblite
+.ipynb_checkpoints
+.ropeproject
+__pycache__
+
+### OS Generated Files ###
+*.out
+*.swp
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+### Python files & directory ###
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.venv
+
+### Vagrant files & directory ###
+*.box
+.vagrant
+
+#-------------------------------------------------------------------------------
+

@@ -25,7 +25,7 @@ presents too much friction to our member.
 So the over arching objective here is to make it easier for Makersmiths members to record their volunteer hours.
 We intent to address this in the following way:
 
-1. Establish any easy to maintain methodology for our stewards to record what tasks they need help with from membership volunteers.
+1. Establish an easy to maintain methodology for our stewards to record what tasks they need help with from membership volunteers.
 
 ## YAML File Format
 YAML (which stands for "**YAML Ain't Markup Language**")
@@ -67,7 +67,7 @@ Data Model
    shop -----------> area -----------> location ----------> work_tasks --------> task
 
 Examples
-    LMS, PMS     Main Floor,       Leatherworking Shop,   Dust & Wipe Down Machines
+    MSL, MSP     Main Floor,       Leatherworking Shop,   Dust & Wipe Down Machines
                  Basement,         Downstairs Bathroom,
                  Outside, etc.     Garden Area, etc.
 ```

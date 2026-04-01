@@ -7,9 +7,9 @@
 #
 #   Data Model
 #      shop --------> area --------> location --------> work_tasks --------> task
-#   
+#
 #   Examples
-#       LMS, PMS    Main Floor,     Leatherworking Shop,   Dust & Wipe Down Machines
+#       MSL, MSP    Main Floor,     Leatherworking Shop,   Dust & Wipe Down Machines
 #                   Basement,       Downstairs Bathroom,
 #                   Outside, etc.   Garden Area, etc.
 #
@@ -31,7 +31,7 @@
 
 tasks_list:
   shop:
-    name: Lessburg Makersmiths (LMS)
+    name: Makersmiths Leesburg (MSL)
     address: 106 Royal St SW, Leesburg, VA 20175
     steward: John Carter
     area:
@@ -39,18 +39,18 @@ tasks_list:
         location:
           - name: 3D Printing
             steward: Bryan Daniels, Scott Silvers
-            task:
-              - name: Dust & Wipe Down Machines
-              - name: Clean-Off & Organize Tabletops
-              - name: Remove Anything That is Not 3D Printing and Put Away
-              - name: Vaccum Floor & Clean-Up Filament Srapes
-              - name: Clean Resin Wash Station
-              - name: ReSpool Red PLA
+            work_tasks:
+              - task: Dust & Wipe Down Machines
+              - task: Clean-Off & Organize Tabletops
+              - task: Remove Anything That is Not 3D Printing and Put Away
+              - task: Vaccum Floor & Clean-Up Filament Srapes
+              - task: Clean Resin Wash Station
+              - task: ReSpool Red PLA
 
           - name: BN2-20 Vinyl Cutter
             steward: Diane Bollinger
-            task:
-              - name: This is a Test
+            work_tasks:
+              - task: This is a Test
                 frequency: Weekly
                 completion_date: NA
                 purpose: Keep Shop Orderly & Safe
@@ -58,59 +58,105 @@ tasks_list:
 
           - name: Classroom
             steward: Oliver Arend
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: CO2 Lasercutter
             steward: Jonathon White, Ralph Pugh, Chris Chatfield
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Cosplay & Propmaking
             steward: Madeline Waldron, Isaac Bowser
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Fume Room
             steward: Mike Brady
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Leatherworking
             steward: Diane Bollinger
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Metalshop
             steward: Brad Hess
-            task:
-              - name: Clean Out Tormach
-              - name: Wipe Down Powder Coat Booth
-              - name: Sweep
-              - name: Wet Swiffer
-              - name: Dust & Wipe Down Machine
-              - name: Clear Off & Organize Tabletops
-              - name: Remove Anything That is Not CNC and Put Away
-              - name: Vaccum Floor
-              - name: Check Dust Collection and Empty if Needed
-              - name: Empty Shop Vac
-              - name: Empty Saw Dust
+            work_tasks:
+              - task: Dust & Wipe Down Machine
+                frequency: Weekly
+                purpose: Keep shop clean, safe, and easy for all to use
+                instructions: Do not use any cleaning solvant. Just a dry or damp cloth should be used.
+                supervision: false
+                last_date: NA
+
+              - task: Clear Off & Organize Tabletops
+                frequency: Daily
+                purpose: Keep the work area as open & free of object for safety
+                instructions: Every CNC / Big Red thing has its place, so place it there.
+                supervision: false
+                last_date: NA
+
+              - task: Remove Anything That is Not CNC and Put Away
+                frequency: Daily
+                purpose: Keep the work area as open & free of object for safety
+                instructions: Every CNC / Big Red thing has its place, so please it there.
+                supervision: false
+                last_date: NA
+
+              - task: Vaccum Floor
+                frequency: Daily
+                purpose: Keeping the floor clean is important for safety
+                instructions: If there is significant dust on the floor, sweap / vaccum it up.
+                supervision: false
+                last_date: NA
+
+              - task: Check Dust Collection and Empty if Needed
+                frequency: Weekly
+                purpose: Keep shop clean, safe, and easy for all to use.
+                instructions: Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.
+                supervision: false
+                last_date: NA
+
+              - task: Empty Shop Vac
+                frequency: Bi-Weekly
+                purpose: As the Vac fills up, it losses power and not nearly as effective when clean.
+                instructions: Dump its contents in the dumpster in the back of the building.
+                supervision: false
+                last_date: NA
+
+              - task: Empty Saw Dust
+                frequency: Bi-Weekly
+                purpose: This helps keep the machine from clogging up while in use.
+                instructions: On the front of the machine, remove the small basket and put in the dumpster.
+                supervision: false
+                last_date: NA
 
           - name: Printmaking
             steward: John Carter
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Sewing & Crafts
             steward: Amy Copley, Erin Werling
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Sublimation Printing
             steward: Diane Bollinger
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: UV Printer
             steward: Dana Eddy, Diane Bollinger
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Woodshop
             steward: Mike Dewan
-            task:
-              - name: This is a Test
+            work_tasks:
+              - task: This is a Test
                 frequency: Weekly
                 completion_date: NA
                 purpose: Keep Shop Orderly & Safe
@@ -118,7 +164,8 @@ tasks_list:
 
           - name: Woodturning
             steward: Ken Fuentecilla, Bryan Boston
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: General Work Room
             steward: ???
@@ -126,42 +173,49 @@ tasks_list:
 
           - name: Reception Area
             steward: ???
-            task:
+            work_tasks:
+              - task: TBD
 
       - name: Basement Level
         location:
           - name: Electronics
             steward: Oliver Arend
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Downstairs Bathroom
             steward: ???
-            task:
-              - name: Wipe Down Sink
-              - name: Swiffer / Mop Floor
-              - name: Replace Toilet Papar & Paper Towels
-              - name: Empty Waste Basket
+            work_tasks:
+              - task: Wipe Down Sink
+              - task: Swiffer / Mop Floor
+              - task: Replace Toilet Papar & Paper Towels
+              - task: Empty Waste Basket
 
           - name: Member Storage
             steward: ???
-            task:
+            work_tasks:
+              - task: TBD
 
       - name: Outside
         location:
           - name: Main Enterance of MakerSmiths
             steward: ???
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Garden Area of MakerSmiths
             steward: ???
-            task:
+            work_tasks:
+              - task: TBD
 
       - name: Cloud
         location:
           - name: Website
             steward: ???
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Wiki
             steward: ???
-            task:
+            work_tasks:
+              - task: TBD

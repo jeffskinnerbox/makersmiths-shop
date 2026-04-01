@@ -7,9 +7,9 @@
 #
 #   Data Model
 #      shop --------> area --------> location --------> work_tasks --------> task
-#   
+#
 #   Examples
-#       LMS, PMS    Main Floor,     Leatherworking Shop,   Dust & Wipe Down Machines
+#       MSL, MSP    Main Floor,     Leatherworking Shop,   Dust & Wipe Down Machines
 #                   Basement,       Downstairs Bathroom,
 #                   Outside, etc.   Garden Area, etc.
 #
@@ -40,7 +40,7 @@
 
 opportunity:
   shop:
-    name: Lessburg Makersmiths (LMS)
+    name: Makersmiths Leesburg (MSL)
     address: 106 Royal St SW, Leesburg, VA 20175
     steward: John Carter
     area:
