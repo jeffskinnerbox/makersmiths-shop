@@ -37,6 +37,8 @@ and place your findings in @specifications.md.
 
 ----
 
+claude --resume "signup-sheet-tools-implementation"
+
 ## Modification to Plan
 The first step of `@docs/implementation-plan.md` needs to be the creation of
 the Python tools defined in `@input/my-prompts.md` file,
@@ -59,7 +61,7 @@ When complete review all documents in `@docs` and `@input` for completeness and 
 ----
 
 ## Task List Formatting Tools
-I need two Python program that will convert @metalshop-volunteer-opportunity.yaml
+I need two Python program that will convert `@metalshop-volunteer-opportunity.yaml`
 into a 8.5 x 11 inch sign-up sheet that can be posted in the makerspace.
 
 The 1st Python program, called `@scripts/signup-sheet-template.py`,

@@ -44,7 +44,7 @@
 
 ### --------------------------- Project Specific --------------------------- ###
 # claude's backup files
-*.bak
+#*.bak
 
 # git worktrees
 .worktrees/

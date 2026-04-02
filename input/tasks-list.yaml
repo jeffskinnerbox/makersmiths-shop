@@ -15,17 +15,16 @@
 #
 # TESTING
 #    YAML linter to spot syntax errors
-#        yamllint *.yaml
-#        yamllint tasks-list.yaml
+#        yamllint input/tasks-list.yaml
 #
 #    # format tasks-list.yaml into a markdown file
-#    python3 parse-tasks.py tasks-list.yaml tasks-list.md
+#    python3 scripts/parse-tasks.py input/tasks-list.yaml output/tasks-list.md
 #
 #    # convert markdown file to MS Word .docx
-#    pandoc -f gfm tasks-list.md -o tasks-list.docx
+#    pandoc -f gfm output/tasks-list.md -o output/tasks-list.docx
 #
 #    # convert yaml format to json format
-#    python yaml-to-json.py tasks-list.yaml | jq -C '.'
+#    python3 scripts/yaml-to-json.py input/tasks-list.yaml | jq -C '.'
 
 ---
 
@@ -50,11 +49,7 @@ tasks_list:
           - name: BN2-20 Vinyl Cutter
             steward: Diane Bollinger
             work_tasks:
-              - task: This is a Test
-                frequency: Weekly
-                completion_date: NA
-                purpose: Keep Shop Orderly & Safe
-                instructions: test instructions
+              - task: TBD
 
           - name: Classroom
             steward: Oliver Arend

@@ -49,8 +49,11 @@ python3 scripts/signup-sheet.py \
     --yaml input/metalshop-volunteer-opportunity.yaml \
     --output output/metalshop-signup-sheet.html
 
-# Run tests
+# Run all tests
 python3 -m pytest tests/ -v
+
+# Run a single test
+python3 -m pytest tests/test_signup_sheet.py::test_extract_locations_opportunity_count -v
 ```
 
 ## Tech Stack (Planned)
@@ -61,6 +64,22 @@ python3 -m pytest tests/ -v
 - **`jinja2`** — HTML template rendering; **`qrcode[pil]`** — QR generation
 - **`weasyprint`** — PDF rendering (Phase 1+)
 - **APScheduler** — recurring reminders; **pytest** — testing
+
+## Script Architecture (Phase 0)
+
+Two-layer pattern in `scripts/`:
+- **CLI entry points** (kebab-case): `signup-sheet.py`, `signup-sheet-template.py` — `argparse` wrappers, no logic
+- **Library modules** (snake_case): `signup_sheet.py`, `signup_sheet_template.py` — all logic, imported by CLI and tests
+
+Two YAML input formats, detected by root key via `detect_format()`:
+- `opportunity` — extended format with `work_tasks` dicts; used for a single area's sign-up sheet (e.g., `metalshop-volunteer-opportunity.yaml`)
+- `tasks_list` — simpler master catalog format (e.g., `tasks-list.yaml`)
+
+Logo and image assets live in `signup_sheets/`. The default logo path is `input/makersmiths-logo.png` (a symlink or copy from `signup_sheets/`).
+
+## Debugging
+
+When encountering an error, consider writing a test case that reproduces it before fixing. This keeps the bug from regressing and grows the test suite.
 
 ## Key Docs
 

@@ -67,6 +67,7 @@ URL (`https://makersmiths.org`) until the Slack bot exists.
 - 24 tests passing
 
 **Usage:**
+
 ```bash
 # Generate the default Jinja2 template
 python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
