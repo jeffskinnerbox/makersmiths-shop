@@ -46,14 +46,23 @@
 # claude's backup files
 *.bak
 
+# git worktrees
+.worktrees/
+
+# generated PDF output
+output/
+
+# superpowers visual companion
+.superpowers/
+
 # photos and images that I'm using to guide development
-signup_sheets/
-*.png 
-*.jpg 
-*.jpeg 
+#signup_sheets/
+#*.png 
+#*.jpg 
+#*.jpeg 
 
 # this directory is just a "scrach pad" form my brainstorming with claude
-brain_storming/
+#brain_storming/
 
 
 ### ------------------------------- General -------------------------------- ###
