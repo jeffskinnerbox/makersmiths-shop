@@ -53,10 +53,16 @@ On scan, Slack opens with `#task-log` pre-filled. Member taps Send. Total: 2 tap
 Each task in `tasks-list.yaml` gets a stable ID field (e.g., `MSL-METAL-001`). Format: `<SHOP>-<AREA_CODE>-<SEQ>`.
 
 ### Generation Pipeline
-Extend existing `parse-tasks.py`:
-1. Read YAML → generate per-location task list
-2. For each task row, generate QR image (Python `qrcode` library)
-3. Render to PDF with QR column (Python `weasyprint` or `reportlab`)
+
+**Phase 0 (trial — HTML output):**
+1. `signup-sheet-template.py` generates a reusable Jinja2 `.html.j2` template
+2. `signup-sheet.py` parses YAML, generates per-task QR codes (inline base64 PNG), renders HTML
+3. Admin opens HTML in browser → File > Print → save as PDF or print directly
+- QR codes encode `https://makersmiths.org` as placeholder until Slack bot is live
+
+**Phase 1 (automated — PDF output):**
+1. `generate-sheets.py` encodes live Slack deep links in QR codes
+2. Output is PDF (via `weasyprint`) for direct posting or bot-triggered generation
 
 ---
 
@@ -157,7 +163,8 @@ Synced from YAML when sheets are generated. Allows Claude to resolve task IDs wi
 | AI / OCR / agent | Claude API (`claude-sonnet-4-6`), vision + tool use |
 | Data store | Google Sheets API v4 |
 | QR generation | Python `qrcode` library |
-| PDF rendering | Python `weasyprint` |
+| Sheet template | Python `jinja2` |
+| HTML rendering | Browser print-to-PDF (Phase 0); Python `weasyprint` (Phase 1+) |
 | Hosting | Makersmiths on-premise server (Linux) |
 | Config / secrets | Environment variables or `.env` file |
 | Task data | Existing `tasks-list.yaml` + `parse-tasks.py` pipeline |
@@ -166,10 +173,18 @@ Synced from YAML when sheets are generated. Allows Claude to resolve task IDs wi
 
 ## 8. Phased Implementation
 
+### Phase 0 — Sign-Up Sheet Tools (Trial) ✅
+- Add `task_id` fields to `metalshop-volunteer-opportunity.yaml`
+- Create `signup-sheet-template.py` (Jinja2 template generator)
+- Create `signup-sheet.py` (YAML + template → HTML sign-up sheet)
+- QR codes encode `https://makersmiths.org` as placeholder
+- Trial: post sheets at MSL Metalshop, collect steward/member feedback
+
+**Test:** Generate metalshop sheet, print, post, review with steward.
+
 ### Phase 1 — Foundation
-- Add stable `task_id` fields to `tasks-list.yaml`
-- Extend `parse-tasks.py` to generate QR codes per task row
-- Render sign-up sheet PDFs with QR column
+- Add stable `task_id` fields to `tasks-list.yaml` (all locations)
+- Create `generate-sheets.py`: encodes live Slack deep links in QR codes, renders PDFs via `weasyprint`
 - Set up Google Sheets with `task-log`, `members`, `task-catalog` sheets
 - Verify QR → Slack deep link flow manually
 
