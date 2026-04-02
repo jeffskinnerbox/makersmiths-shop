@@ -29,25 +29,42 @@ features:
       - CSV includes user, action, and timestamp
     tags: [reporting, ui]
 
-  - id: x
+  - id: FEAT-003
     title: Google Sheets data repository
     description: Application data will be held in a Google Sheets repository for reporting of results
-    priority: High                     # options: High, Medium, Low
-    status: Backlog                    # options: Backlog, In Progress, Done
-    owner: Dev Team A                  # options: "Dev Team A"
+    priority: High
+    status: Backlog
+    owner: jeff
     acceptance_criteria:
-      - automatic loading of data gathered from xxx
+      - automatic loading of data gathered from Slack bot
       - ability for user to create all standard reports
       - ability for user to create a manual report
-    tags: [reporting, ui]
+    tags: [reporting, data-store, phase-1]
 
-  - id: x
+  - id: FEAT-004
     title: Agentic user (Claude) has an account on Slack
-    description: Agentic user can dialog with other Slack users perfrom tasks concerning the oppertunities feature
-    priority: High                     # options: High, Medium, Low
-    status: Backlog                    # options: Backlog, In Progress, Done
-    owner: Dev Team A                  # options: "Dev Team A"
+    description: Claude agent can dialog with Slack users and perform tasks for the volunteer tracking feature
+    priority: High
+    status: Backlog
+    owner: jeff
     acceptance_criteria:
-      - agentic users is Claude
-      - agentic user can give instructions on how to use the oppertunities feature
-    tags: [agency, ui]
+      - Claude is the agentic user
+      - Agent can give instructions on how to use the volunteer opportunities feature
+    tags: [agency, slack, phase-2]
+
+  - id: FEAT-005
+    title: Sign-Up Sheet Generation Tools
+    description: >
+      Two Python scripts (signup-sheet-template.py, signup-sheet.py) convert
+      YAML task data into printable HTML sign-up sheets with QR code placeholders.
+      Used for trial with stewards/members before automation is built.
+    priority: High
+    status: Done
+    owner: jeff
+    acceptance_criteria:
+      - signup-sheet-template.py generates a reusable Jinja2 HTML template
+      - signup-sheet.py renders template + YAML to HTML with embedded QR codes
+      - QR codes use https://makersmiths.org as placeholder URL
+      - Handles both metalshop-volunteer-opportunity.yaml and tasks-list.yaml formats
+      - 24 tests passing
+    tags: [phase-0, tooling, print]
