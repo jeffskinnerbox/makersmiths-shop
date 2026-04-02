@@ -53,40 +53,47 @@ opportunity:
                 frequency: Weekly
                 purpose: Keep shop clean, safe, and easy for all to use
                 instructions: Do not use any cleaning solvant. Just a dry or damp cloth should be used.
+                supervision: false
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Clear Off & Organize Tabletops
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
                 instructions: Every CNC / Big Red thing has its place, so place it there.
+                supervision: false
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Remove Anything That is Not CNC and Put Away
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
                 instructions: Every CNC / Big Red thing has its place, so please it there.
+                supervision: false
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Vaccum Floor
                 frequency: Daily
                 purpose: Keeping the floor clean is important for safety
                 instructions: If there is significant dust on the floor, sweap / vaccum it up.
+                supervision: false
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Check Dust Collection and Empty if Needed
                 frequency: Weekly
                 purpose: Keep shop clean, safe, and easy for all to use.
                 instructions: Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.
+                supervision: true
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Empty Shop Vac
                 frequency: Bi-Weekly
                 purpose: As the Vac fills up, it losses power and not nearly as effective when clean.
                 instructions: Dump its contents in the dumpster in the back of the building.
+                supervision: false
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Empty Saw Dust
                 frequency: Bi-Weekly
                 purpose: This helps keep the machine from clogging up while in use.
                 instructions: On the front of the machine, remove the small basket and put in the dumpster.
+                supervision: true
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
