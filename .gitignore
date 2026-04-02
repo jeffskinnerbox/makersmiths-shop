@@ -50,7 +50,8 @@
 .worktrees/
 
 # generated PDF output
-output/
+output/*
+!output/.gitkeep
 
 # superpowers visual companion
 .superpowers/
