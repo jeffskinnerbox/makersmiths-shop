@@ -148,3 +148,73 @@ def test_attach_qr_codes_all_tasks_same_url():
     locs = attach_qr_codes(locs, "https://makersmiths.org")
     qr_values = [task["qr_b64"] for loc in locs for task in loc["tasks"]]
     assert len(set(qr_values)) == 1
+
+
+# ---------------------------------------------------------------------------
+# TBD filtering
+# ---------------------------------------------------------------------------
+
+TBD_YAML = {
+    "tasks_list": {
+        "shop": {
+            "name": "MSL",
+            "area": [
+                {
+                    "name": "Main Level",
+                    "location": [
+                        {
+                            "name": "Real Location",
+                            "steward": "Alice",
+                            "work_tasks": [
+                                {"task": "Clean tables", "frequency": "Weekly"},
+                            ],
+                        },
+                        {
+                            "name": "TBD Location",
+                            "steward": "Bob",
+                            "work_tasks": [{"task": "TBD"}],
+                        },
+                        {
+                            "name": "Empty Location",
+                            "steward": "Carol",
+                            "work_tasks": None,
+                        },
+                    ],
+                }
+            ],
+        }
+    }
+}
+
+
+def test_extract_locations_skips_tbd_by_default():
+    locs = extract_locations(TBD_YAML)
+    names = [loc["name"] for loc in locs]
+    assert "Real Location" in names
+    assert "TBD Location" not in names
+    assert "Empty Location" not in names
+
+
+def test_extract_locations_includes_tbd_when_disabled():
+    locs = extract_locations(TBD_YAML, skip_tbd=False)
+    names = [loc["name"] for loc in locs]
+    assert "TBD Location" in names
+    assert "Empty Location" in names
+
+
+def test_extract_locations_tbd_tasks_excluded_within_location():
+    """Mixed location: real tasks kept, TBD tasks dropped."""
+    data = {
+        "tasks_list": {
+            "shop": {
+                "area": [{"location": [{"name": "Mixed", "steward": "X", "work_tasks": [
+                    {"task": "Real task", "frequency": "Weekly"},
+                    {"task": "TBD"},
+                ]}]}]
+            }
+        }
+    }
+    locs = extract_locations(data)
+    assert len(locs) == 1
+    assert len(locs[0]["tasks"]) == 1
+    assert locs[0]["tasks"][0]["name"] == "Real task"

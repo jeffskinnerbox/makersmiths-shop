@@ -49,8 +49,8 @@ def parse_args():
         help="URL to encode in QR codes"
     )
     p.add_argument(
-        "--logo", default=None,
-        help="Path to logo image file"
+        "--logo", default="input/makersmiths-logo.png",
+        help="Path to logo image file (default: input/makersmiths-logo.png)"
     )
     return p.parse_args()
 

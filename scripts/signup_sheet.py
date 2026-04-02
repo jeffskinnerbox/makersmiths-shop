@@ -33,10 +33,19 @@ def detect_format(data: dict) -> str:
     )
 
 
-def extract_locations(data: dict) -> list:
+def _is_real_task(t) -> bool:
+    """Return True if t is a real task (not a TBD placeholder)."""
+    if isinstance(t, dict):
+        return t.get("task", "").strip().upper() != "TBD" and t.get("task", "").strip() != ""
+    return str(t).strip().upper() != "TBD" and str(t).strip() != ""
+
+
+def extract_locations(data: dict, skip_tbd: bool = True) -> list:
     """
     Return list of location dicts from YAML data.
     Each dict: {'name': str, 'steward': str, 'tasks': [{'name', 'task_id', 'frequency'}]}
+
+    When skip_tbd=True (default), locations with no real tasks (empty or all-TBD) are omitted.
     """
     fmt = detect_format(data)
     shop = data[fmt]["shop"]
@@ -44,9 +53,16 @@ def extract_locations(data: dict) -> list:
     locations = []
     for area in shop.get("area", []):
         for loc in area.get("location", []):
-            raw_tasks = loc.get("work_tasks", loc.get("task", []))
+            raw_tasks = loc.get("work_tasks", loc.get("task", [])) or []
+
+            # Skip locations with no real task data
+            if skip_tbd and not any(_is_real_task(t) for t in raw_tasks):
+                continue
+
             tasks = []
             for t in raw_tasks:
+                if not _is_real_task(t):
+                    continue
                 if isinstance(t, dict):
                     tasks.append({
                         "name": t.get("task", "???"),
