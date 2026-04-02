@@ -50,6 +50,7 @@ opportunity:
             steward: Brad Hess
             work_tasks:
               - task: Dust & Wipe Down Machine
+                task_id: MSL-METAL-001
                 frequency: Weekly
                 purpose: Keep shop clean, safe, and easy for all to use
                 instructions: Do not use any cleaning solvant. Just a dry or damp cloth should be used.
@@ -57,6 +58,7 @@ opportunity:
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Clear Off & Organize Tabletops
+                task_id: MSL-METAL-002
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
                 instructions: Every CNC / Big Red thing has its place, so place it there.
@@ -64,6 +66,7 @@ opportunity:
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Remove Anything That is Not CNC and Put Away
+                task_id: MSL-METAL-003
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
                 instructions: Every CNC / Big Red thing has its place, so please it there.
@@ -71,6 +74,7 @@ opportunity:
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Vaccum Floor
+                task_id: MSL-METAL-004
                 frequency: Daily
                 purpose: Keeping the floor clean is important for safety
                 instructions: If there is significant dust on the floor, sweap / vaccum it up.
@@ -78,6 +82,7 @@ opportunity:
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Check Dust Collection and Empty if Needed
+                task_id: MSL-METAL-005
                 frequency: Weekly
                 purpose: Keep shop clean, safe, and easy for all to use.
                 instructions: Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.
@@ -85,6 +90,7 @@ opportunity:
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Empty Shop Vac
+                task_id: MSL-METAL-006
                 frequency: Bi-Weekly
                 purpose: As the Vac fills up, it losses power and not nearly as effective when clean.
                 instructions: Dump its contents in the dumpster in the back of the building.
@@ -92,6 +98,7 @@ opportunity:
                 last_date: NA                                     # last date this task was completed (this information supplied via automation)
 
               - task: Empty Saw Dust
+                task_id: MSL-METAL-007
                 frequency: Bi-Weekly
                 purpose: This helps keep the machine from clogging up while in use.
                 instructions: On the front of the machine, remove the small basket and put in the dumpster.
