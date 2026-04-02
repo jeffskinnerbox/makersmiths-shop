@@ -6,7 +6,7 @@
 
 **Architecture:** Sign-up sheets are generated as PDFs with per-task QR codes that open Slack with a pre-filled message. A Slack bot handles three channels: `#task-log` (member completions), `#task-intake` (admin OCR uploads), and `#shop-sergeant` (admin natural language queries). All data flows into a Google Sheet (`task-log`, `members`, `task-catalog`).
 
-**Tech Stack:** Python 3.11+, Slack Bolt for Python (Socket Mode), Claude API (`claude-sonnet-4-6`), Google Sheets API v4, `qrcode`, `weasyprint`, `APScheduler`, `pytest`
+**Tech Stack:** Python 3.11+, `jinja2`, `qrcode[pil]`, Slack Bolt for Python (Socket Mode), Claude API (`claude-sonnet-4-6`), Google Sheets API v4, `weasyprint` (Phase 1+), `APScheduler`, `pytest`
 
 ---
 
@@ -14,33 +14,78 @@
 
 ```
 shop-sergeant/
-├── tasks-list.yaml              # MODIFIED: add task_id to each task
+├── input/
+│   ├── tasks-list.yaml                        # MODIFIED (Phase 0+1): add task_id to each task
+│   ├── metalshop-volunteer-opportunity.yaml   # MODIFIED (Phase 0): task_id fields added ✅
+│   └── makersmiths-logo.png                   # NEW: drop logo here for header
 ├── scripts/
-│   ├── parse-tasks.py           # existing, untouched
-│   ├── generate-sheets.py       # NEW: YAML → PDF with QR codes
-│   └── sync-catalog.py          # NEW: sync task-catalog sheet from YAML
+│   ├── parse-tasks.py                         # existing, untouched
+│   ├── signup_sheet_template.py               # NEW (Phase 0): template library ✅
+│   ├── signup-sheet-template.py               # NEW (Phase 0): CLI for template gen ✅
+│   ├── signup_sheet.py                        # NEW (Phase 0): sheet renderer library ✅
+│   ├── signup-sheet.py                        # NEW (Phase 0): CLI for sheet gen ✅
+│   ├── generate-sheets.py                     # NEW (Phase 1): YAML → PDF with live QR codes
+│   └── sync-catalog.py                        # NEW (Phase 1): sync task-catalog sheet from YAML
 ├── bot/
-│   ├── __init__.py              # NEW: empty
-│   ├── app.py                   # NEW: Slack Bolt entry point
-│   ├── config.py                # NEW: env var loading
-│   ├── sheets.py                # NEW: Google Sheets client
-│   ├── claude_client.py         # NEW: Claude API (OCR + agent)
-│   ├── scheduler.py             # NEW: APScheduler reminders
+│   ├── __init__.py              # NEW (Phase 2): empty
+│   ├── app.py                   # NEW (Phase 2): Slack Bolt entry point
+│   ├── config.py                # NEW (Phase 2): env var loading
+│   ├── sheets.py                # NEW (Phase 2): Google Sheets client
+│   ├── claude_client.py         # NEW (Phase 3): Claude API (OCR + agent)
+│   ├── scheduler.py             # NEW (Phase 4): APScheduler reminders
 │   └── handlers/
-│       ├── __init__.py          # NEW: empty
-│       ├── task_done.py         # NEW: "task-done <id>" handler
-│       ├── ocr.py               # NEW: image upload → OCR handler
-│       └── admin.py             # NEW: natural language query handler
+│       ├── __init__.py          # NEW (Phase 2): empty
+│       ├── task_done.py         # NEW (Phase 2): "task-done <id>" handler
+│       ├── ocr.py               # NEW (Phase 3): image upload → OCR handler
+│       └── admin.py             # NEW (Phase 4): natural language query handler
 ├── tests/
-│   ├── conftest.py              # NEW: shared fixtures
-│   ├── test_sheets.py           # NEW: Sheets client unit tests
-│   ├── test_task_done.py        # NEW: task-done handler tests
-│   ├── test_ocr.py              # NEW: OCR handler tests
-│   └── test_admin.py            # NEW: admin query handler tests
-├── requirements.txt             # NEW
-├── .env.example                 # NEW
-└── output/sheets/               # NEW: generated PDFs land here (gitignored)
+│   ├── test_signup_sheet_template.py   # NEW (Phase 0) ✅
+│   ├── test_signup_sheet.py            # NEW (Phase 0) ✅
+│   ├── conftest.py                     # NEW (Phase 1): shared fixtures
+│   ├── test_sheets.py                  # NEW (Phase 1): Sheets client unit tests
+│   ├── test_task_done.py               # NEW (Phase 2): task-done handler tests
+│   ├── test_ocr.py                     # NEW (Phase 3): OCR handler tests
+│   └── test_admin.py                   # NEW (Phase 4): admin query handler tests
+├── output/                      # generated files land here (gitignored except .gitkeep) ✅
+├── requirements.txt             # NEW (Phase 1)
+├── .env.example                 # NEW (Phase 1)
+└── output/sheets/               # NEW (Phase 1): generated PDFs
 ```
+
+---
+
+## Phase 0 — Sign-Up Sheet Tools (Trial) ✅
+
+**Goal:** Create printable sign-up sheets from YAML data and validate the form design
+with stewards and members before any automation is built. QR codes use a placeholder
+URL (`https://makersmiths.org`) until the Slack bot exists.
+
+**Deliverables (all complete):**
+- `scripts/signup-sheet-template.py` — generates a reusable Jinja2 HTML template
+- `scripts/signup-sheet.py` — renders template + YAML → HTML sign-up sheet
+- `input/metalshop-volunteer-opportunity.yaml` — task_id fields added (MSL-METAL-001…007)
+- 24 tests passing
+
+**Usage:**
+```bash
+# Generate the default Jinja2 template
+python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
+
+# Generate the metalshop sign-up sheet
+python3 scripts/signup-sheet.py \
+    --template output/signup-sheet-template.html.j2 \
+    --yaml input/metalshop-volunteer-opportunity.yaml \
+    --output output/metalshop-signup-sheet.html
+
+# Open in browser → File > Print to save as PDF
+```
+
+**Trial Process:**
+1. Generate the metalshop sign-up sheet and review with area steward (Brad Hess)
+2. Print and post in place of existing sign-up sheets at MSL
+3. Walk members through how the QR column will eventually work
+4. Collect feedback on: layout, task names, frequency labels, QR column placement
+5. Update YAML and/or template based on feedback before moving to Phase 1
 
 ---
 
