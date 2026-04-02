@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""
+signup_sheet.py
+
+Core library for Makersmiths sign-up sheet generation.
+Provides YAML parsing, QR code generation, and HTML rendering functions.
+Imported by signup-sheet.py (CLI) and tests.
+"""
+
+import base64
+import io
+from pathlib import Path
+
+import qrcode
+import yaml
+from jinja2 import Environment, FileSystemLoader
+
+
+def load_yaml(filepath: str) -> dict:
+    with open(filepath, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def detect_format(data: dict) -> str:
+    """Return 'opportunity' or 'tasks_list' based on root key."""
+    if "opportunity" in data:
+        return "opportunity"
+    if "tasks_list" in data:
+        return "tasks_list"
+    raise ValueError(
+        f"Unknown YAML format: root key must be 'opportunity' or 'tasks_list', "
+        f"got: {list(data.keys())}"
+    )
+
+
+def extract_locations(data: dict) -> list:
+    """
+    Return list of location dicts from YAML data.
+    Each dict: {'name': str, 'steward': str, 'tasks': [{'name', 'task_id', 'frequency'}]}
+    """
+    fmt = detect_format(data)
+    shop = data[fmt]["shop"]
+
+    locations = []
+    for area in shop.get("area", []):
+        for loc in area.get("location", []):
+            raw_tasks = loc.get("work_tasks", loc.get("task", []))
+            tasks = []
+            for t in raw_tasks:
+                if isinstance(t, dict):
+                    tasks.append({
+                        "name": t.get("task", "???"),
+                        "task_id": t.get("task_id", ""),
+                        "frequency": t.get("frequency", "NA"),
+                    })
+                else:
+                    tasks.append({"name": str(t), "task_id": "", "frequency": "NA"})
+
+            locations.append({
+                "name": loc.get("name", "???"),
+                "steward": loc.get("steward", loc.get("stward", "???")),
+                "tasks": tasks,
+            })
+    return locations
+
+
+def make_qr_b64(url: str) -> str:
+    """Generate QR code for url, return as base64-encoded PNG string."""
+    img = qrcode.make(url)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return base64.b64encode(buf.getvalue()).decode("utf-8")
+
+
+def attach_qr_codes(locations: list, qr_url: str) -> list:
+    """Add qr_b64 field to every task. All tasks share the same placeholder URL."""
+    qr_b64 = make_qr_b64(qr_url)
+    for loc in locations:
+        for task in loc["tasks"]:
+            task["qr_b64"] = qr_b64
+    return locations
+
+
+def render_sheet(template_path: str, locations: list, logo_path: str | None) -> str:
+    """Render the Jinja2 template with location/task data."""
+    tmpl_file = Path(template_path)
+    env = Environment(
+        loader=FileSystemLoader(str(tmpl_file.parent)),
+        autoescape=False,
+    )
+    template = env.get_template(tmpl_file.name)
+    return template.render(locations=locations, logo_path=logo_path)
