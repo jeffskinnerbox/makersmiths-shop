@@ -58,7 +58,14 @@ def main():
     )
 
     args = parser.parse_args()
-    content = build_template(args)
+    content = build_template(
+        title=args.title,
+        footer=args.footer,
+        location_font_size=args.location_font_size,
+        steward_font_size=args.steward_font_size,
+        title_font_size=args.title_font_size,
+        footer_font_size=args.footer_font_size,
+    )
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)

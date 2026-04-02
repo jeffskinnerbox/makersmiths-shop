@@ -73,13 +73,20 @@ TEMPLATE_BODY = r"""<!DOCTYPE html>
 """
 
 
-def build_template(args) -> str:
+def build_template(
+    title: str,
+    footer: str,
+    location_font_size: int,
+    steward_font_size: int,
+    title_font_size: int,
+    footer_font_size: int,
+) -> str:
     """Return the rendered Jinja2 template string with CSS/layout values baked in."""
     return TEMPLATE_BODY.format(
-        title=args.title,
-        location_font_size=args.location_font_size,
-        steward_font_size=args.steward_font_size,
-        title_font_size=args.title_font_size,
-        footer_font_size=args.footer_font_size,
-        footer=args.footer,
+        title=title,
+        location_font_size=location_font_size,
+        steward_font_size=steward_font_size,
+        title_font_size=title_font_size,
+        footer_font_size=footer_font_size,
+        footer=footer,
     )
