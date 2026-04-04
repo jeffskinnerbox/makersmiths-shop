@@ -40,11 +40,17 @@ tasks_list:
             steward: Bryan Daniels, Scott Silvers
             work_tasks:
               - task: Dust & Wipe Down Machines
+                task_id: 3D-PRINT-001
               - task: Clean-Off & Organize Tabletops
+                task_id: 3D-PRINT-002
               - task: Remove Anything That is Not 3D Printing and Put Away
+                task_id: 3D-PRINT-003
               - task: Vaccum Floor & Clean-Up Filament Srapes
+                task_id: 3D-PRINT-004
               - task: Clean Resin Wash Station
+                task_id: 3D-PRINT-005
               - task: ReSpool Red PLA
+                task_id: 3D-PRINT-006
 
           - name: BN2-20 Vinyl Cutter
             steward: Diane Bollinger

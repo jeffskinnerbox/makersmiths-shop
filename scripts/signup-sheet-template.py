@@ -40,7 +40,7 @@ def main():
     parser.add_argument(
         "--title-font-size",
         type=int,
-        default=14,
+        default=20,
         dest="title_font_size",
         help="Title font size in pt (default: 14)",
     )

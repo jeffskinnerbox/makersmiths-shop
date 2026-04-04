@@ -47,14 +47,14 @@
 #*.bak
 
 # git worktrees
-.worktrees/
+#.worktrees/
 
 # generated PDF output
-output/*
-!output/.gitkeep
+#output/*
+#!output/.gitkeep
 
 # superpowers visual companion
-.superpowers/
+#.superpowers/
 
 # photos and images that I'm using to guide development
 #signup_sheets/

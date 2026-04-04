@@ -45,31 +45,31 @@ opportunity:
                 purpose: Keep shop clean, safe, and easy for all to use
                 instructions: Do not use any cleaning solvant. Just a dry or damp cloth should be used.
                 supervision: false
-                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+                last_date: NA
 
               - task: Clear Off & Organize Tabletops
                 task_id: MSL-METAL-002
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
-                instructions: Every CNC / Big Red thing has its place, so place it there.
+                instructions: NA
                 supervision: false
-                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+                last_date: NA
 
               - task: Remove Anything That is Not CNC and Put Away
                 task_id: MSL-METAL-003
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
-                instructions: Every CNC / Big Red thing has its place, so please it there.
+                instructions: Every CNC / Big Red thing has its place, so place it there.
                 supervision: false
-                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+                last_date: NA
 
               - task: Vaccum Floor
                 task_id: MSL-METAL-004
                 frequency: Daily
                 purpose: Keeping the floor clean is important for safety
-                instructions: If there is significant dust on the floor, sweap / vaccum it up.
+                instructions: NA
                 supervision: false
-                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+                last_date: NA
 
               - task: Check Dust Collection and Empty if Needed
                 task_id: MSL-METAL-005
@@ -77,7 +77,7 @@ opportunity:
                 purpose: Keep shop clean, safe, and easy for all to use.
                 instructions: Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.
                 supervision: true
-                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+                last_date: NA
 
               - task: Empty Shop Vac
                 task_id: MSL-METAL-006
@@ -85,7 +85,7 @@ opportunity:
                 purpose: As the Vac fills up, it losses power and not nearly as effective when clean.
                 instructions: Dump its contents in the dumpster in the back of the building.
                 supervision: false
-                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+                last_date: NA
 
               - task: Empty Saw Dust
                 task_id: MSL-METAL-007
@@ -93,4 +93,6 @@ opportunity:
                 purpose: This helps keep the machine from clogging up while in use.
                 instructions: On the front of the machine, remove the small basket and put in the dumpster.
                 supervision: true
-                last_date: NA                                     # last date this task was completed (this information supplied via automation)
+                last_date: NA
+
+              - task: Test Case - removed all data 

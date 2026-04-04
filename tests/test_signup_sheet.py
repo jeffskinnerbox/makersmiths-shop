@@ -108,7 +108,7 @@ def test_extract_locations_tasks_list_format():
     assert locs[0]["tasks"][0]["task_id"] == "MSL-3DP-001"
 
 
-def test_extract_locations_missing_task_id_defaults_empty():
+def test_extract_locations_missing_task_id_defaults_na():
     data = {
         "opportunity": {
             "shop": {
@@ -119,7 +119,7 @@ def test_extract_locations_missing_task_id_defaults_empty():
         }
     }
     locs = extract_locations(data)
-    assert locs[0]["tasks"][0]["task_id"] == ""
+    assert locs[0]["tasks"][0]["task_id"] == "NA"
 
 
 def test_make_qr_b64_returns_string():

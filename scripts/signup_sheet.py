@@ -64,13 +64,16 @@ def extract_locations(data: dict, skip_tbd: bool = True) -> list:
                 if not _is_real_task(t):
                     continue
                 if isinstance(t, dict):
+                    instructions = t.get("instructions", "")
                     tasks.append({
                         "name": t.get("task", "???"),
-                        "task_id": t.get("task_id", ""),
+                        "task_id": t.get("task_id") or "NA",
                         "frequency": t.get("frequency", "NA"),
+                        "last_date": t.get("last_date") or "NA",
+                        "instructions": "" if (not instructions or str(instructions).strip().upper() == "NA") else str(instructions).strip(),
                     })
                 else:
-                    tasks.append({"name": str(t), "task_id": "", "frequency": "NA"})
+                    tasks.append({"name": str(t), "task_id": "NA", "frequency": "NA", "last_date": "NA", "instructions": ""})
 
             locations.append({
                 "name": loc.get("name", "???"),
@@ -97,6 +100,17 @@ def attach_qr_codes(locations: list, qr_url: str) -> list:
     return locations
 
 
+def _logo_data_uri(logo_path: str) -> str | None:
+    """Return a base64 data URI for the logo image, or None if not found."""
+    p = Path(logo_path)
+    if not p.exists():
+        return None
+    suffix = p.suffix.lower().lstrip(".")
+    mime = "jpeg" if suffix in ("jpg", "jpeg") else suffix
+    data = base64.b64encode(p.read_bytes()).decode("utf-8")
+    return f"data:image/{mime};base64,{data}"
+
+
 def render_sheet(template_path: str, locations: list, logo_path: str | None) -> str:
     """Render the Jinja2 template with location/task data."""
     tmpl_file = Path(template_path)
@@ -105,4 +119,5 @@ def render_sheet(template_path: str, locations: list, logo_path: str | None) -> 
         autoescape=False,
     )
     template = env.get_template(tmpl_file.name)
-    return template.render(locations=locations, logo_path=logo_path)
+    logo_uri = _logo_data_uri(logo_path) if logo_path else None
+    return template.render(locations=locations, logo_path=logo_uri)

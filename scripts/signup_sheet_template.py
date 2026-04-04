@@ -2,27 +2,28 @@
 
 TEMPLATE_BODY = r"""<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8">
+<head><meta charset="UTF-8"><title></title>
 <style>
   @page {{ size: 11in 8.5in landscape; margin: 0.5in; }}
-  body {{ font-family: Arial, sans-serif; }}
+  body {{ font-family: Arial, sans-serif; margin: 0; }}
   .location {{ font-size: {location_font_size}pt; font-weight: bold; }}
   .steward {{ font-size: {steward_font_size}pt; font-weight: bold; }}
   .title {{ font-size: {title_font_size}pt; font-weight: bold; color: red; }}
   .footer {{ font-size: {footer_font_size}pt; font-weight: bold; }}
   table {{ width: 100%; border-collapse: collapse; }}
-  th, td {{ border: 1px solid #888; padding: 4px 6px; }}
+  th, td {{ border: 1px solid #888; padding: 1px 6px; line-height: 1.2; }}
   th {{ background-color: #ddd; }}
-  .col-task {{ width: 38%; }}
-  .col-freq {{ width: 10%; }}
-  .col-member {{ width: 30%; }}
-  .col-date {{ width: 12%; }}
-  .col-qr {{ width: 60px; text-align: center; }}
+  .col-task {{ width: 48%; }}
+  .col-last-done {{ width: 10%; text-align: center; }}
+  .col-freq {{ width: 8%; text-align: center; }}
+  .col-member-date {{ width: 8%; }}
+  .col-qr {{ width: 85px; text-align: center; padding: 2px; }}
+  .page {{ box-sizing: border-box; width: 100%; min-height: 7.5in; outline: 0.25in solid red; outline-offset: -0.25in; }}
 </style>
 </head>
 <body>
 {{% for location in locations %}}
-<div class="page" style="page-break-after: always;">
+<div class="page" style="page-break-after: always; padding: 0.3in;">
   <div style="display:flex; justify-content:space-between; border-bottom:2px solid #333; padding-bottom:4px; margin-bottom:6px;">
     <div>
       <div class="location">Location: {{{{ location.name }}}}</div>
@@ -43,22 +44,26 @@ TEMPLATE_BODY = r"""<!DOCTYPE html>
     <thead>
       <tr>
         <th class="col-task">Task Name</th>
+        <th class="col-last-done">Last Done</th>
         <th class="col-freq">Frequency</th>
-        <th class="col-member">Member (sign)</th>
-        <th class="col-date">Date</th>
+        <th class="col-member-date">Member Name / Date</th>
+        <th class="col-member-date">Member Name / Date</th>
+        <th class="col-member-date">Member Name / Date</th>
         <th class="col-qr">Log It (QR)</th>
       </tr>
     </thead>
     <tbody>
       {{% for task in location.tasks %}}
       <tr>
-        <td class="col-task">{{{{ task.name }}}}</td>
+        <td class="col-task" style="position:relative;"><span style="color:red; font-weight:bold;">{{{{ task.name }}}}</span>{{% if task.instructions %}}<br><span style="font-size:8pt; font-weight:normal;">{{{{ task.instructions }}}}</span>{{% endif %}}{{% if task.task_id %}}<div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">{{{{ task.task_id }}}}</div>{{% endif %}}</td>
+        <td class="col-last-done">{{{{ task.last_date }}}}</td>
         <td class="col-freq">{{{{ task.frequency }}}}</td>
-        <td class="col-member">&nbsp;</td>
-        <td class="col-date">&nbsp;</td>
+        <td class="col-member-date">&nbsp;</td>
+        <td class="col-member-date">&nbsp;</td>
+        <td class="col-member-date">&nbsp;</td>
         <td class="col-qr">
           {{% if task.qr_b64 %}}
-            <img src="data:image/png;base64,{{{{ task.qr_b64 }}}}" width="50" height="50" alt="QR">
+            <img src="data:image/png;base64,{{{{ task.qr_b64 }}}}" width="75" height="75" alt="QR">
           {{% endif %}}
         </td>
       </tr>

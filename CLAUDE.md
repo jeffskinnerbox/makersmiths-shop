@@ -40,14 +40,19 @@ pandoc -f gfm output/tasks-list.md -o output/tasks-list.docx
 # Convert YAML → JSON
 python3 scripts/yaml-to-json.py input/tasks-list.yaml | jq -C '.'
 
-# Generate sign-up sheet template (Jinja2)
+# Step 1: Generate Jinja2 template (run once; output is reusable)
 python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
 
-# Generate sign-up sheet HTML (metalshop example)
+# Step 2: Render HTML sign-up sheet from template + YAML
 python3 scripts/signup-sheet.py \
     --template output/signup-sheet-template.html.j2 \
     --yaml input/metalshop-volunteer-opportunity.yaml \
     --output output/metalshop-signup-sheet.html
+
+# Optional flags for signup-sheet.py:
+#   --location "Metalshop"      render a single location only
+#   --qr-url "https://..."      override QR placeholder URL
+#   --logo input/logo.png       override logo image path
 
 # Run all tests
 python3 -m pytest tests/ -v
@@ -74,6 +79,10 @@ Two-layer pattern in `scripts/`:
 Two YAML input formats, detected by root key via `detect_format()`:
 - `opportunity` — extended format with `work_tasks` dicts; used for a single area's sign-up sheet (e.g., `metalshop-volunteer-opportunity.yaml`)
 - `tasks_list` — simpler master catalog format (e.g., `tasks-list.yaml`)
+
+Both formats use `work_tasks` for task lists (falling back to `task` key). Both are handled by the same `extract_locations()` pipeline.
+
+Test files mirror the library modules: `test_signup_sheet.py` → `signup_sheet.py`, `test_signup_sheet_template.py` → `signup_sheet_template.py`.
 
 Logo and image assets live in `signup_sheets/`. The default logo path is `input/makersmiths-logo.png` (a symlink or copy from `signup_sheets/`).
 
