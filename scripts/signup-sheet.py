@@ -5,12 +5,16 @@ signup-sheet.py
 CLI: Renders a Makersmiths volunteer sign-up sheet HTML from a Jinja2 template + YAML.
 
 Usage:
+    # stdin → stdout (pipeline-friendly)
+    cat input/metalshop-volunteer-opportunity.yaml | python3 scripts/signup-sheet.py
+
+    # file → file
     python3 scripts/signup-sheet.py \\
-        --template output/signup-sheet-template.html.j2 \\
-        --yaml input/metalshop-volunteer-opportunity.yaml \\
+        --input input/metalshop-volunteer-opportunity.yaml \\
         --output output/metalshop-signup-sheet.html
 
 Options:
+    --template output/...      Jinja2 template path
     --location "Metalshop"     Generate a single location only
     --qr-url "https://..."     Override QR placeholder URL
     --logo input/logo.png      Path to logo image
@@ -29,27 +33,27 @@ def parse_args():
         description="Render a Makersmiths sign-up sheet HTML from template + YAML"
     )
     p.add_argument(
-        "--template", default="output/signup-sheet-template.html.j2",
+        "-t", "--template", default="output/signup-sheet-template.html.j2",
         help="Path to Jinja2 .html.j2 template"
     )
     p.add_argument(
-        "--yaml", required=True,
-        help="Path to YAML task file"
+        "-i", "--input", "--yaml", default=None, dest="input",
+        help="Path to YAML task file (default: stdin)"
     )
     p.add_argument(
-        "--output", default="output/signup-sheet.html",
-        help="Output HTML file path"
+        "-o", "--output", default=None,
+        help="Output HTML file path (default: stdout)"
     )
     p.add_argument(
-        "--location", default=None,
+        "-l", "--location", default=None,
         help="Filter to a single location name (default: all)"
     )
     p.add_argument(
-        "--qr-url", default="https://makersmiths.org",
+        "-q", "--qr-url", default="https://makersmiths.org",
         help="URL to encode in QR codes"
     )
     p.add_argument(
-        "--logo", default="input/makersmiths-logo.png",
+        "-a", "--logo", default="input/makersmiths-logo.png",
         help="Path to logo image file (default: input/makersmiths-logo.png)"
     )
     return p.parse_args()
@@ -63,13 +67,14 @@ def main():
         print("Run signup-sheet-template.py first.", file=sys.stderr)
         sys.exit(1)
 
-    data = load_yaml(args.yaml)
+    source = args.input if args.input else sys.stdin
+    data = load_yaml(source)
     locations = extract_locations(data)
 
     if args.location:
         locations = [loc for loc in locations if loc["name"] == args.location]
         if not locations:
-            print(f"ERROR: Location '{args.location}' not found in {args.yaml}", file=sys.stderr)
+            print(f"ERROR: Location '{args.location}' not found.", file=sys.stderr)
             sys.exit(1)
 
     if not locations:
@@ -79,11 +84,14 @@ def main():
     locations = attach_qr_codes(locations, args.qr_url)
     html = render_sheet(args.template, locations, logo_path=args.logo)
 
-    out = Path(args.output)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(html, encoding="utf-8")
-    print(f"Sign-up sheet written to {out}")
-    print("Open in browser and use File > Print to save as PDF.")
+    if args.output:
+        out = Path(args.output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(html, encoding="utf-8")
+        print(f"Sign-up sheet written to {out}", file=sys.stderr)
+        print("Open in browser and use File > Print to save as PDF.", file=sys.stderr)
+    else:
+        sys.stdout.write(html)
 
 
 if __name__ == "__main__":

@@ -16,8 +16,11 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 
 
-def load_yaml(filepath: str) -> dict:
-    with open(filepath, "r", encoding="utf-8") as f:
+def load_yaml(source) -> dict:
+    """Load YAML from a file path (str/Path) or an open file object (e.g. sys.stdin)."""
+    if hasattr(source, "read"):
+        return yaml.safe_load(source)
+    with open(source, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 

@@ -70,7 +70,7 @@ TEMPLATE_BODY = r"""<!DOCTYPE html>
       {{% endfor %}}
     </tbody>
   </table>
-  <div class="footer" style="margin-top:6px; border-top:1px solid #ccc; padding-top:3px;">{footer}</div>
+  <div class="footer" style="margin-top:6px; border-top:1px solid #ccc; padding-top:3px; text-align:center;">{footer}</div>
 </div>
 {{% endfor %}}
 </body>
