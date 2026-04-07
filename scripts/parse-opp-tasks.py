@@ -2,7 +2,7 @@
 """
 parse_opp_tasks.py
 
-Parses a volunteer-opportunity YAML file (e.g. metalshop-volunteer-opportunity.yaml)
+Parses a volunteer-opportunity YAML file (e.g. metalshop-volunteer-opportunities.yaml)
 and generates a Markdown file where each location has its own table with columns:
 Task, Frequency, Purpose, Instructions, Last Date.
 """
@@ -25,7 +25,7 @@ def generate_markdown(data: dict) -> str:
     lines = []
     lines.append("# Makersmiths Volunteer Opportunity Task List\n")
 
-    shop = data.get("opportunity", {}).get("shop", {})
+    shop = data.get("opportunities", {}).get("shop", {})
     shop_name = shop.get("name", "Unknown Shop")
     shop_address = shop.get("address", "")
     shop_steward = shop.get("steward", "")
@@ -65,7 +65,9 @@ def generate_markdown(data: dict) -> str:
                         name = escape(task)
                         frequency = purpose = instructions = last_date = "NA"
 
-                    lines.append(f"| {name} | {frequency} | {purpose} | {instructions} | {last_date} |")
+                    lines.append(
+                        f"| {name} | {frequency} | {purpose} | {instructions} | {last_date} |"
+                    )
             else:
                 lines.append("| ??? | NA | NA | NA | NA |")
 
@@ -75,7 +77,9 @@ def generate_markdown(data: dict) -> str:
 
 
 def main():
-    input_file = sys.argv[1] if len(sys.argv) > 1 else "metalshop-volunteer-opportunity.yaml"
+    input_file = (
+        sys.argv[1] if len(sys.argv) > 1 else "metalshop-volunteer-opportunities.yaml"
+    )
     output_file = sys.argv[2] if len(sys.argv) > 2 else "metalshop-task-list.md"
 
     print(f"Parsing: {input_file}")

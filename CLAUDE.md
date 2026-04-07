@@ -21,8 +21,8 @@ Phase 0 complete: sign-up sheet tools built and tested (`signup-sheet-template.p
 Hierarchical YAML structure: **Shop → Area → Location → Task** (with unique `task_id` like `MSL-METAL-001`)
 
 Key data files:
-- `input/MSL-volunteer-opportunities.yaml` — master task catalog (task_id fields still needed for most locations)
-- `input/metalshop-volunteer-opportunity.yaml` — metalshop extended format; task_ids added (MSL-METAL-001…007)
+- `input/MSL-volunteer-opportunities.yaml` — master task catalog (root key: `tasks_list`)
+- `input/metalshop-volunteer-opportunities.yaml` — metalshop extended format; task_ids added MSL-METAL-001…007 (root key: `opportunities`)
 
 ## Available Commands
 
@@ -32,7 +32,7 @@ yamllint input/MSL-volunteer-opportunities.yaml
 
 # Convert YAML → Markdown
 python3 scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-volunteer-opportunities.md
-python3 scripts/parse-opp-tasks.py input/metalshop-volunteer-opportunity.yaml output/metalshop-task-list.md
+python3 scripts/parse-opp-tasks.py input/metalshop-volunteer-opportunities.yaml output/metalshop-task-list.md
 
 # Convert Markdown → Word doc
 pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-opportunities.docx
@@ -46,7 +46,7 @@ python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.h
 # Step 2: Render HTML sign-up sheet from template + YAML
 python3 scripts/signup-sheet.py \
     --template output/signup-sheet-template.html.j2 \
-    --yaml input/metalshop-volunteer-opportunity.yaml \
+    --yaml input/metalshop-volunteer-opportunities.yaml \
     --output output/metalshop-signup-sheet.html
 
 # Optional flags for signup-sheet.py:
@@ -72,19 +72,18 @@ python3 -m pytest tests/test_signup_sheet.py::test_extract_locations_opportunity
 
 ## Script Architecture (Phase 0)
 
-Two-layer pattern in `scripts/`:
-- **CLI entry points** (kebab-case): `signup-sheet.py`, `signup-sheet-template.py` — `argparse` wrappers, no logic
-- **Library modules** (snake_case): `signup_sheet.py`, `signup_sheet_template.py` — all logic, imported by CLI and tests
+`scripts/signup-sheet.py` (CLI, argparse only) imports from `scripts/signup_sheet.py` (library, all logic). Tests import from the library directly via `sys.path.insert`.
 
-Two YAML input formats, detected by root key via `detect_format()`:
-- `opportunity` — extended format with `work_tasks` dicts; used for a single area's sign-up sheet (e.g., `metalshop-volunteer-opportunity.yaml`)
+`scripts/signup-sheet-template.py` is self-contained — `build_template()` lives in the CLI file itself. Tests import it via `importlib.util.spec_from_file_location`.
+
+Three YAML root keys, all handled by `detect_format()` in `signup_sheet.py`:
+- `opportunity` — single-area extended format
+- `opportunities` — same structure, plural key (e.g., `metalshop-volunteer-opportunities.yaml`)
 - `tasks_list` — simpler master catalog format (e.g., `MSL-volunteer-opportunities.yaml`)
 
-Both formats use `work_tasks` for task lists (falling back to `task` key). Both are handled by the same `extract_locations()` pipeline.
+All formats use `work_tasks` for task lists (falling back to `task` key). Locations where all tasks are TBD or empty are silently skipped by `extract_locations()` (`skip_tbd=True` default).
 
-Test files mirror the library modules: `test_signup_sheet.py` → `signup_sheet.py`, `test_signup_sheet_template.py` → `signup_sheet_template.py`.
-
-Logo and image assets live in `signup_sheets/`. The default logo path is `input/makersmiths-logo.png` (a symlink or copy from `signup_sheets/`).
+Logo and image assets live in `signup_sheets/`. The default logo path is `input/makersmiths-logo.png`.
 
 ## Debugging
 

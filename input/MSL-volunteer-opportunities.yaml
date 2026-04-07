@@ -2,7 +2,7 @@
 # Version:      0.0.0
 #
 # DESCRIPTION
-#   lossly follows this diagram: https://makersmiths.org/locations/leesburg
+#   loosely follows this diagram: https://makersmiths.org/locations/leesburg
 #                                https://makersmiths.org/locations/purcellville
 #
 #   Data Model
@@ -14,21 +14,36 @@
 #                   Outside, etc.   Garden Area, etc.
 #
 # TESTING
-#    YAML linter to spot syntax errors
-#        yamllint input/MSL-volunteer-opportunities.yaml
+#   Generate Jinja2 template (run once; output is reusable)
+#       scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
 #
-#    # format MSL-volunteer-opportunities.yaml into a markdown file
-#    python3 scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-volunteer-opportunities.md
+#   YAML linter to spot syntax errors
+#       yamllint input/MSL-volunteer-opportunities.yaml
 #
-#    # convert markdown file to MS Word .docx
-#    pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-opportunities.docx
+#   convert yaml format to json format
+#       scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
 #
-#    # convert yaml format to json format
-#    python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
+#   Generate HTML sign-up sheet from Jinja2 template + YAML
+#       scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/MSL-volunteer-opportunities.yaml --output output/MSL-signup-sheet.html
+#
+#   View the rendered HTML sign-up sheet in your browser
+#       file:///home/jeff/src/projects/makersmiths/shop-sergeant/output/MSL-signup-sheet.html
+#
+#   Render HTML sign-up sheet as a PDF file
+#       wkhtmltopdf --orientation Landscape output/MSL-signup-sheet.html output/MSL-signup-sheet.pdf
+#
+#   View the rendered HTML sign-up sheet as a PDF file
+#       xdg-open output/MSL-signup-sheet.pdf
+#
+# CLEAN-UP
+#   Run this command to re-initialized everything
+#       trash output/*.{html,j2}
+#
+
 
 ---
 
-opportunity:
+opportunities:
   shop:
     name: Makersmiths Leesburg (MSL)
     address: 106 Royal St SW, Leesburg, VA 20175
@@ -41,16 +56,51 @@ opportunity:
             work_tasks:
               - task: Dust & Wipe Down Machines
                 task_id: 3D-PRINT-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
               - task: Clean-Off & Organize Tabletops
                 task_id: 3D-PRINT-002
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
               - task: Remove Anything That is Not 3D Printing and Put Away
                 task_id: 3D-PRINT-003
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
               - task: Vaccum Floor & Clean-Up Filament Srapes
                 task_id: 3D-PRINT-004
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
               - task: Clean Resin Wash Station
                 task_id: 3D-PRINT-005
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
               - task: ReSpool Red PLA
                 task_id: 3D-PRINT-006
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: BN2-20 Vinyl Cutter
             steward: Diane Bollinger
@@ -86,6 +136,7 @@ opportunity:
             steward: Brad Hess
             work_tasks:
               - task: Dust & Wipe Down Machine
+                task_id: MSL-METAL-001
                 frequency: Weekly
                 purpose: Keep shop clean, safe, and easy for all to use
                 instructions: Do not use any cleaning solvant. Just a dry or damp cloth should be used.
@@ -93,6 +144,7 @@ opportunity:
                 last_date: NA
 
               - task: Clear Off & Organize Tabletops
+                task_id: MSL-METAL-002
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
                 instructions: Every CNC / Big Red thing has its place, so place it there.
@@ -100,6 +152,7 @@ opportunity:
                 last_date: NA
 
               - task: Remove Anything That is Not CNC and Put Away
+                task_id: MSL-METAL-003
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
                 instructions: Every CNC / Big Red thing has its place, so please it there.
@@ -107,6 +160,7 @@ opportunity:
                 last_date: NA
 
               - task: Vaccum Floor
+                task_id: MSL-METAL-004
                 frequency: Daily
                 purpose: Keeping the floor clean is important for safety
                 instructions: If there is significant dust on the floor, sweap / vaccum it up.
@@ -114,6 +168,7 @@ opportunity:
                 last_date: NA
 
               - task: Check Dust Collection and Empty if Needed
+                task_id: MSL-METAL-005
                 frequency: Weekly
                 purpose: Keep shop clean, safe, and easy for all to use.
                 instructions: Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.
@@ -121,6 +176,7 @@ opportunity:
                 last_date: NA
 
               - task: Empty Shop Vac
+                task_id: MSL-METAL-006
                 frequency: Bi-Weekly
                 purpose: As the Vac fills up, it losses power and not nearly as effective when clean.
                 instructions: Dump its contents in the dumpster in the back of the building.
@@ -128,6 +184,7 @@ opportunity:
                 last_date: NA
 
               - task: Empty Saw Dust
+                task_id: MSL-METAL-007
                 frequency: Bi-Weekly
                 purpose: This helps keep the machine from clogging up while in use.
                 instructions: On the front of the machine, remove the small basket and put in the dumpster.
@@ -158,10 +215,12 @@ opportunity:
             steward: Mike Dewan
             work_tasks:
               - task: This is a Test
+                task_id: MSL-WOOD-001
                 frequency: Weekly
-                completion_date: NA
                 purpose: Keep Shop Orderly & Safe
                 instructions: test instructions
+                supervision: false
+                last_date: NA
 
           - name: Woodturning
             steward: Ken Fuentecilla, Bryan Boston
@@ -170,7 +229,8 @@ opportunity:
 
           - name: General Work Room
             steward: ???
-            task:
+            work_tasks:
+              - task: TBD
 
           - name: Reception Area
             steward: ???
@@ -188,9 +248,36 @@ opportunity:
             steward: ???
             work_tasks:
               - task: Wipe Down Sink
+                task_id: MSL-BATH-001
+                frequency: Daily
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
               - task: Swiffer / Mop Floor
+                task_id: MSL-BATH-002
+                frequency: Daily
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
               - task: Replace Toilet Papar & Paper Towels
+                task_id: MSL-BATH-003
+                frequency: Daily
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
               - task: Empty Waste Basket
+                task_id: MSL-BATH-004
+                frequency: Daily
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Member Storage
             steward: ???

@@ -2,8 +2,8 @@
 # Version:      0.0.0
 #
 # DESCRIPTION
-#   lossly follows this diagram: https://makersmiths.org/locations/leesburg
-#                                https://makersmiths.org/locations/purcellville
+#   loosely follows this diagram: https://makersmiths.org/locations/leesburg
+#                                 https://makersmiths.org/locations/purcellville
 #
 #   Data Model
 #      shop --------> area --------> location --------> work_tasks --------> task
@@ -14,25 +14,35 @@
 #                   Outside, etc.   Garden Area, etc.
 #
 # TESTING
-#   YAML linter to spot syntax errors
-#       yamllint input/metalshop-volunteer-opportunity.yaml
-#
 #   Generate Jinja2 template (run once; output is reusable)
 #       scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
 #
+#   YAML linter to spot syntax errors
+#       yamllint input/metalshop-volunteer-opportunities.yaml
+#
+#   convert yaml format to json format
+#       scripts/yaml-to-json.py input/metalshop-volunteer-opportunities.yaml | jq -C '.'
+#
 #   Generate HTML sign-up sheet from Jinja2 template + YAML
-#       scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/metalshop-volunteer-opportunity.yaml --output output/metalshop-signup-sheet.html
+#       scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/metalshop-volunteer-opportunities.yaml --output output/metalshop-signup-sheet.html
 #
 #   View the rendered HTML sign-up sheet in your browser
 #       file:///home/jeff/src/projects/makersmiths/shop-sergeant/output/metalshop-signup-sheet.html
 #
-#   View the rendered HTML sign-up sheet as a PDF file
+#   Render HTML sign-up sheet as a PDF file
 #       wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/metalshop-signup-sheet.pdf
+#
+#   View the rendered HTML sign-up sheet as a PDF file
+#       xdg-open output/metalshop-signup-sheet.pdf
+#
+# CLEAN-UP
+#   Run this command to re-initialized everything
+#       trash output/*.{html,j2}
 #
 
 ---
 
-opportunity:
+opportunities:
   shop:
     name: Makersmiths Leesburg (MSL)
     address: 106 Royal St SW, Leesburg, VA 20175
@@ -99,6 +109,6 @@ opportunity:
                 supervision: true
                 last_date: NA
 
-              - task: Test Case - removed all data 
+              - task: Test Case - removed all data
 
               - task: Test Case - forcing a new page

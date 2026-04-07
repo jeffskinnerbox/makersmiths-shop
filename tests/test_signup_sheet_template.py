@@ -1,9 +1,15 @@
 # tests/test_signup_sheet_template.py
+import importlib.util
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from signup_sheet_template import build_template  # noqa: E402
+_spec = importlib.util.spec_from_file_location(
+    "signup_sheet_template",
+    Path(__file__).parent.parent / "scripts" / "signup-sheet-template.py",
+)
+_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_mod)
+build_template = _mod.build_template
 
 
 def make_args(**overrides):

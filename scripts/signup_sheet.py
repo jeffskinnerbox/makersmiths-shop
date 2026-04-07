@@ -25,13 +25,12 @@ def load_yaml(source) -> dict:
 
 
 def detect_format(data: dict) -> str:
-    """Return 'opportunity' or 'tasks_list' based on root key."""
-    if "opportunity" in data:
-        return "opportunity"
-    if "tasks_list" in data:
-        return "tasks_list"
+    """Return the root key used to access shop data."""
+    for key in ("opportunity", "opportunities", "tasks_list"):
+        if key in data:
+            return key
     raise ValueError(
-        f"Unknown YAML format: root key must be 'opportunity' or 'tasks_list', "
+        f"Unknown YAML format: root key must be 'opportunity', 'opportunities', or 'tasks_list', "
         f"got: {list(data.keys())}"
     )
 
