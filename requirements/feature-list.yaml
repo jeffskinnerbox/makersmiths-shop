@@ -65,6 +65,6 @@ features:
       - signup-sheet-template.py generates a reusable Jinja2 HTML template
       - signup-sheet.py renders template + YAML to HTML with embedded QR codes
       - QR codes use https://makersmiths.org as placeholder URL
-      - Handles both metalshop-volunteer-opportunity.yaml and tasks-list.yaml formats
+      - Handles both metalshop-volunteer-opportunity.yaml and MSL-volunteer-opportunities.yaml formats
       - 24 tests passing
     tags: [phase-0, tooling, print]

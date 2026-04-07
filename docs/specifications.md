@@ -50,7 +50,7 @@ slack://channel?team=<TEAM_ID>&id=<TASK_LOG_CHANNEL_ID>&message=task-done%20MSL-
 On scan, Slack opens with `#task-log` pre-filled. Member taps Send. Total: 2 taps.
 
 ### Task IDs
-Each task in `tasks-list.yaml` gets a stable ID field (e.g., `MSL-METAL-001`). Format: `<SHOP>-<AREA_CODE>-<SEQ>`.
+Each task in `MSL-volunteer-opportunities.yaml` gets a stable ID field (e.g., `MSL-METAL-001`). Format: `<SHOP>-<AREA_CODE>-<SEQ>`.
 
 ### Generation Pipeline
 
@@ -167,7 +167,7 @@ Synced from YAML when sheets are generated. Allows Claude to resolve task IDs wi
 | HTML rendering | Browser print-to-PDF (Phase 0); Python `weasyprint` (Phase 1+) |
 | Hosting | Makersmiths on-premise server (Linux) |
 | Config / secrets | Environment variables or `.env` file |
-| Task data | Existing `tasks-list.yaml` + `parse-tasks.py` pipeline |
+| Task data | Existing `MSL-volunteer-opportunities.yaml` + `parse-tasks.py` pipeline |
 
 ---
 
@@ -183,7 +183,7 @@ Synced from YAML when sheets are generated. Allows Claude to resolve task IDs wi
 **Test:** Generate metalshop sheet, print, post, review with steward.
 
 ### Phase 1 — Foundation
-- Add stable `task_id` fields to `tasks-list.yaml` (all locations)
+- Add stable `task_id` fields to `MSL-volunteer-opportunities.yaml` (all locations)
 - Create `generate-sheets.py`: encodes live Slack deep links in QR codes, renders PDFs via `weasyprint`
 - Set up Google Sheets with `task-log`, `members`, `task-catalog` sheets
 - Verify QR → Slack deep link flow manually

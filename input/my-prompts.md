@@ -71,7 +71,7 @@ The default format is expressed below and the command-line arguments will make m
 
 The 2nd Python program is called `@scripts/signup-sheet.py`.
 This will also use `argparse` module for commandl-line options specifying a Jinja2 template
-and a YAML file formated like `metalshop-volunteer-opportunity.yaml` or `tasks-list.yaml`
+and a YAML file formated like `metalshop-volunteer-opportunity.yaml` or `MSL-volunteer-opportunities.yaml`
 that will be parsed to inserted into the template to create the sign-up sheet.
 
 The default output of `@scripts/signup-sheet-template.py` should look like this:

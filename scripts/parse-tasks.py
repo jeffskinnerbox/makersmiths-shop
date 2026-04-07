@@ -2,7 +2,7 @@
 """
 parse_tasks.py
 
-Parses a tasks-list.yaml file and generates a Markdown file where each
+Parses a MSL-volunteer-opportunities.yaml file and generates a Markdown file where each
 location has its own table with columns: Task Name, Completion Date, Frequency.
 """
 
@@ -73,7 +73,7 @@ def generate_markdown(data: dict) -> str:
 
 
 def main():
-    input_file = sys.argv[1] if len(sys.argv) > 1 else "/mnt/user-data/uploads/tasks-list.yaml"
+    input_file = sys.argv[1] if len(sys.argv) > 1 else "/mnt/user-data/uploads/MSL-volunteer-opportunities.yaml"
     output_file = sys.argv[2] if len(sys.argv) > 2 else "/mnt/user-data/outputs/tasks-list.md"
 
     print(f"Parsing: {input_file}")

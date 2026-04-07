@@ -15,7 +15,7 @@
 ```
 shop-sergeant/
 ├── input/
-│   ├── tasks-list.yaml                        # MODIFIED (Phase 0+1): add task_id to each task
+│   ├── MSL-volunteer-opportunities.yaml                        # MODIFIED (Phase 0+1): add task_id to each task
 │   ├── metalshop-volunteer-opportunity.yaml   # MODIFIED (Phase 0): task_id fields added ✅
 │   └── makersmiths-logo.png                   # NEW: drop logo here for header
 ├── scripts/
@@ -92,12 +92,12 @@ python3 scripts/signup-sheet.py \
 
 ## Phase 1 — Foundation (QR Sheets + Google Sheets Setup)
 
-### Task 1: Add task_id to tasks-list.yaml
+### Task 1: Add task_id to MSL-volunteer-opportunities.yaml
 
 **Files:**
-- Modify: `tasks-list.yaml`
+- Modify: `MSL-volunteer-opportunities.yaml`
 
-- [ ] **Step 1: Open tasks-list.yaml and add `task_id` to every task under `work_tasks`**
+- [ ] **Step 1: Open MSL-volunteer-opportunities.yaml and add `task_id` to every task under `work_tasks`**
 
   Format: `<SHOP_CODE>-<AREA_CODE>-<SEQ>` where SHOP_CODE = `MSL` or `MSP`, AREA_CODE is a short 3-4 letter code for the location (e.g., `3DP`, `METAL`, `WOOD`, `LASER`), SEQ is a zero-padded 3-digit number.
 
@@ -133,7 +133,7 @@ python3 scripts/signup-sheet.py \
 
   ```bash
   cd /home/jeff/src/projects/makersmiths/shop-sergeant
-  yamllint tasks-list.yaml
+  yamllint MSL-volunteer-opportunities.yaml
   ```
 
   Expected: no errors.
@@ -143,7 +143,7 @@ python3 scripts/signup-sheet.py \
   ```bash
   python3 -c "
   import yaml
-  with open('tasks-list.yaml') as f:
+  with open('MSL-volunteer-opportunities.yaml') as f:
       data = yaml.safe_load(f)
   ids = []
   shop = data['tasks_list']['shop']
@@ -163,8 +163,8 @@ python3 scripts/signup-sheet.py \
 - [ ] **Step 4: Commit**
 
   ```bash
-  git add tasks-list.yaml
-  git commit -m "feat: add stable task_id to all tasks in tasks-list.yaml"
+  git add MSL-volunteer-opportunities.yaml
+  git commit -m "feat: add stable task_id to all tasks in MSL-volunteer-opportunities.yaml"
   ```
 
 ---
@@ -535,11 +535,11 @@ python3 scripts/signup-sheet.py \
   """
   generate-sheets.py
 
-  Generates sign-up sheet PDFs from tasks-list.yaml.
+  Generates sign-up sheet PDFs from MSL-volunteer-opportunities.yaml.
   Each location gets its own PDF page with task rows and per-task QR codes.
 
   Usage:
-      python3 scripts/generate-sheets.py tasks-list.yaml output/sheets \
+      python3 scripts/generate-sheets.py MSL-volunteer-opportunities.yaml output/sheets \
           --team-id T0000000001 --channel-id C0000000001
   """
 
@@ -652,7 +652,7 @@ python3 scripts/signup-sheet.py \
 
   def main():
       parser = argparse.ArgumentParser(description="Generate sign-up sheet PDFs with QR codes")
-      parser.add_argument("yaml_file", help="Path to tasks-list.yaml")
+      parser.add_argument("yaml_file", help="Path to MSL-volunteer-opportunities.yaml")
       parser.add_argument("output_dir", help="Directory to write PDFs into")
       parser.add_argument("--team-id", required=True, help="Slack workspace team ID (T...)")
       parser.add_argument("--channel-id", required=True, help="Slack #task-log channel ID (C...)")
@@ -671,7 +671,7 @@ python3 scripts/signup-sheet.py \
 
   ```bash
   cd /home/jeff/src/projects/makersmiths/shop-sergeant
-  python3 scripts/generate-sheets.py tasks-list.yaml output/sheets \
+  python3 scripts/generate-sheets.py MSL-volunteer-opportunities.yaml output/sheets \
       --team-id TXXXXXXXX --channel-id CXXXXXXXX
   ```
 
@@ -720,11 +720,11 @@ python3 scripts/signup-sheet.py \
   """
   sync-catalog.py
 
-  Syncs task-catalog Google Sheet from tasks-list.yaml.
+  Syncs task-catalog Google Sheet from MSL-volunteer-opportunities.yaml.
   Clears the sheet (except header) and rewrites all task rows.
 
   Usage:
-      python3 scripts/sync-catalog.py tasks-list.yaml \
+      python3 scripts/sync-catalog.py MSL-volunteer-opportunities.yaml \
           --credentials /path/to/creds.json \
           --spreadsheet-id YOUR_SHEET_ID
   """
@@ -800,7 +800,7 @@ python3 scripts/signup-sheet.py \
 - [ ] **Step 4: Run sync-catalog.py**
 
   ```bash
-  python3 scripts/sync-catalog.py tasks-list.yaml \
+  python3 scripts/sync-catalog.py MSL-volunteer-opportunities.yaml \
       --credentials /path/to/creds.json \
       --spreadsheet-id YOUR_SHEET_ID
   ```
@@ -1886,7 +1886,7 @@ This is configuration work, no code.
   ```
 
   Run through the full member digital flow:
-  1. Generate a test PDF: `python3 scripts/generate-sheets.py tasks-list.yaml output/sheets --team-id <T_ID> --channel-id <C_ID>`
+  1. Generate a test PDF: `python3 scripts/generate-sheets.py MSL-volunteer-opportunities.yaml output/sheets --team-id <T_ID> --channel-id <C_ID>`
   2. Open the PDF, scan a QR code with a phone
   3. Confirm Slack opens with `task-done MSL-XXXX-XXX` pre-filled
   4. Tap Send — confirm bot replies ✅ with correct task name

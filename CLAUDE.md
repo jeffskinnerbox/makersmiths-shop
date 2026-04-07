@@ -21,24 +21,24 @@ Phase 0 complete: sign-up sheet tools built and tested (`signup-sheet-template.p
 Hierarchical YAML structure: **Shop → Area → Location → Task** (with unique `task_id` like `MSL-METAL-001`)
 
 Key data files:
-- `input/tasks-list.yaml` — master task catalog (task_id fields still needed for most locations)
+- `input/MSL-volunteer-opportunities.yaml` — master task catalog (task_id fields still needed for most locations)
 - `input/metalshop-volunteer-opportunity.yaml` — metalshop extended format; task_ids added (MSL-METAL-001…007)
 
 ## Available Commands
 
 ```bash
 # Validate YAML
-yamllint input/tasks-list.yaml
+yamllint input/MSL-volunteer-opportunities.yaml
 
 # Convert YAML → Markdown
-python3 scripts/parse-tasks.py input/tasks-list.yaml output/tasks-list.md
+python3 scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-volunteer-opportunities.md
 python3 scripts/parse-opp-tasks.py input/metalshop-volunteer-opportunity.yaml output/metalshop-task-list.md
 
 # Convert Markdown → Word doc
-pandoc -f gfm output/tasks-list.md -o output/tasks-list.docx
+pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-opportunities.docx
 
 # Convert YAML → JSON
-python3 scripts/yaml-to-json.py input/tasks-list.yaml | jq -C '.'
+python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
 
 # Step 1: Generate Jinja2 template (run once; output is reusable)
 python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
@@ -78,7 +78,7 @@ Two-layer pattern in `scripts/`:
 
 Two YAML input formats, detected by root key via `detect_format()`:
 - `opportunity` — extended format with `work_tasks` dicts; used for a single area's sign-up sheet (e.g., `metalshop-volunteer-opportunity.yaml`)
-- `tasks_list` — simpler master catalog format (e.g., `tasks-list.yaml`)
+- `tasks_list` — simpler master catalog format (e.g., `MSL-volunteer-opportunities.yaml`)
 
 Both formats use `work_tasks` for task lists (falling back to `task` key). Both are handled by the same `extract_locations()` pipeline.
 

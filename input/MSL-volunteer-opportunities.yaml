@@ -15,20 +15,20 @@
 #
 # TESTING
 #    YAML linter to spot syntax errors
-#        yamllint input/tasks-list.yaml
+#        yamllint input/MSL-volunteer-opportunities.yaml
 #
-#    # format tasks-list.yaml into a markdown file
-#    python3 scripts/parse-tasks.py input/tasks-list.yaml output/tasks-list.md
+#    # format MSL-volunteer-opportunities.yaml into a markdown file
+#    python3 scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-volunteer-opportunities.md
 #
 #    # convert markdown file to MS Word .docx
-#    pandoc -f gfm output/tasks-list.md -o output/tasks-list.docx
+#    pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-opportunities.docx
 #
 #    # convert yaml format to json format
-#    python3 scripts/yaml-to-json.py input/tasks-list.yaml | jq -C '.'
+#    python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
 
 ---
 
-tasks_list:
+opportunity:
   shop:
     name: Makersmiths Leesburg (MSL)
     address: 106 Royal St SW, Leesburg, VA 20175
