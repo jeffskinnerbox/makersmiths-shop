@@ -280,11 +280,11 @@ opportunities:
           - name: Woodshop
             steward: Mike Dewan
             work_tasks:
-              - task: This is a Test
+              - task: TBD
                 task_id: MSL-WOOD-001
-                frequency: Weekly
-                purpose: Keep Shop Orderly & Safe
-                instructions: Instructions for doing this task.
+                frequency: NA
+                purpose: NA
+                instructions: NA
                 supervision: false
                 last_date: NA
 
