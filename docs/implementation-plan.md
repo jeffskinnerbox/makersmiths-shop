@@ -16,12 +16,11 @@
 shop-sergeant/
 ├── input/
 │   ├── MSL-volunteer-opportunities.yaml                        # MODIFIED (Phase 0+1): add task_id to each task
-│   ├── metalshop-volunteer-opportunity.yaml   # MODIFIED (Phase 0): task_id fields added ✅
+│   ├── metalshop-volunteer-opportunities.yaml  # MODIFIED (Phase 0): task_id fields added ✅
 │   └── makersmiths-logo.png                   # NEW: drop logo here for header
 ├── scripts/
-│   ├── parse-tasks.py                         # existing, untouched
-│   ├── signup_sheet_template.py               # NEW (Phase 0): template library ✅
-│   ├── signup-sheet-template.py               # NEW (Phase 0): CLI for template gen ✅
+│   ├── parse-tasks.py                         # existing, updated to handle all root keys
+│   ├── signup-sheet-template.py               # NEW (Phase 0): template gen (CLI + build_template()) ✅
 │   ├── signup_sheet.py                        # NEW (Phase 0): sheet renderer library ✅
 │   ├── signup-sheet.py                        # NEW (Phase 0): CLI for sheet gen ✅
 │   ├── generate-sheets.py                     # NEW (Phase 1): YAML → PDF with live QR codes
@@ -63,8 +62,8 @@ URL (`https://makersmiths.org`) until the Slack bot exists.
 **Deliverables (all complete):**
 - `scripts/signup-sheet-template.py` — generates a reusable Jinja2 HTML template
 - `scripts/signup-sheet.py` — renders template + YAML → HTML sign-up sheet
-- `input/metalshop-volunteer-opportunity.yaml` — task_id fields added (MSL-METAL-001…007)
-- 24 tests passing
+- `input/metalshop-volunteer-opportunities.yaml` — task_id fields added (MSL-METAL-001…007)
+- 33 tests passing
 
 **Usage:**
 
@@ -75,7 +74,7 @@ python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.h
 # Generate the metalshop sign-up sheet
 python3 scripts/signup-sheet.py \
     --template output/signup-sheet-template.html.j2 \
-    --yaml input/metalshop-volunteer-opportunity.yaml \
+    --yaml input/metalshop-volunteer-opportunities.yaml \
     --output output/metalshop-signup-sheet.html
 
 # Open in browser → File > Print to save as PDF
@@ -97,7 +96,7 @@ python3 scripts/signup-sheet.py \
 **Files:**
 - Modify: `MSL-volunteer-opportunities.yaml`
 
-- [ ] **Step 1: Open MSL-volunteer-opportunities.yaml and add `task_id` to every task under `work_tasks`**
+- [x] **Step 1: Open MSL-volunteer-opportunities.yaml and add `task_id` to every task under `work_tasks`**
 
   Format: `<SHOP_CODE>-<AREA_CODE>-<SEQ>` where SHOP_CODE = `MSL` or `MSP`, AREA_CODE is a short 3-4 letter code for the location (e.g., `3DP`, `METAL`, `WOOD`, `LASER`), SEQ is a zero-padded 3-digit number.
 
@@ -129,24 +128,23 @@ python3 scripts/signup-sheet.py \
 
   Apply this pattern to every location in the file. Keep seq numbers unique within a location.
 
-- [ ] **Step 2: Validate YAML syntax**
+- [x] **Step 2: Validate YAML syntax**
 
   ```bash
-  cd /home/jeff/src/projects/makersmiths/shop-sergeant
-  yamllint MSL-volunteer-opportunities.yaml
+  yamllint input/MSL-volunteer-opportunities.yaml
   ```
 
   Expected: no errors.
 
-- [ ] **Step 3: Spot-check IDs are unique across the file**
+- [x] **Step 3: Spot-check IDs are unique across the file**
 
   ```bash
   python3 -c "
   import yaml
-  with open('MSL-volunteer-opportunities.yaml') as f:
+  with open('input/MSL-volunteer-opportunities.yaml') as f:
       data = yaml.safe_load(f)
   ids = []
-  shop = data['tasks_list']['shop']
+  shop = data['opportunities']['shop']
   for area in shop.get('area', []):
       for loc in area.get('location', []):
           for task in loc.get('work_tasks', []):
@@ -160,10 +158,10 @@ python3 scripts/signup-sheet.py \
 
   Expected: `Duplicates: set()`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
   ```bash
-  git add MSL-volunteer-opportunities.yaml
+  git add input/MSL-volunteer-opportunities.yaml
   git commit -m "feat: add stable task_id to all tasks in MSL-volunteer-opportunities.yaml"
   ```
 
