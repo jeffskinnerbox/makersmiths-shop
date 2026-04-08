@@ -42,4 +42,6 @@ scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-task-li
 #NOTE: This needs more work
 # Convert YAML → JSON
 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
+
+#NOTE: what about the creation of metalshop-task-list.docx
 ```

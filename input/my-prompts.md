@@ -1,8 +1,7 @@
-
 # Claude Code Prompts
 These prompts where used to create portions of this solution.
 
-## My Vision for Makersmiths Volunteer Program
+## 1st Prompt: My Vision for Makersmiths Volunteer Program
 I'm a member of a makerspace call Makersmiths.
 All members are expected to volunteer 2 hours per month to perform work tasks
 for the care, up-keep, and expansion of the makerspace.
@@ -37,9 +36,7 @@ and place your findings in @specifications.md.
 
 ----
 
-claude --resume "signup-sheet-tools-implementation"
-
-## Modification to Plan
+## 2nd Prompt: Modification to Plan
 The first step of `@docs/implementation-plan.md` needs to be the creation of
 the Python tools defined in `@input/my-prompts.md` file,
 section titled "Task List Formatting Tools".
@@ -60,7 +57,7 @@ When complete review all documents in `@docs` and `@input` for completeness and 
 
 ----
 
-## Task List Formatting Tools
+## 3rd Prompt: Task List Formatting Tools
 I need two Python program that will convert `@metalshop-volunteer-opportunity.yaml`
 into a 8.5 x 11 inch sign-up sheet that can be posted in the makerspace.
 

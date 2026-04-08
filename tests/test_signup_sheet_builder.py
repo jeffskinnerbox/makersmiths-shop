@@ -1,4 +1,5 @@
-"""tests/test_signup_sheet.py"""
+"""tests/test_signup_sheet_builder.py"""
+
 import sys
 import base64
 from pathlib import Path
@@ -29,8 +30,16 @@ OPPORTUNITY_YAML = {
                             "name": "Metalshop",
                             "steward": "Brad Hess",
                             "work_tasks": [
-                                {"task": "Wipe machines", "task_id": "MSL-METAL-001", "frequency": "Weekly"},
-                                {"task": "Vacuum floor", "task_id": "MSL-METAL-002", "frequency": "Daily"},
+                                {
+                                    "task": "Wipe machines",
+                                    "task_id": "MSL-METAL-001",
+                                    "frequency": "Weekly",
+                                },
+                                {
+                                    "task": "Vacuum floor",
+                                    "task_id": "MSL-METAL-002",
+                                    "frequency": "Daily",
+                                },
                             ],
                         }
                     ],
@@ -52,7 +61,11 @@ TASKS_LIST_YAML = {
                             "name": "3D Printing",
                             "steward": "Bryan Daniels",
                             "work_tasks": [
-                                {"task": "Dust machines", "task_id": "MSL-3DP-001", "frequency": "Weekly"},
+                                {
+                                    "task": "Dust machines",
+                                    "task_id": "MSL-3DP-001",
+                                    "frequency": "Weekly",
+                                },
                             ],
                         }
                     ],
@@ -114,9 +127,19 @@ def test_extract_locations_missing_task_id_defaults_na():
     data = {
         "opportunity": {
             "shop": {
-                "area": [{"location": [{"name": "X", "steward": "Y", "work_tasks": [
-                    {"task": "No ID task", "frequency": "Weekly"}
-                ]}]}]
+                "area": [
+                    {
+                        "location": [
+                            {
+                                "name": "X",
+                                "steward": "Y",
+                                "work_tasks": [
+                                    {"task": "No ID task", "frequency": "Weekly"}
+                                ],
+                            }
+                        ]
+                    }
+                ]
             }
         }
     }
@@ -209,10 +232,20 @@ def test_extract_locations_tbd_tasks_excluded_within_location():
     data = {
         "tasks_list": {
             "shop": {
-                "area": [{"location": [{"name": "Mixed", "steward": "X", "work_tasks": [
-                    {"task": "Real task", "frequency": "Weekly"},
-                    {"task": "TBD"},
-                ]}]}]
+                "area": [
+                    {
+                        "location": [
+                            {
+                                "name": "Mixed",
+                                "steward": "X",
+                                "work_tasks": [
+                                    {"task": "Real task", "frequency": "Weekly"},
+                                    {"task": "TBD"},
+                                ],
+                            }
+                        ]
+                    }
+                ]
             }
         }
     }
@@ -226,6 +259,7 @@ def test_extract_locations_tbd_tasks_excluded_within_location():
 # detect_format — opportunities plural key
 # ---------------------------------------------------------------------------
 
+
 def test_detect_format_opportunities():
     data = {"opportunities": {"shop": {}}}
     assert detect_format(data) == "opportunities"
@@ -234,6 +268,7 @@ def test_detect_format_opportunities():
 # ---------------------------------------------------------------------------
 # load_yaml
 # ---------------------------------------------------------------------------
+
 
 def test_load_yaml_from_path(tmp_path):
     f = tmp_path / "test.yaml"
@@ -253,6 +288,7 @@ def test_load_yaml_from_file_object(tmp_path):
 # ---------------------------------------------------------------------------
 # render_sheet
 # ---------------------------------------------------------------------------
+
 
 def test_render_sheet_returns_html(tmp_path):
     tmpl = tmp_path / "sheet.html.j2"
