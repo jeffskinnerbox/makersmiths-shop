@@ -34,9 +34,9 @@ yamllint input/MSL-volunteer-opportunities.yaml
 python3 scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-volunteer-opportunities.md
 python3 scripts/parse-opp-tasks.py input/metalshop-volunteer-opportunities.yaml output/metalshop-task-list.md
 
-# Convert Markdown → Word doc (docs/custom-reference.docx controls styles)
+# Convert Markdown → Word doc (input/custom-reference.docx controls styles)
 pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-opportunities.docx \
-    --reference-doc docs/custom-reference.docx
+    --reference-doc input/custom-reference.docx
 
 # Convert YAML → JSON
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
@@ -52,7 +52,11 @@ python3 scripts/signup-sheet.py \
 
 # Step 3: Convert HTML to PDF (Phase 0 — requires wkhtmltopdf)
 wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/metalshop-signup-sheet.pdf
-# Convenience scripts: bash scripts/print-metalshop.sh  or  bash scripts/print-MSL.sh
+# Convenience scripts (template + HTML + PDF, then open PDF): bash scripts/print-metalshop.sh  or  bash scripts/print-MSL.sh
+# Post scripts (template + HTML only, then open HTML in Chrome): bash scripts/post-metalshop.sh  or  bash scripts/post-MSL.sh
+
+# Clean up all generated output artifacts and .bak files
+bash scripts/clean-up.sh
 
 # Optional flags for signup-sheet.py:
 #   --location "Metalshop"      render a single location only
