@@ -20,7 +20,7 @@
 #   YAML linter to spot syntax errors
 #       yamllint input/MSL-volunteer-opportunities.yaml
 #
-#   convert yaml format to json format
+#   Convert yaml format to json format
 #       scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
 #
 #   Generate HTML sign-up sheet from Jinja2 template + YAML
