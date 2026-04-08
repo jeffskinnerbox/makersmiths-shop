@@ -21,7 +21,7 @@ def convert_yaml_to_json(input_file, output_file=None, indent=2):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python solution.py <input.yaml> [output.json]")
+        print("Usage: python3 scripts/yaml-to-json.py <input.yaml> [output.json]")
         sys.exit(1)
 
     input_file = sys.argv[1]

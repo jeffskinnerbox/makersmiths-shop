@@ -108,22 +108,22 @@ python3 scripts/signup-sheet.py \
     steward: Bryan Daniels, Scott Silvers
     work_tasks:
       - task: Dust & Wipe Down Machines
-        task_id: MSL-3DP-001
+        task_id: MSL-3D-PRINT-001
         frequency: Weekly
       - task: Clean-Off & Organize Tabletops
-        task_id: MSL-3DP-002
+        task_id: MSL-3D-PRINT-002
         frequency: Weekly
       - task: Remove Anything That is Not 3D Printing and Put Away
-        task_id: MSL-3DP-003
+        task_id: MSL-3D-PRINT-003
         frequency: Weekly
       - task: Vaccum Floor & Clean-Up Filament Srapes
-        task_id: MSL-3DP-004
+        task_id: MSL-3D-PRINT-004
         frequency: Weekly
       - task: Clean Resin Wash Station
-        task_id: MSL-3DP-005
+        task_id: MSL-3D-PRINT-005
         frequency: Weekly
       - task: ReSpool Red PLA
-        task_id: MSL-3DP-006
+        task_id: MSL-3D-PRINT-006
         frequency: Monthly
   ```
 

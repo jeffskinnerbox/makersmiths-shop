@@ -9,8 +9,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from signup_sheet import (  # noqa: E402
     detect_format,
     extract_locations,
+    load_yaml,
     make_qr_b64,
     attach_qr_codes,
+    render_sheet,
 )
 
 
@@ -218,3 +220,67 @@ def test_extract_locations_tbd_tasks_excluded_within_location():
     assert len(locs) == 1
     assert len(locs[0]["tasks"]) == 1
     assert locs[0]["tasks"][0]["name"] == "Real task"
+
+
+# ---------------------------------------------------------------------------
+# detect_format — opportunities plural key
+# ---------------------------------------------------------------------------
+
+def test_detect_format_opportunities():
+    data = {"opportunities": {"shop": {}}}
+    assert detect_format(data) == "opportunities"
+
+
+# ---------------------------------------------------------------------------
+# load_yaml
+# ---------------------------------------------------------------------------
+
+def test_load_yaml_from_path(tmp_path):
+    f = tmp_path / "test.yaml"
+    f.write_text("tasks_list:\n  shop:\n    name: Test\n")
+    data = load_yaml(str(f))
+    assert data["tasks_list"]["shop"]["name"] == "Test"
+
+
+def test_load_yaml_from_file_object(tmp_path):
+    f = tmp_path / "test.yaml"
+    f.write_text("tasks_list:\n  shop:\n    name: Test\n")
+    with open(f) as fh:
+        data = load_yaml(fh)
+    assert data["tasks_list"]["shop"]["name"] == "Test"
+
+
+# ---------------------------------------------------------------------------
+# render_sheet
+# ---------------------------------------------------------------------------
+
+def test_render_sheet_returns_html(tmp_path):
+    tmpl = tmp_path / "sheet.html.j2"
+    tmpl.write_text(
+        "<html>{% for location in locations %}<p>{{ location.name }}</p>{% endfor %}</html>"
+    )
+    locs = [{"name": "Metalshop", "steward": "Brad", "tasks": []}]
+    html = render_sheet(str(tmpl), locs, logo_path=None)
+    assert "<p>Metalshop</p>" in html
+
+
+def test_render_sheet_no_logo_skips_uri(tmp_path):
+    tmpl = tmp_path / "sheet.html.j2"
+    tmpl.write_text("{% if logo_path %}HAS_LOGO{% endif %}RENDERED")
+    html = render_sheet(str(tmpl), [], logo_path=None)
+    assert "HAS_LOGO" not in html
+    assert "RENDERED" in html
+
+
+def test_render_sheet_with_logo_embeds_data_uri(tmp_path):
+    tmpl = tmp_path / "sheet.html.j2"
+    tmpl.write_text("{{ logo_path }}")
+    # minimal 1×1 PNG
+    png = base64.b64decode(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk"
+        "+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+    )
+    logo = tmp_path / "logo.png"
+    logo.write_bytes(png)
+    html = render_sheet(str(tmpl), [], logo_path=str(logo))
+    assert html.startswith("data:image/png;base64,")

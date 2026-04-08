@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/bin/bash
+set -euo pipefail
 
 # Generate Jinja2 template (you can run once; output is reusable)
 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
