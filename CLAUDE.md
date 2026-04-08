@@ -21,8 +21,8 @@ Phase 0 complete: sign-up sheet tools built and tested (`signup-sheet-template.p
 Hierarchical YAML structure: **Shop → Area → Location → Task** (with unique `task_id` like `MSL-METAL-001`)
 
 Key data files:
-- `input/MSL-volunteer-opportunities.yaml` — master task catalog (root key: `opportunities`)
-- `input/metalshop-volunteer-opportunities.yaml` — metalshop extended format; task_ids added MSL-METAL-001…007 (root key: `opportunities`)
+- `input/MSL-volunteer-opportunities.yaml` — master task catalog (root key: `opportunities`, plural)
+- `input/metalshop-volunteer-opportunities.yaml` — metalshop extended format; task_ids MSL-METAL-001…007 (root key: `opportunities`)
 
 ## Available Commands
 
@@ -34,8 +34,9 @@ yamllint input/MSL-volunteer-opportunities.yaml
 python3 scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-volunteer-opportunities.md
 python3 scripts/parse-opp-tasks.py input/metalshop-volunteer-opportunities.yaml output/metalshop-task-list.md
 
-# Convert Markdown → Word doc
-pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-opportunities.docx
+# Convert Markdown → Word doc (docs/custom-reference.docx controls styles)
+pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-opportunities.docx \
+    --reference-doc docs/custom-reference.docx
 
 # Convert YAML → JSON
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
@@ -61,8 +62,9 @@ wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/me
 # Run all tests
 python3 -m pytest tests/ -v
 
-# Run a single test
+# Run a single test (examples from each test module)
 python3 -m pytest tests/test_signup_sheet.py::test_extract_locations_opportunity_count -v
+python3 -m pytest tests/test_signup_sheet_template.py::test_build_template_contains_jinja2_for_loop -v
 ```
 
 ## Tech Stack (Planned)
@@ -80,14 +82,16 @@ python3 -m pytest tests/test_signup_sheet.py::test_extract_locations_opportunity
 
 `scripts/signup-sheet-template.py` is self-contained — `build_template()` lives in the CLI file itself. Tests import it via `importlib.util.spec_from_file_location`.
 
+`scripts/parse-opp-tasks.py` is also standalone (no library split) — parses `opportunities`-format YAML and emits per-location Markdown tables with task, frequency, purpose, instructions, and last-date columns.
+
 Three YAML root keys, all handled by `detect_format()` in `signup_sheet.py`:
 - `opportunity` — single-area extended format
-- `opportunities` — same structure, plural key (e.g., `metalshop-volunteer-opportunities.yaml`)
-- `tasks_list` — simpler master catalog format (e.g., `MSL-volunteer-opportunities.yaml`)
+- `opportunities` — plural form of the same structure (both active input files use this)
+- `tasks_list` — simpler master catalog format (supported in code and tests; no current input file uses it)
 
 All formats use `work_tasks` for task lists (falling back to `task` key). Locations where all tasks are TBD or empty are silently skipped by `extract_locations()` (`skip_tbd=True` default).
 
-Logo and image assets live in `input/`. The default logo path is `input/makersmiths-logo.png`.
+Logo and image assets live in `input/`. The default logo path is `input/makersmiths-logo.png`. Alternate logo variants (anvil-only, vertical, color options) are in `logos_images/`.
 
 ## Debugging
 
@@ -97,4 +101,5 @@ When encountering an error, consider writing a test case that reproduces it befo
 
 - `docs/specifications.md` — system spec (data flows, Sheets schema, sign-up sheet design)
 - `docs/implementation-plan.md` — detailed 5-phase implementation plan with file map and code examples
-- `requirements/feature-list.yaml` — feature tracker
+- `requirements/feature-list.yaml` — feature tracker (template/placeholder, not yet populated)
+- `requirements/use-case-list.yaml` — use case tracker
