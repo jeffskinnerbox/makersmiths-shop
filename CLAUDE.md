@@ -21,7 +21,7 @@ Phase 0 complete: sign-up sheet tools built and tested (`signup-sheet-template.p
 Hierarchical YAML structure: **Shop → Area → Location → Task** (with unique `task_id` like `MSL-METAL-001`)
 
 Key data files:
-- `input/MSL-volunteer-opportunities.yaml` — master task catalog (root key: `tasks_list`)
+- `input/MSL-volunteer-opportunities.yaml` — master task catalog (root key: `opportunities`)
 - `input/metalshop-volunteer-opportunities.yaml` — metalshop extended format; task_ids added MSL-METAL-001…007 (root key: `opportunities`)
 
 ## Available Commands
@@ -48,6 +48,10 @@ python3 scripts/signup-sheet.py \
     --template output/signup-sheet-template.html.j2 \
     --yaml input/metalshop-volunteer-opportunities.yaml \
     --output output/metalshop-signup-sheet.html
+
+# Step 3: Convert HTML to PDF (Phase 0 — requires wkhtmltopdf)
+wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/metalshop-signup-sheet.pdf
+# Convenience scripts: bash scripts/print-metalshop.sh  or  bash scripts/print-MSL.sh
 
 # Optional flags for signup-sheet.py:
 #   --location "Metalshop"      render a single location only
@@ -83,7 +87,7 @@ Three YAML root keys, all handled by `detect_format()` in `signup_sheet.py`:
 
 All formats use `work_tasks` for task lists (falling back to `task` key). Locations where all tasks are TBD or empty are silently skipped by `extract_locations()` (`skip_tbd=True` default).
 
-Logo and image assets live in `signup_sheets/`. The default logo path is `input/makersmiths-logo.png`.
+Logo and image assets live in `input/`. The default logo path is `input/makersmiths-logo.png`.
 
 ## Debugging
 

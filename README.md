@@ -75,17 +75,27 @@ Examples
 ---------------
 
 ```bash
-# yaml linter to spot syntax errors
-yamllint task-list.yaml
+# YAML linter to spot syntax errors
+yamllint input/MSL-volunteer-opportunities.yaml
 
-# format task-list.yaml into a markdown file
-python3 parse-task.py task-list.yaml task-list.md
+# Convert YAML to Markdown task list
+python3 scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-task-list.md
 
-# convert markdown file to MS Word .docx
-pandoc -f gfm task-list.md -o task-list.docx
+# Convert Markdown to Word doc
+pandoc -f gfm output/MSL-task-list.md -o output/MSL-task-list.docx
 
-# convert yaml format to json format
-python yaml-to-json.py task-list.yaml | jq -C '.'
+# Convert YAML to JSON
+python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
+
+# Generate sign-up sheet HTML (Step 1: template, Step 2: render)
+python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
+python3 scripts/signup-sheet.py \
+    --template output/signup-sheet-template.html.j2 \
+    --yaml input/MSL-volunteer-opportunities.yaml \
+    --output output/MSL-signup-sheet.html
+
+# Convert HTML to PDF (requires wkhtmltopdf)
+wkhtmltopdf --orientation Landscape output/MSL-signup-sheet.html output/MSL-signup-sheet.pdf
 ```
 
 ---------------

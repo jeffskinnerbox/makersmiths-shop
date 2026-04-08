@@ -18,26 +18,26 @@ sudo apt install wkhtmltopdf pandoc
 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
 
 # Step 2: Generate HTML sign-up sheet from Jinja2 template + YAML
-scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/metalshop-volunteer-opportunity.yaml --output output/metalshop-signup-sheet.html
-scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/MSL-volunteer-opportunities.yaml --output output/tasks-signup-sheet.html
+scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/metalshop-volunteer-opportunities.yaml --output output/metalshop-signup-sheet.html
+scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/MSL-volunteer-opportunities.yaml --output output/MSL-signup-sheet.html
 
 # view the rendered HTML sign-up sheet in your browser
 file:///home/jeff/src/projects/makersmiths/shop-sergeant/output/metalshop-signup-sheet.html
-file:///home/jeff/src/projects/makersmiths/shop-sergeant/output/tasks-signup-sheet.html
+file:///home/jeff/src/projects/makersmiths/shop-sergeant/output/MSL-signup-sheet.html
 
 # view the rendered HTML sign-up sheet as a PDF file
 wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/metalshop-signup-sheet.pdf
-wkhtmltopdf --orientation Landscape output/tasks-signup-sheet.html output/tasks-signup-sheet.pdf
+wkhtmltopdf --orientation Landscape output/MSL-signup-sheet.html output/MSL-signup-sheet.pdf
 
 #NOTE: This needs more work
 # Convert HTML → Word doc
 pandoc output/metalshop-signup-sheet.html --reference-doc=input/custom-reference.docx -o output/metalshop-signup-sheet.docx
-pandoc output/task-signup-sheet.html --reference-doc=input/custom-reference.docx -o output/task-signup-sheet.docx
+pandoc output/MSL-signup-sheet.html --reference-doc=input/custom-reference.docx -o output/MSL-signup-sheet.docx
 
 #NOTE: This needs more work
 # Convert YAML task list to Markdown
-scripts/parse-opp-tasks.py input/metalshop-volunteer-opportunity.yaml output/metalshop-task-list.md
-scripts/parse-opp-tasks.py input/MSL-volunteer-opportunities.yaml output/task-list.md
+scripts/parse-opp-tasks.py input/metalshop-volunteer-opportunities.yaml output/metalshop-task-list.md
+scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-task-list.md
 
 #NOTE: This needs more work
 # Convert YAML → JSON

@@ -74,8 +74,8 @@ def generate_markdown(data: dict) -> str:
 
 
 def main():
-    input_file = sys.argv[1] if len(sys.argv) > 1 else "/mnt/user-data/uploads/MSL-volunteer-opportunities.yaml"
-    output_file = sys.argv[2] if len(sys.argv) > 2 else "/mnt/user-data/outputs/tasks-list.md"
+    input_file = sys.argv[1] if len(sys.argv) > 1 else "input/MSL-volunteer-opportunities.yaml"
+    output_file = sys.argv[2] if len(sys.argv) > 2 else "output/MSL-task-list.md"
 
     print(f"Parsing: {input_file}")
     data = parse_yaml(input_file)

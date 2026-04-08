@@ -174,7 +174,7 @@ Synced from YAML when sheets are generated. Allows Claude to resolve task IDs wi
 ## 8. Phased Implementation
 
 ### Phase 0 — Sign-Up Sheet Tools (Trial) ✅
-- Add `task_id` fields to `metalshop-volunteer-opportunity.yaml`
+- Add `task_id` fields to `metalshop-volunteer-opportunities.yaml`
 - Create `signup-sheet-template.py` (Jinja2 template generator)
 - Create `signup-sheet.py` (YAML + template → HTML sign-up sheet)
 - QR codes encode `https://makersmiths.org` as placeholder
@@ -222,5 +222,5 @@ Synced from YAML when sheets are generated. Allows Claude to resolve task IDs wi
 ## 9. Unresolved Questions
 
 1. **Slack deep links on Android vs iOS** — deep link format may differ; needs testing on both platforms before Phase 1 sign-off.
-2. **OCR prompt tuning** — Claude's accuracy on handwritten names depends on sheet layout; may need iteration with real sheet samples (images exist in `signup_sheets/`).
+2. **OCR prompt tuning** — Claude's accuracy on handwritten names depends on sheet layout; may need iteration with real sheet samples.
 3. **Multi-completion per task** — can a task appear on multiple sheets (different months)? How does the system distinguish a March completion from an April one for the same task?
