@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 signup_sheet_builder.py
 
@@ -38,7 +37,10 @@ def detect_format(data: dict) -> str:
 def _is_real_task(t) -> bool:
     """Return True if t is a real task (not a TBD placeholder)."""
     if isinstance(t, dict):
-        return t.get("task", "").strip().upper() != "TBD" and t.get("task", "").strip() != ""
+        return (
+            t.get("task", "").strip().upper() != "TBD"
+            and t.get("task", "").strip() != ""
+        )
     return str(t).strip().upper() != "TBD" and str(t).strip() != ""
 
 
@@ -67,21 +69,40 @@ def extract_locations(data: dict, skip_tbd: bool = True) -> list:
                     continue
                 if isinstance(t, dict):
                     instructions = t.get("instructions", "")
-                    tasks.append({
-                        "name": t.get("task", "???"),
-                        "task_id": t.get("task_id") or "NA",
-                        "frequency": t.get("frequency", "NA"),
-                        "last_date": t.get("last_date") or "NA",
-                        "instructions": "" if (not instructions or str(instructions).strip().upper() == "NA") else str(instructions).strip(),
-                    })
+                    tasks.append(
+                        {
+                            "name": t.get("task", "???"),
+                            "task_id": t.get("task_id") or "NA",
+                            "frequency": t.get("frequency", "NA"),
+                            "last_date": t.get("last_date") or "NA",
+                            "instructions": (
+                                ""
+                                if (
+                                    not instructions
+                                    or str(instructions).strip().upper() == "NA"
+                                )
+                                else str(instructions).strip()
+                            ),
+                        }
+                    )
                 else:
-                    tasks.append({"name": str(t), "task_id": "NA", "frequency": "NA", "last_date": "NA", "instructions": ""})
+                    tasks.append(
+                        {
+                            "name": str(t),
+                            "task_id": "NA",
+                            "frequency": "NA",
+                            "last_date": "NA",
+                            "instructions": "",
+                        }
+                    )
 
-            locations.append({
-                "name": loc.get("name", "???"),
-                "steward": loc.get("steward", loc.get("stward", "???")),
-                "tasks": tasks,
-            })
+            locations.append(
+                {
+                    "name": loc.get("name", "???"),
+                    "steward": loc.get("steward", loc.get("stward", "???")),
+                    "tasks": tasks,
+                }
+            )
     return locations
 
 

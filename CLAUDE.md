@@ -91,7 +91,7 @@ Three YAML root keys, all handled by `detect_format()` in `signup_sheet_builder.
 
 All formats use `work_tasks` for task lists (falling back to `task` key). Locations where all tasks are TBD or empty are silently skipped by `extract_locations()` (`skip_tbd=True` default).
 
-Logo and image assets live in `input/`. The default logo path is `input/makersmiths-logo.png`. Alternate logo variants (anvil-only, vertical, color options) are in `logos_images/`.
+Logo and image assets live in `input/`. The default logo path is `input/makersmiths-logo.png`. A copy also lives in `logos_images/makersmiths-logo.png`; see `logos_images/README.md` for logo asset notes.
 
 ## Debugging
 

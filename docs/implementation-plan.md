@@ -17,7 +17,7 @@ shop-sergeant/
 ├── input/
 │   ├── MSL-volunteer-opportunities.yaml                        # MODIFIED (Phase 0+1): add task_id to each task
 │   ├── metalshop-volunteer-opportunities.yaml  # MODIFIED (Phase 0): task_id fields added ✅
-│   └── makersmiths-logo.png                   # NEW: drop logo here for header
+│   └── makersmiths-logo.png   # NEW: drop logo here for header
 ├── scripts/
 │   ├── parse-tasks.py                         # existing, updated to handle all root keys
 │   ├── generate-signup-sheet-template.py               # NEW (Phase 0): template gen (CLI + build_template()) ✅
