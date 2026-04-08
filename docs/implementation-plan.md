@@ -20,8 +20,8 @@ shop-sergeant/
 │   └── makersmiths-logo.png                   # NEW: drop logo here for header
 ├── scripts/
 │   ├── parse-tasks.py                         # existing, updated to handle all root keys
-│   ├── signup-sheet-template.py               # NEW (Phase 0): template gen (CLI + build_template()) ✅
-│   ├── signup_sheet.py                        # NEW (Phase 0): sheet renderer library ✅
+│   ├── generate-signup-sheet-template.py               # NEW (Phase 0): template gen (CLI + build_template()) ✅
+│   ├── signup_sheet_builder.py                        # NEW (Phase 0): sheet renderer library ✅
 │   ├── signup-sheet.py                        # NEW (Phase 0): CLI for sheet gen ✅
 │   ├── generate-sheets.py                     # NEW (Phase 1): YAML → PDF with live QR codes
 │   └── sync-catalog.py                        # NEW (Phase 1): sync task-catalog sheet from YAML
@@ -39,7 +39,7 @@ shop-sergeant/
 │       └── admin.py             # NEW (Phase 4): natural language query handler
 ├── tests/
 │   ├── test_signup_sheet_template.py   # NEW (Phase 0) ✅
-│   ├── test_signup_sheet.py            # NEW (Phase 0) ✅
+│   ├── test_signup_sheet_builder.py            # NEW (Phase 0) ✅
 │   ├── conftest.py                     # NEW (Phase 1): shared fixtures
 │   ├── test_sheets.py                  # NEW (Phase 1): Sheets client unit tests
 │   ├── test_task_done.py               # NEW (Phase 2): task-done handler tests
@@ -60,7 +60,7 @@ with stewards and members before any automation is built. QR codes use a placeho
 URL (`https://makersmiths.org`) until the Slack bot exists.
 
 **Deliverables (all complete):**
-- `scripts/signup-sheet-template.py` — generates a reusable Jinja2 HTML template
+- `scripts/generate-signup-sheet-template.py` — generates a reusable Jinja2 HTML template
 - `scripts/signup-sheet.py` — renders template + YAML → HTML sign-up sheet
 - `input/metalshop-volunteer-opportunities.yaml` — task_id fields added (MSL-METAL-001…007)
 - 33 tests passing
@@ -69,7 +69,7 @@ URL (`https://makersmiths.org`) until the Slack bot exists.
 
 ```bash
 # Generate the default Jinja2 template
-python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
+python3 scripts/generate-signup-sheet-template.py --output output/signup-sheet-template.html.j2
 
 # Generate the metalshop sign-up sheet
 python3 scripts/signup-sheet.py \

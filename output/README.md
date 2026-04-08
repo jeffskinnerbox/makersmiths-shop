@@ -15,7 +15,7 @@ sudo apt install wkhtmltopdf pandoc
 
 ```bash
 # Step 1: Generate Jinja2 template (run once; output is reusable)
-scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
+scripts/generate-signup-sheet-template.py --output output/signup-sheet-template.html.j2
 
 # Step 2: Generate HTML sign-up sheet from Jinja2 template + YAML
 scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/metalshop-volunteer-opportunities.yaml --output output/metalshop-signup-sheet.html

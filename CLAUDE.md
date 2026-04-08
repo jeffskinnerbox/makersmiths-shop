@@ -14,7 +14,7 @@ Google Sheets is the authoritative data store.
 
 ## Current State
 
-Phase 0 complete: sign-up sheet tools built and tested (`signup-sheet-template.py`, `signup-sheet.py`). Ready for trial with stewards/members. No bot code yet. The 5-phase implementation plan is in `docs/implementation-plan.md`.
+Phase 0 complete: sign-up sheet tools built and tested (`generate-signup-sheet-template.py`, `signup-sheet.py`). Ready for trial with stewards/members. No bot code yet. The 5-phase implementation plan is in `docs/implementation-plan.md`.
 
 ## Data Model
 
@@ -42,7 +42,7 @@ pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-oppo
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
 
 # Step 1: Generate Jinja2 template (run once; output is reusable)
-python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
+python3 scripts/generate-signup-sheet-template.py --output output/signup-sheet-template.html.j2
 
 # Step 2: Render HTML sign-up sheet from template + YAML
 python3 scripts/signup-sheet.py \
@@ -63,7 +63,7 @@ wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/me
 python3 -m pytest tests/ -v
 
 # Run a single test (examples from each test module)
-python3 -m pytest tests/test_signup_sheet.py::test_extract_locations_opportunity_count -v
+python3 -m pytest tests/test_signup_sheet_builder.py::test_extract_locations_opportunity_count -v
 python3 -m pytest tests/test_signup_sheet_template.py::test_build_template_contains_jinja2_for_loop -v
 ```
 
@@ -78,13 +78,13 @@ python3 -m pytest tests/test_signup_sheet_template.py::test_build_template_conta
 
 ## Script Architecture (Phase 0)
 
-`scripts/signup-sheet.py` (CLI, argparse only) imports from `scripts/signup_sheet.py` (library, all logic). Tests import from the library directly via `sys.path.insert`.
+`scripts/signup-sheet.py` (CLI, argparse only) imports from `scripts/signup_sheet_builder.py` (library, all logic). Tests import from the library directly via `sys.path.insert`.
 
-`scripts/signup-sheet-template.py` is self-contained — `build_template()` lives in the CLI file itself. Tests import it via `importlib.util.spec_from_file_location`.
+`scripts/generate-signup-sheet-template.py` is self-contained — `build_template()` lives in the CLI file itself. Tests import it via `importlib.util.spec_from_file_location`.
 
 `scripts/parse-opp-tasks.py` is also standalone (no library split) — parses `opportunities`-format YAML and emits per-location Markdown tables with task, frequency, purpose, instructions, and last-date columns.
 
-Three YAML root keys, all handled by `detect_format()` in `signup_sheet.py`:
+Three YAML root keys, all handled by `detect_format()` in `signup_sheet_builder.py`:
 - `opportunity` — single-area extended format
 - `opportunities` — plural form of the same structure (both active input files use this)
 - `tasks_list` — simpler master catalog format (supported in code and tests; no current input file uses it)

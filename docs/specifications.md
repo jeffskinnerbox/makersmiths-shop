@@ -55,7 +55,7 @@ Each task in `MSL-volunteer-opportunities.yaml` gets a stable ID field (e.g., `M
 ### Generation Pipeline
 
 **Phase 0 (trial — HTML output):**
-1. `signup-sheet-template.py` generates a reusable Jinja2 `.html.j2` template
+1. `generate-signup-sheet-template.py` generates a reusable Jinja2 `.html.j2` template
 2. `signup-sheet.py` parses YAML, generates per-task QR codes (inline base64 PNG), renders HTML
 3. Admin opens HTML in browser → File > Print → save as PDF or print directly
 - QR codes encode `https://makersmiths.org` as placeholder until Slack bot is live
@@ -175,7 +175,7 @@ Synced from YAML when sheets are generated. Allows Claude to resolve task IDs wi
 
 ### Phase 0 — Sign-Up Sheet Tools (Trial) ✅
 - Add `task_id` fields to `metalshop-volunteer-opportunities.yaml`
-- Create `signup-sheet-template.py` (Jinja2 template generator)
+- Create `generate-signup-sheet-template.py` (Jinja2 template generator)
 - Create `signup-sheet.py` (YAML + template → HTML sign-up sheet)
 - QR codes encode `https://makersmiths.org` as placeholder
 - Trial: post sheets at MSL Metalshop, collect steward/member feedback

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-signup_sheet.py
+signup_sheet_builder.py
 
 Core library for Makersmiths sign-up sheet generation.
 Provides YAML parsing, QR code generation, and HTML rendering functions.

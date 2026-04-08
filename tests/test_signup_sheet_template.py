@@ -5,7 +5,7 @@ from pathlib import Path
 
 _spec = importlib.util.spec_from_file_location(
     "signup_sheet_template",
-    Path(__file__).parent.parent / "scripts" / "signup-sheet-template.py",
+    Path(__file__).parent.parent / "scripts" / "generate-signup-sheet-template.py",
 )
 _mod = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_mod)

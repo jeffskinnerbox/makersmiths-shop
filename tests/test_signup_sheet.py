@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from signup_sheet import (  # noqa: E402
+from signup_sheet_builder import (  # noqa: E402
     detect_format,
     extract_locations,
     load_yaml,

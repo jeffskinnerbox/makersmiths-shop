@@ -55,14 +55,14 @@ features:
   - id: FEAT-005
     title: Sign-Up Sheet Generation Tools
     description: >
-      Two Python scripts (signup-sheet-template.py, signup-sheet.py) convert
+      Two Python scripts (generate-signup-sheet-template.py, signup-sheet.py) convert
       YAML task data into printable HTML sign-up sheets with QR code placeholders.
       Used for trial with stewards/members before automation is built.
     priority: High
     status: Done
     owner: jeff
     acceptance_criteria:
-      - signup-sheet-template.py generates a reusable Jinja2 HTML template
+      - generate-signup-sheet-template.py generates a reusable Jinja2 HTML template
       - signup-sheet.py renders template + YAML to HTML with embedded QR codes
       - QR codes use https://makersmiths.org as placeholder URL
       - Handles both metalshop-volunteer-opportunity.yaml and MSL-volunteer-opportunities.yaml formats

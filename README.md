@@ -88,7 +88,7 @@ pandoc -f gfm output/MSL-task-list.md -o output/MSL-task-list.docx
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
 
 # Generate sign-up sheet HTML (Step 1: template, Step 2: render)
-python3 scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
+python3 scripts/generate-signup-sheet-template.py --output output/signup-sheet-template.html.j2
 python3 scripts/signup-sheet.py \
     --template output/signup-sheet-template.html.j2 \
     --yaml input/MSL-volunteer-opportunities.yaml \

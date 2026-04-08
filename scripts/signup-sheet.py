@@ -25,7 +25,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from signup_sheet import load_yaml, extract_locations, attach_qr_codes, render_sheet
+from signup_sheet_builder import load_yaml, extract_locations, attach_qr_codes, render_sheet
 
 
 def parse_args():
@@ -64,7 +64,7 @@ def main():
 
     if not Path(args.template).exists():
         print(f"ERROR: Template not found: {args.template}", file=sys.stderr)
-        print("Run signup-sheet-template.py first.", file=sys.stderr)
+        print("Run generate-signup-sheet-template.py first.", file=sys.stderr)
         sys.exit(1)
 
     source = args.input if args.input else sys.stdin

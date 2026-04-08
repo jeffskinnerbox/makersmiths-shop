@@ -64,7 +64,7 @@ When complete review all documents in `@docs` and `@input` for completeness and 
 I need two Python program that will convert `@metalshop-volunteer-opportunity.yaml`
 into a 8.5 x 11 inch sign-up sheet that can be posted in the makerspace.
 
-The 1st Python program, called `@scripts/signup-sheet-template.py`,
+The 1st Python program, called `@scripts/generate-signup-sheet-template.py`,
 will create the Jinja2 HTML template that capture the format of the sign-up sheet.
 This program will use `argparse` module to capture the format of the sign-up sheet from the user.
 The default format is expressed below and the command-line arguments will make modifications to the default format.
@@ -74,7 +74,7 @@ This will also use `argparse` module for commandl-line options specifying a Jinj
 and a YAML file formated like `metalshop-volunteer-opportunity.yaml` or `MSL-volunteer-opportunities.yaml`
 that will be parsed to inserted into the template to create the sign-up sheet.
 
-The default output of `@scripts/signup-sheet-template.py` should look like this:
+The default output of `@scripts/generate-signup-sheet-template.py` should look like this:
 1. The the 8.5x11 inch sign-up sheet should be printed in landscape format as a HTML template that can be used for all locations.
 1. Each 8.5×11 sheet should cover only one location (e.g., Metal Shop, Leesburg).
 1. Heading of the sign-up sheet should be formatted like this:
