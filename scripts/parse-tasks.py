@@ -20,7 +20,8 @@ def generate_markdown(data: dict) -> str:
     lines = []
     lines.append("# Makersmiths Task List\n")
 
-    shop = data.get("tasks_list", {}).get("shop", {})
+    root = data.get("tasks_list") or data.get("opportunities") or data.get("opportunity") or {}
+    shop = root.get("shop", {})
     shop_name = shop.get("name", "Unknown Shop")
     shop_address = shop.get("address", "")
 
@@ -38,7 +39,7 @@ def generate_markdown(data: dict) -> str:
         for location in locations:
             loc_name = location.get("name", "Unknown Location")
             steward = location.get("steward", location.get("stward", "???"))  # handle typo in yaml
-            tasks = location.get("task", [])
+            tasks = location.get("work_tasks", location.get("task", []))
 
             lines.append(f"### {loc_name}\n")
             lines.append(f"**Steward:** {steward}  \n")
@@ -50,7 +51,7 @@ def generate_markdown(data: dict) -> str:
             if tasks:
                 for task in tasks:
                     if isinstance(task, dict):
-                        task_name = task.get("name", "???")
+                        task_name = task.get("task", task.get("name", "???"))
                         completion_date = task.get("completion_date", "NA")
                         frequency = task.get("frequency", "NA")
                     else:

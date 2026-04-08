@@ -37,9 +37,15 @@
 #
 # CLEAN-UP
 #   Run this command to re-initialized everything
-#       trash output/*.{html,j2}
+#       trash output/*.{html,j2,pdf}
+#       trash *.bak* output/*.bak* input/*.bak* docs/*.bak* requirments/*.bak* scripts/*.bak* tests/*.bak*
 #
-
+# PRINT SIGNUP SHEET 
+#   To print the signup sheet in PDF format for this location, use the following
+#       scripts/signup-sheet-template.py --output output/signup-sheet-template.html.j2
+#       scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/MSL-volunteer-opportunities.yaml --output output/MSL-signup-sheet.html
+#       wkhtmltopdf --orientation Landscape output/MSL-signup-sheet.html output/MSL-signup-sheet.pdf
+#       xdg-open output/MSL-signup-sheet.pdf
 
 ---
 
@@ -55,7 +61,7 @@ opportunities:
             steward: Bryan Daniels, Scott Silvers
             work_tasks:
               - task: Dust & Wipe Down Machines
-                task_id: 3D-PRINT-001
+                task_id: MSL-3D-PRINT-001
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -63,7 +69,7 @@ opportunities:
                 last_date: NA
 
               - task: Clean-Off & Organize Tabletops
-                task_id: 3D-PRINT-002
+                task_id: MSL-3D-PRINT-002
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -71,7 +77,7 @@ opportunities:
                 last_date: NA
 
               - task: Remove Anything That is Not 3D Printing and Put Away
-                task_id: 3D-PRINT-003
+                task_id: MSL-3D-PRINT-003
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -79,7 +85,7 @@ opportunities:
                 last_date: NA
 
               - task: Vaccum Floor & Clean-Up Filament Srapes
-                task_id: 3D-PRINT-004
+                task_id: MSL-3D-PRINT-004
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -87,7 +93,7 @@ opportunities:
                 last_date: NA
 
               - task: Clean Resin Wash Station
-                task_id: 3D-PRINT-005
+                task_id: MSL-3D-PRINT-005
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -95,7 +101,7 @@ opportunities:
                 last_date: NA
 
               - task: ReSpool Red PLA
-                task_id: 3D-PRINT-006
+                task_id: MSL-3D-PRINT-006
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -106,31 +112,67 @@ opportunities:
             steward: Diane Bollinger
             work_tasks:
               - task: TBD
+                task_id: MSL-VINYL-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Classroom
             steward: Oliver Arend
             work_tasks:
               - task: TBD
+                task_id: MSL-CLASSROOM-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: CO2 Lasercutter
             steward: Jonathon White, Ralph Pugh, Chris Chatfield
             work_tasks:
               - task: TBD
+                task_id: MSL-CO2-LASER-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Cosplay & Propmaking
             steward: Madeline Waldron, Isaac Bowser
             work_tasks:
               - task: TBD
+                task_id: MSL-COSPLAY-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Fume Room
             steward: Mike Brady
             work_tasks:
               - task: TBD
+                task_id: MSL-FUME-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Leatherworking
             steward: Diane Bollinger
             work_tasks:
               - task: TBD
+                task_id: MSL-LEATHER-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Metalshop
             steward: Brad Hess
@@ -195,21 +237,45 @@ opportunities:
             steward: John Carter
             work_tasks:
               - task: TBD
+                task_id: MSL-PRINT-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Sewing & Crafts
             steward: Amy Copley, Erin Werling
             work_tasks:
               - task: TBD
+                task_id: MSL-CRAFT-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Sublimation Printing
             steward: Diane Bollinger
             work_tasks:
               - task: TBD
+                task_id: MSL-SUBPRINT-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: UV Printer
             steward: Dana Eddy, Diane Bollinger
             work_tasks:
               - task: TBD
+                task_id: MSL-UVPRINT-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Woodshop
             steward: Mike Dewan
@@ -218,7 +284,7 @@ opportunities:
                 task_id: MSL-WOOD-001
                 frequency: Weekly
                 purpose: Keep Shop Orderly & Safe
-                instructions: test instructions
+                instructions: Instructions for doing this task.
                 supervision: false
                 last_date: NA
 
@@ -226,16 +292,34 @@ opportunities:
             steward: Ken Fuentecilla, Bryan Boston
             work_tasks:
               - task: TBD
+                task_id: MSL-WOODTURN-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: General Work Room
             steward: ???
             work_tasks:
               - task: TBD
+                task_id: MSL-WORKROOM-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Reception Area
             steward: ???
             work_tasks:
               - task: TBD
+                task_id: MSL-RECEPTION-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
       - name: Basement Level
         location:
@@ -243,6 +327,12 @@ opportunities:
             steward: Oliver Arend
             work_tasks:
               - task: TBD
+                task_id: MSL-ELECTRONICS-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Downstairs Bathroom
             steward: ???
@@ -283,6 +373,12 @@ opportunities:
             steward: ???
             work_tasks:
               - task: TBD
+                task_id: MSL-STORAGE-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
       - name: Outside
         location:
@@ -290,11 +386,23 @@ opportunities:
             steward: ???
             work_tasks:
               - task: TBD
+                task_id: MSL-ENTERANCE-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Garden Area of MakerSmiths
             steward: ???
             work_tasks:
               - task: TBD
+                task_id: MSL-GARDEN-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
       - name: Cloud
         location:
@@ -302,8 +410,20 @@ opportunities:
             steward: ???
             work_tasks:
               - task: TBD
+                task_id: MSL-CLOUD-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
 
           - name: Wiki
             steward: ???
             work_tasks:
               - task: TBD
+                task_id: MSL-WIKI-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
