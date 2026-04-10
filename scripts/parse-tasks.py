@@ -6,14 +6,14 @@ Parses a MSL-volunteer-opportunities.yaml file and generates a Markdown file whe
 location has its own table with columns: Task Name, Completion Date, Frequency.
 """
 
-import yaml
 import sys
 from pathlib import Path
 
+from signup_sheet_builder import load_yaml
 
-def parse_yaml(filepath: str) -> dict:
-    with open(filepath, "r") as f:
-        return yaml.safe_load(f)
+
+def escape(value) -> str:
+    return str(value).replace("|", "\\|")
 
 
 def generate_markdown(data: dict) -> str:
@@ -60,9 +60,9 @@ def generate_markdown(data: dict) -> str:
                         frequency = "NA"
 
                     # Escape any pipe characters in values
-                    task_name = str(task_name).replace("|", "\\|")
-                    completion_date = str(completion_date).replace("|", "\\|")
-                    frequency = str(frequency).replace("|", "\\|")
+                    task_name = escape(task_name)
+                    completion_date = escape(completion_date)
+                    frequency = escape(frequency)
 
                     lines.append(f"| {task_name} | {completion_date} | {frequency} |")
             else:
@@ -78,7 +78,7 @@ def main():
     output_file = sys.argv[2] if len(sys.argv) > 2 else "output/MSL-task-list.md"
 
     print(f"Parsing: {input_file}")
-    data = parse_yaml(input_file)
+    data = load_yaml(input_file)
 
     print("Generating markdown...")
     markdown = generate_markdown(data)

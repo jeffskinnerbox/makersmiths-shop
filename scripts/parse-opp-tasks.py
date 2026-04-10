@@ -7,14 +7,10 @@ and generates a Markdown file where each location has its own table with columns
 Task, Frequency, Purpose, Instructions, Last Date.
 """
 
-import yaml
 import sys
 from pathlib import Path
 
-
-def parse_yaml(filepath: str) -> dict:
-    with open(filepath, "r") as f:
-        return yaml.safe_load(f)
+from signup_sheet_builder import load_yaml
 
 
 def escape(value) -> str:
@@ -83,7 +79,7 @@ def main():
     output_file = sys.argv[2] if len(sys.argv) > 2 else "metalshop-task-list.md"
 
     print(f"Parsing: {input_file}")
-    data = parse_yaml(input_file)
+    data = load_yaml(input_file)
 
     print("Generating markdown...")
     markdown = generate_markdown(data)

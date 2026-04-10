@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-import yaml
+import argparse
 import json
 import sys
+
+import yaml
 
 
 def convert_yaml_to_json(input_file, output_file=None, indent=2):
@@ -14,20 +16,21 @@ def convert_yaml_to_json(input_file, output_file=None, indent=2):
     if output_file:
         with open(output_file, "w") as f:
             f.write(json_output)
-        print(f"JSON written to {output_file}")
+        print(f"JSON written to {output_file}", file=sys.stderr)
     else:
         print(json_output)
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python3 scripts/yaml-to-json.py <input.yaml> [output.json]")
-        sys.exit(1)
-
-    input_file = sys.argv[1]
-    output_file = sys.argv[2] if len(sys.argv) > 2 else None
-
-    convert_yaml_to_json(input_file, output_file)
+    parser = argparse.ArgumentParser(
+        description="Convert a YAML task catalog to JSON."
+    )
+    parser.add_argument("input", help="Input YAML file path")
+    parser.add_argument(
+        "-o", "--output", default=None, help="Output JSON file path (default: stdout)"
+    )
+    args = parser.parse_args()
+    convert_yaml_to_json(args.input, args.output)
 
 
 if __name__ == "__main__":

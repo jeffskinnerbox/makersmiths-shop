@@ -5,6 +5,10 @@ import argparse
 import sys
 from pathlib import Path
 
+DEFAULT_LOCATION_FONT_SIZE = 12
+DEFAULT_STEWARD_FONT_SIZE = 10
+DEFAULT_TITLE_FONT_SIZE = 30
+DEFAULT_FOOTER_FONT_SIZE = 8
 
 TEMPLATE_BODY = r"""<!DOCTYPE html>
 <html lang="en">
@@ -128,28 +132,28 @@ def main():
     parser.add_argument(
         "-l", "--location-font-size",
         type=int,
-        default=12,
+        default=DEFAULT_LOCATION_FONT_SIZE,
         dest="location_font_size",
         help="Location header font size in pt (default: 12)",
     )
     parser.add_argument(
         "-s", "--steward-font-size",
         type=int,
-        default=10,
+        default=DEFAULT_STEWARD_FONT_SIZE,
         dest="steward_font_size",
         help="Steward line font size in pt (default: 10)",
     )
     parser.add_argument(
         "-a", "--title-font-size",
         type=int,
-        default=30,
+        default=DEFAULT_TITLE_FONT_SIZE,
         dest="title_font_size",
         help="Title font size in pt (default: 30)",
     )
     parser.add_argument(
         "-b", "--footer-font-size",
         type=int,
-        default=8,
+        default=DEFAULT_FOOTER_FONT_SIZE,
         dest="footer_font_size",
         help="Footer font size in pt (default: 8)",
     )

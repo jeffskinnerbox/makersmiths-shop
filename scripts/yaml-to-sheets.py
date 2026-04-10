@@ -39,7 +39,7 @@ COLUMNS = [
 ]
 
 DEFAULT_INPUT = Path("input/MSL-volunteer-opportunities.yaml")
-DEFAULT_OUTPUT = Path("input/google-sheet.xlsx")
+DEFAULT_OUTPUT = Path("output/google-sheet.xlsx")
 
 HEADER_BG = "4472C4"   # blue
 HEADER_FG = "FFFFFF"   # white
@@ -60,7 +60,7 @@ def detect_shop(data: dict) -> dict:
             return data[key]["shop"]
     raise ValueError(
         "Unknown YAML format — root key must be 'opportunity', 'opportunities', or 'tasks_list'. "
-        f"Got: {list(data.keys())}"
+        f"Got: {list(data)}"
     )
 
 

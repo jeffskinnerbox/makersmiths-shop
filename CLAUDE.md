@@ -41,9 +41,8 @@ pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-oppo
     --reference-doc input/custom-reference.docx
 
 # Convert YAML → Excel (for Google Sheets import)
-# Note: default output is input/google-sheet.xlsx (in input/, not output/) — intentional for Sheets import workflow
 python3 scripts/yaml-to-sheets.py
-python3 scripts/yaml-to-sheets.py --yaml input/MSL-volunteer-opportunities.yaml --output input/google-sheet.xlsx
+python3 scripts/yaml-to-sheets.py --yaml input/MSL-volunteer-opportunities.yaml --output output/google-sheet.xlsx
 
 # Convert YAML → JSON
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'

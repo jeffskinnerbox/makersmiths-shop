@@ -30,7 +30,7 @@ def detect_format(data: dict) -> str:
             return key
     raise ValueError(
         f"Unknown YAML format: root key must be 'opportunity', 'opportunities', or 'tasks_list', "
-        f"got: {list(data.keys())}"
+        f"got: {list(data)}"
     )
 
 
@@ -44,6 +44,42 @@ def _is_real_task(t) -> bool:
     return str(t).strip().upper() != "TBD" and str(t).strip() != ""
 
 
+def _build_task_entry(t) -> dict:
+    """Build a task dict from a raw YAML task entry (dict or plain string)."""
+    if isinstance(t, dict):
+        instructions = t.get("instructions", "")
+        return {
+            "name": t.get("task", "???"),
+            "task_id": t.get("task_id") or "NA",
+            "frequency": t.get("frequency", "NA"),
+            "last_date": t.get("last_date") or "NA",
+            "instructions": (
+                ""
+                if not instructions or str(instructions).strip().upper() == "NA"
+                else str(instructions).strip()
+            ),
+        }
+    return {
+        "name": str(t),
+        "task_id": "NA",
+        "frequency": "NA",
+        "last_date": "NA",
+        "instructions": "",
+    }
+
+
+def _process_location(loc: dict, skip_tbd: bool) -> dict | None:
+    """Return a location dict, or None if all tasks are TBD/empty and skip_tbd is True."""
+    raw_tasks = loc.get("work_tasks", loc.get("task", [])) or []
+    if skip_tbd and not any(_is_real_task(t) for t in raw_tasks):
+        return None
+    return {
+        "name": loc.get("name", "???"),
+        "steward": loc.get("steward", loc.get("stward", "???")),
+        "tasks": [_build_task_entry(t) for t in raw_tasks if _is_real_task(t)],
+    }
+
+
 def extract_locations(data: dict, skip_tbd: bool = True) -> list:
     """
     Return list of location dicts from YAML data.
@@ -53,56 +89,12 @@ def extract_locations(data: dict, skip_tbd: bool = True) -> list:
     """
     fmt = detect_format(data)
     shop = data[fmt]["shop"]
-
     locations = []
     for area in shop.get("area", []):
         for loc in area.get("location", []):
-            raw_tasks = loc.get("work_tasks", loc.get("task", [])) or []
-
-            # Skip locations with no real task data
-            if skip_tbd and not any(_is_real_task(t) for t in raw_tasks):
-                continue
-
-            tasks = []
-            for t in raw_tasks:
-                if not _is_real_task(t):
-                    continue
-                if isinstance(t, dict):
-                    instructions = t.get("instructions", "")
-                    tasks.append(
-                        {
-                            "name": t.get("task", "???"),
-                            "task_id": t.get("task_id") or "NA",
-                            "frequency": t.get("frequency", "NA"),
-                            "last_date": t.get("last_date") or "NA",
-                            "instructions": (
-                                ""
-                                if (
-                                    not instructions
-                                    or str(instructions).strip().upper() == "NA"
-                                )
-                                else str(instructions).strip()
-                            ),
-                        }
-                    )
-                else:
-                    tasks.append(
-                        {
-                            "name": str(t),
-                            "task_id": "NA",
-                            "frequency": "NA",
-                            "last_date": "NA",
-                            "instructions": "",
-                        }
-                    )
-
-            locations.append(
-                {
-                    "name": loc.get("name", "???"),
-                    "steward": loc.get("steward", loc.get("stward", "???")),
-                    "tasks": tasks,
-                }
-            )
+            result = _process_location(loc, skip_tbd)
+            if result is not None:
+                locations.append(result)
     return locations
 
 
