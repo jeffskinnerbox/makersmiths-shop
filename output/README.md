@@ -1,5 +1,7 @@
 
-# How Use Your Tools
+# README.md
+
+## How To Use Your Tools
 In Ubuntu, you can convert an HTML file to a landscape PDF using several command-line tools.
 `wkhtmltopdf` is often the most direct method,
 while `pandoc` offers more flexibility if you have a LaTeX engine installed.

@@ -9,7 +9,7 @@
 #      shop --------> area --------> location --------> work_tasks --------> task
 #
 #   Examples
-#       MSL, MSP    Main Floor,     Leatherworking Shop,   Dust & Wipe Down Machines
+#       MSL, MSP    Main Level,     Leatherworking Shop,   Dust & Wipe Down Machines
 #                   Basement,       Downstairs Bathroom,
 #                   Outside, etc.   Garden Area, etc.
 #
@@ -41,7 +41,7 @@
 #       trash *.bak* output/*.bak* input/*.bak* docs/*.bak* requirments/*.bak* scripts/*.bak* tests/*.bak*
 #
 # PRINT SIGNUP SHEET 
-#   To print the signup sheet in PDF format for this location, use the following
+#   To print the signup sheet in PDF format for all these location, use the following
 #       scripts/generate-signup-sheet-template.py --output output/signup-sheet-template.html.j2
 #       scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/MSL-volunteer-opportunities.yaml --output output/MSL-signup-sheet.html
 #       wkhtmltopdf --orientation Landscape output/MSL-signup-sheet.html output/MSL-signup-sheet.pdf
@@ -55,8 +55,159 @@ opportunities:
     address: 106 Royal St SW, Leesburg, VA 20175
     steward: John Carter
     area:
+      - name: Outdoor
+        location:
+          - name: Enterance
+            steward: ???
+            work_tasks:
+              - task: Ensure all trash & recycling is in bins, not beside or on top.
+                task_id: MSL-ENTERANCE-001
+              - task: Sweep sidewalks, clearing any gravel.
+                task_id: MSL-ENTERANCE-002
+              - task: Sweep front steps and patio.
+                task_id: MSL-ENTERANCE-003
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+          - name: Garden/Patio
+            steward: ???
+            work_tasks:
+              - task: Pick up any debris in back garden/patio area.
+                task_id: MSL-GARDEN-001
+              - task: Pick up any debris in side garden/patio area.
+                task_id: MSL-GARDEN-002
+              - task: Sweep side patio.
+                task_id: MSL-GARDEN-003
+              - task: Clean grill on side patio and empty ash into bagged trash can.
+                task_id: MSL-GARDEN-004
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
+          - name: Misc Outdoor
+            steward: ???
+            work_tasks:
+              - task: Ensure drain & pipe from A/C condenser near locked gate doors are unobstructed.
+                task_id: MSL-MISCOUTDOOR-001
+              - task: Windex all windows.
+                task_id: MSL-MISCOUTDOOR-002
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
       - name: Main Level
         location:
+          - name: Miscellaneous
+            steward: ???
+            work_tasks:
+              - task: Wipe down all light switches and doorknobs.
+                task_id: MSL-LOBBY-001
+              - task: Remove cobwebs.
+                task_id: MSL-LOBBY-002
+              - task: Check and reset mousetraps, ant & roach traps as needed.
+                task_id: MSL-LOBBY-003
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
+          - name: Lobby
+            steward: ???
+            work_tasks:
+              - task: Vacuum carpets including behind furniture.
+                task_id: MSL-LOBBY-001
+              - task: ShopVac chairs.
+                task_id: MSL-LOBBY-002
+              - task: Clean microwave inside & out.
+                task_id: MSL-LOBBY-003
+              - task: Clean refrigerator inside & out.
+                task_id: MSL-LOBBY-004
+              - task: Dust monitors.
+                task_id: MSL-LOBBY-005
+              - task: Dust inside & ortside of display cases.
+                task_id: MSL-LOBBY-006
+              - task: Windex windows and display cases.
+                task_id: MSL-LOBBY-007
+              - task: Empty wastebasket.
+                task_id: MSL-LOBBY-008
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
+          - name: Main Room
+            steward: ???
+            work_tasks:
+              - task: ShopVac doormat.
+                task_id: MSL-MAINROOM-001
+              - task: Dust & windex windows.
+                task_id: MSL-MAINROOM-002
+              - task: Sweep & swiffer floors including behind and under furniture & equipment.
+                task_id: MSL-MAINROOM-003
+              - task: Clean tabletops.
+                task_id: MSL-MAINROOM-004
+              - task: Organize benchtops.
+                task_id: MSL-MAINROOM-005
+              - task: Dust monitors, computer tables and printers.
+                task_id: MSL-MAINROOM-006
+              - task: Empty trash & recycling.
+                task_id: MSL-MAINROOM-007
+              - task: Clean trash & recycling cans as necessary.
+                task_id: MSL-MAINROOM-008
+              - task: Organize Supply Closet.
+                task_id: MSL-MAINROOM-009
+              - task: Empty Shopvac into bagged trash can.
+                task_id: MSL-MAINROOM-010
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
+          - name: Upstairs Bathroom
+            steward: ???
+            work_tasks:
+              - task: Windex mirror.
+                task_id: MSL-UPBATH-001
+              - task: Scrub toilet, inside & out.
+                task_id: MSL-UPBATH-002
+              - task: Scrub sink.
+                task_id: MSL-UPBATH-003
+              - task: Wipe down walls to mitigate grime & stains.
+                task_id: MSL-UPBATH-004
+              - task: Restock paper products.
+                task_id: MSL-UPBATH-005
+              - task: Empty wastebasket.
+                task_id: MSL-UPBATH-006
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
+          - name: Upstairs Hallway
+            steward: ???
+            work_tasks:
+              - task: Wipe down walls to mitigate grime & stains.
+                task_id: MSL-UPHALLWAY-001
+              - task: Vacuum carpets.
+                task_id: MSL-UPHALLWAY-002
+              - task: Empty vacuum into bagged trash can.
+                task_id: MSL-UPHALLWAY-003
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
           - name: 3D Printing
             steward: Bryan Daniels, Scott Silvers
             work_tasks:
@@ -299,28 +450,6 @@ opportunities:
                 supervision: false
                 last_date: NA
 
-          - name: General Work Room
-            steward: ???
-            work_tasks:
-              - task: TBD
-                task_id: MSL-WORKROOM-001
-                frequency: NA
-                purpose: NA
-                instructions: NA
-                supervision: false
-                last_date: NA
-
-          - name: Reception Area
-            steward: ???
-            work_tasks:
-              - task: TBD
-                task_id: MSL-RECEPTION-001
-                frequency: NA
-                purpose: NA
-                instructions: NA
-                supervision: false
-                last_date: NA
-
       - name: Basement Level
         location:
           - name: Electronics
@@ -334,11 +463,53 @@ opportunities:
                 supervision: false
                 last_date: NA
 
+          - name: Basement Room
+            steward: ???
+            work_tasks:
+              - task: Sweep & swiffer floors.
+                task_id: MSL-BASEROOM-001
+              - task: ShopVac stairs.
+                task_id: MSL-BASEROOM-002
+              - task: Ensure dehumidifier is on 'Hi' and set to 'Dry' '35'.
+                task_id: MSL-BASEROOM-003
+              - task: Ensure waste water pump behind dehumidifier is not overflowing.
+                task_id: MSL-BASEROOM-004
+              - task: Clean tabletops.
+                task_id: MSL-BASEROOM-005
+              - task: Clean chairs & stools.
+                task_id: MSL-BASEROOM-006
+              - task: Dust monitors.
+                task_id: MSL-BASEROOM-007
+              - task: Organize slop sink room.
+                task_id: MSL-BASEROOM-008
+              - task: Scrub sink and ensure drain is unclogged.
+                task_id: MSL-BASEROOM-009
+                frequency: Daily
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
           - name: Downstairs Bathroom
             steward: ???
             work_tasks:
-              - task: Wipe Down Sink
-                task_id: MSL-BATH-001
+              - task: Windex mirror.
+                task_id: MSL-DOWNBATH-001
+
+              - task: Scrub toilet, inside & out.
+                task_id: MSL-DOWNBATH-002
+
+              - task: Scrub sink.
+                task_id: MSL-DOWNBATH-003
+
+              - task: Wipe down walls to mitigate grime & stains.
+                task_id: MSL-DOWNBATH-004
+
+              - task: Restock paper products.
+                task_id: MSL-DOWNBATH-005
+
+              - task: Empty wastebasketr
+                task_id: MSL-DOWNBATH-006
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -346,7 +517,7 @@ opportunities:
                 last_date: NA
 
               - task: Swiffer / Mop Floor
-                task_id: MSL-BATH-002
+                task_id: MSL-DOWNBATH-007
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -354,7 +525,7 @@ opportunities:
                 last_date: NA
 
               - task: Replace Toilet Papar & Paper Towels
-                task_id: MSL-BATH-003
+                task_id: MSL-DOWNBATH-008
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -362,7 +533,7 @@ opportunities:
                 last_date: NA
 
               - task: Empty Waste Basket
-                task_id: MSL-BATH-004
+                task_id: MSL-DOWNBATH-009
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -380,30 +551,6 @@ opportunities:
                 supervision: false
                 last_date: NA
 
-      - name: Outside
-        location:
-          - name: Main Enterance of MakerSmiths
-            steward: ???
-            work_tasks:
-              - task: TBD
-                task_id: MSL-ENTERANCE-001
-                frequency: NA
-                purpose: NA
-                instructions: NA
-                supervision: false
-                last_date: NA
-
-          - name: Garden Area of MakerSmiths
-            steward: ???
-            work_tasks:
-              - task: TBD
-                task_id: MSL-GARDEN-001
-                frequency: NA
-                purpose: NA
-                instructions: NA
-                supervision: false
-                last_date: NA
-
       - name: Cloud
         location:
           - name: Website
@@ -411,6 +558,17 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-CLOUD-001
+                frequency: NA
+                purpose: NA
+                instructions: NA
+                supervision: false
+                last_date: NA
+
+          - name: Wiki
+            steward: ???
+            work_tasks:
+              - task: TBD
+                task_id: MSL-WIKI-001
                 frequency: NA
                 purpose: NA
                 instructions: NA
