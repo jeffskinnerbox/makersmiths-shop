@@ -37,8 +37,7 @@
 #
 # CLEAN-UP
 #   Run this command to re-initialized everything
-#       trash output/*.{html,j2,pdf}
-#       trash *.bak* output/*.bak* input/*.bak* docs/*.bak* requirments/*.bak* scripts/*.bak* tests/*.bak*
+#       scripts/clean-up.sh
 #
 # PRINT SIGNUP SHEET 
 #   To print the signup sheet in PDF format for all these location, use the following
@@ -71,6 +70,7 @@ opportunities:
                 instructions: NA
                 supervision: false
                 last_date: NA
+
           - name: Garden/Patio
             steward: ???
             work_tasks:
@@ -107,11 +107,11 @@ opportunities:
             steward: ???
             work_tasks:
               - task: Wipe down all light switches and doorknobs.
-                task_id: MSL-LOBBY-001
+                task_id: MSL-MISC-001
               - task: Remove cobwebs.
-                task_id: MSL-LOBBY-002
+                task_id: MSL-MISC-002
               - task: Check and reset mousetraps, ant & roach traps as needed.
-                task_id: MSL-LOBBY-003
+                task_id: MSL-MISC-003
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -558,17 +558,6 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-CLOUD-001
-                frequency: NA
-                purpose: NA
-                instructions: NA
-                supervision: false
-                last_date: NA
-
-          - name: Wiki
-            steward: ???
-            work_tasks:
-              - task: TBD
-                task_id: MSL-WIKI-001
                 frequency: NA
                 purpose: NA
                 instructions: NA

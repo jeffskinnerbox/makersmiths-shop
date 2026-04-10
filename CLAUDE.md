@@ -31,12 +31,19 @@ Key data files:
 yamllint input/MSL-volunteer-opportunities.yaml
 
 # Convert YAML → Markdown
+# parse-tasks.py: simple 3-col table (Task, Completion Date, Frequency); handles all root key formats
 python3 scripts/parse-tasks.py input/MSL-volunteer-opportunities.yaml output/MSL-volunteer-opportunities.md
+# parse-opp-tasks.py: extended 5-col table (task, frequency, purpose, instructions, last-date); opportunities format only
 python3 scripts/parse-opp-tasks.py input/metalshop-volunteer-opportunities.yaml output/metalshop-task-list.md
 
 # Convert Markdown → Word doc (input/custom-reference.docx controls styles)
 pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-opportunities.docx \
     --reference-doc input/custom-reference.docx
+
+# Convert YAML → Excel (for Google Sheets import)
+# Note: default output is input/google-sheet.xlsx (in input/, not output/) — intentional for Sheets import workflow
+python3 scripts/yaml-to-sheets.py
+python3 scripts/yaml-to-sheets.py --yaml input/MSL-volunteer-opportunities.yaml --output input/google-sheet.xlsx
 
 # Convert YAML → JSON
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
@@ -55,7 +62,7 @@ wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/me
 # Convenience scripts (template + HTML + PDF, then open PDF): bash scripts/print-metalshop.sh  or  bash scripts/print-MSL.sh
 # Post scripts (template + HTML only, then open HTML in Chrome): bash scripts/post-metalshop.sh  or  bash scripts/post-MSL.sh
 
-# Clean up all generated output artifacts and .bak files
+# Clean up all generated output artifacts and .bak files (requires `trash` CLI, not rm)
 bash scripts/clean-up.sh
 
 # Optional flags for signup-sheet.py:
@@ -95,7 +102,13 @@ Three YAML root keys, all handled by `detect_format()` in `signup_sheet_builder.
 
 All formats use `work_tasks` for task lists (falling back to `task` key). Locations where all tasks are TBD or empty are silently skipped by `extract_locations()` (`skip_tbd=True` default).
 
+`extract_locations()` also falls back to `loc.get("stward", ...)` when reading the steward field — this tolerates a known typo present in some legacy YAML data.
+
 Logo and image assets live in `input/`. The default logo path is `input/makersmiths-logo.png`. A copy also lives in `logos_images/makersmiths-logo.png`; see `logos_images/README.md` for logo asset notes.
+
+`_archive/` contains superseded scripts and YAML files from before the current architecture; ignore them when navigating the codebase.
+
+`input/my-prompts.md` is a log of the original design prompts used to bootstrap this project — not input data for any script.
 
 ## Debugging
 

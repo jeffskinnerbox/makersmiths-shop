@@ -37,8 +37,7 @@
 #
 # CLEAN-UP
 #   Run this command to re-initialized everything
-#       trash output/*.{html,j2,pdf}
-#       trash *.bak* output/*.bak* input/*.bak* docs/*.bak* requirments/*.bak* scripts/*.bak* tests/*.bak*
+#       scripts/clean-up.sh
 #
 # PRINT SIGNUP SHEET 
 #   To print the signup sheet in PDF format for this location, use the following

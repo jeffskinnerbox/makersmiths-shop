@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# prevents scripts from "marching forward" blindly after a critical failure
 set -euo pipefail
 
 # Generate Jinja2 template (you can run once; output is reusable)

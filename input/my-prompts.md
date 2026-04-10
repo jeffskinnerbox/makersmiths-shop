@@ -103,3 +103,40 @@ Think Hard about what must be done to create a robust tool.
 I expect there will be some issues,
 so use the AskUserQuestions tool for all things that require further clarification.
 
+----
+
+## 4th Prompt: MSL-volunteer-opportunities.yaml to `.xlsx` File
+- Create Python script that takes the `@input/MSL-volunteer-opportunities.yaml` file
+  and places its content in a Excel `.xlsx` file `@input/google-sheet.xlsx`.
+- The Python script will be called `@scripts/yaml-to-sheets.py`
+- There will be one row in the `.xlsx` file for each of the `task` key.
+- The column headings of the `.xlsx` file will be:
+  - area name
+  - location name
+  - steward
+  - task
+  - task_id
+  - frequency
+  - purpose
+  - instructions
+  - supervision
+  - last_date
+- The rows of the `.xlsx` file will be:
+  - "area name" value
+  - "location name" value
+  - "steward" value
+  - "task" value
+  - "task_id" value
+  - "frequency" value
+  - "purpose" value
+  - "instructions" value
+  - "supervision" value
+  - "last_date" value
+- Like things (e.g. same area, same location) should be in adjacent rows in the `.xlsx` file
+- make sure the "task_id" value is always present, and if not, stop and tell the user to fix it
+- make sure the "task_id" value is always unique, and if not, stop and tell the user to fix it
+- make sure there are no duplicate tasks for a location, and if so, stop and tell the user to fix it
+- if the `@input/google-sheet.xlsx` doesn't exist, create it
+- if the `@input/google-sheet.xlsx` already exist, create a backup call `@input/google-sheet.xlsx.bak`.
+  Increment the backup if that already exists (ex. if `@input/google-sheet.xlsx.bak` exist, create a .bak1 or bak2 or etc.)
+
