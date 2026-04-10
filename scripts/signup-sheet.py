@@ -29,6 +29,7 @@ from signup_sheet_builder import load_yaml, extract_locations, attach_qr_codes, 
 
 
 def parse_args():
+    """Parse and return CLI arguments for the sign-up sheet renderer."""
     p = argparse.ArgumentParser(
         description="Render a Makersmiths sign-up sheet HTML from template + YAML"
     )
@@ -60,6 +61,7 @@ def parse_args():
 
 
 def main():
+    """Load YAML, filter locations, attach QR codes, render HTML, and write output."""
     args = parse_args()
 
     if not Path(args.template).exists():

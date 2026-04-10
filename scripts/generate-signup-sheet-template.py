@@ -96,7 +96,23 @@ def build_template(
     title_font_size: int,
     footer_font_size: int,
 ) -> str:
-    """Return the rendered Jinja2 template string with CSS/layout values baked in."""
+    """Return the Jinja2 template string with CSS values and static text baked in.
+
+    Uses Python str.format() to substitute font sizes and text into TEMPLATE_BODY,
+    producing a Jinja2 .html.j2 file. The resulting template is later rendered by
+    signup-sheet.py with location/task data.
+
+    Args:
+        title: Sheet title text shown in the header (e.g. "Volunteer Opportunities").
+        footer: Footer text printed at the bottom of each page.
+        location_font_size: Font size in pt for the location name header.
+        steward_font_size: Font size in pt for the steward name line.
+        title_font_size: Font size in pt for the main sheet title.
+        footer_font_size: Font size in pt for the footer text.
+
+    Returns:
+        Complete Jinja2 template as a string, ready to write to a .html.j2 file.
+    """
     return TEMPLATE_BODY.format(
         title=title,
         location_font_size=location_font_size,
@@ -108,6 +124,7 @@ def build_template(
 
 
 def main():
+    """Parse CLI args, build the Jinja2 template, and write it to a file or stdout."""
     parser = argparse.ArgumentParser(
         description="Generate a Jinja2 HTML template for volunteer sign-up sheets."
     )

@@ -90,7 +90,8 @@ def extract_rows(shop: dict) -> list[dict]:
         area_name = area.get("name", "")
         for loc in area.get("location", []):
             loc_name = loc.get("name", "")
-            steward = loc.get("steward", "")
+            # tolerate 'stward' typo present in some legacy YAML
+            steward = loc.get("steward", loc.get("stward", ""))
             tasks = loc.get("work_tasks", loc.get("task", [])) or []
             for t in tasks:
                 if not isinstance(t, dict):

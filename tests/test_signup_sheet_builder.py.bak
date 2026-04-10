@@ -345,8 +345,8 @@ def test_render_sheet_with_missing_logo_skips_uri(tmp_path):
 # ---------------------------------------------------------------------------
 
 
-def test_extract_locations_unknown_steward_key_returns_default():
-    """'stward' is not a recognised key; steward should default to '???'."""
+def test_extract_locations_stward_typo_fallback():
+    """Steward field should fall back to 'stward' when 'steward' key is absent."""
     data = {
         "tasks_list": {
             "shop": {
@@ -355,7 +355,7 @@ def test_extract_locations_unknown_steward_key_returns_default():
                         "location": [
                             {
                                 "name": "Loc",
-                                "stward": "Wrong Key Person",  # misspelled — not read
+                                "stward": "Typo Person",  # legacy typo
                                 "work_tasks": [{"task": "Clean", "frequency": "Daily"}],
                             }
                         ]
@@ -365,7 +365,7 @@ def test_extract_locations_unknown_steward_key_returns_default():
         }
     }
     locs = extract_locations(data)
-    assert locs[0]["steward"] == "???"
+    assert locs[0]["steward"] == "Typo Person"
 
 
 def test_extract_locations_plain_string_task():

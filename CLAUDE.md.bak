@@ -75,10 +75,6 @@ python3 -m pytest tests/ -v
 # Run a single test (examples from each test module)
 python3 -m pytest tests/test_signup_sheet_builder.py::test_extract_locations_opportunity_count -v
 python3 -m pytest tests/test_signup_sheet_template.py::test_build_template_contains_jinja2_for_loop -v
-python3 -m pytest tests/test_parse_tasks.py::test_generate_markdown_h1_heading -v
-python3 -m pytest tests/test_parse_opp_tasks.py::test_generate_markdown_five_column_headers -v
-python3 -m pytest tests/test_yaml_to_json.py::test_convert_outputs_valid_json_to_stdout -v
-python3 -m pytest tests/test_yaml_to_sheets.py::test_extract_rows_returns_correct_count -v
 ```
 
 ## Tech Stack (Planned)
@@ -96,11 +92,7 @@ python3 -m pytest tests/test_yaml_to_sheets.py::test_extract_rows_returns_correc
 
 `scripts/generate-signup-sheet-template.py` is self-contained — `build_template()` lives in the CLI file itself. Tests import it via `importlib.util.spec_from_file_location`.
 
-`scripts/parse-tasks.py` imports `detect_format` and `extract_locations` from `signup_sheet_builder.py`; tests must insert the `scripts/` dir into `sys.path` before loading.
-
-`scripts/parse-opp-tasks.py` is standalone (no library split) — parses `opportunities`-format YAML and emits per-location Markdown tables with task, frequency, purpose, instructions, and last-date columns.
-
-`scripts/yaml-to-sheets.py` exposes testable functions: `load_yaml`, `detect_shop`, `extract_rows`, `validate`, `backup_existing`, `write_xlsx`, and the `COLUMNS` list. `validate()` checks for blank/duplicate `task_id` and duplicate task names within the same location (case-insensitive); exits on failure.
+`scripts/parse-opp-tasks.py` is also standalone (no library split) — parses `opportunities`-format YAML and emits per-location Markdown tables with task, frequency, purpose, instructions, and last-date columns.
 
 Three YAML root keys, all handled by `detect_format()` in `signup_sheet_builder.py`:
 - `opportunity` — single-area extended format

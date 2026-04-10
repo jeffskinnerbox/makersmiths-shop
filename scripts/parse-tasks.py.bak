@@ -58,7 +58,7 @@ def generate_markdown(data: dict) -> str:
 
         for location in locations:
             loc_name = location.get("name", "Unknown Location")
-            steward = location.get("steward", "???")
+            steward = location.get("steward", location.get("stward", "???"))  # handle typo in yaml
             tasks = location.get("work_tasks", location.get("task", []))
 
             lines.append(f"### {loc_name}\n")

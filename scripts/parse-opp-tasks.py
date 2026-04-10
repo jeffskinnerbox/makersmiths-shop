@@ -14,10 +14,29 @@ from signup_sheet_builder import load_yaml
 
 
 def escape(value) -> str:
+    """Escape pipe characters so the value is safe inside a Markdown table cell.
+
+    Args:
+        value: Any value; converted to str before escaping.
+
+    Returns:
+        String with literal '|' replaced by '\\|'.
+    """
     return str(value).replace("|", "\\|")
 
 
 def generate_markdown(data: dict) -> str:
+    """Convert parsed opportunities YAML to a Markdown document with per-location tables.
+
+    Each location gets a ### heading and a 5-column table: Task, Frequency,
+    Purpose, Instructions, Last Date. Only handles the 'opportunities' root key.
+
+    Args:
+        data: Top-level dict parsed from YAML (must contain 'opportunities' key).
+
+    Returns:
+        Markdown string with shop header and per-location task tables.
+    """
     lines = []
     lines.append("# Makersmiths Volunteer Opportunity Task List\n")
 
@@ -73,6 +92,7 @@ def generate_markdown(data: dict) -> str:
 
 
 def main():
+    """Load YAML from argv[1] (or default), generate Markdown, write to argv[2] (or default)."""
     input_file = (
         sys.argv[1] if len(sys.argv) > 1 else "metalshop-volunteer-opportunities.yaml"
     )

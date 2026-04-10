@@ -106,6 +106,8 @@ def _build_task_entry(t) -> dict:
 def _process_location(loc: dict, skip_tbd: bool) -> dict | None:
     """Return a normalised location dict, or None if all tasks are TBD/empty.
 
+    Also tolerates the 'stward' typo for the steward field.
+
     Args:
         loc: Raw location dict from YAML.
         skip_tbd: If True, returns None when all tasks are TBD or empty.
@@ -120,7 +122,7 @@ def _process_location(loc: dict, skip_tbd: bool) -> dict | None:
         return None
     return {
         "name": loc.get("name", "???"),
-        "steward": loc.get("steward", "???"),
+        "steward": loc.get("steward", loc.get("stward", "???")),
         "tasks": [_build_task_entry(t) for t in raw_tasks if _is_real_task(t)],
     }
 
@@ -139,7 +141,7 @@ def extract_locations(data: dict, skip_tbd: bool = True) -> list:
     Returns:
         List of dicts, each with keys:
             - name (str): location name
-            - steward (str): steward name (defaults to '???' if key absent)
+            - steward (str): steward name (falls back to 'stward' typo key)
             - tasks (list[dict]): task entries from _build_task_entry()
     """
     fmt = detect_format(data)
