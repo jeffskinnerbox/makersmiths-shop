@@ -19,7 +19,7 @@ convert_yaml_to_json = _mod.convert_yaml_to_json
 # stdout output
 # ---------------------------------------------------------------------------
 
-def test_convert_outputs_valid_json_to_stdout(tmp_path, capsys):
+def test_convert_outputs_valid_json_to_stdout(tmp_path, capsys) -> None:
     f = tmp_path / "test.yaml"
     f.write_text("tasks_list:\n  shop:\n    name: Test\n")
     convert_yaml_to_json(str(f))
@@ -28,7 +28,7 @@ def test_convert_outputs_valid_json_to_stdout(tmp_path, capsys):
     assert data["tasks_list"]["shop"]["name"] == "Test"
 
 
-def test_convert_nested_structure_to_stdout(tmp_path, capsys):
+def test_convert_nested_structure_to_stdout(tmp_path, capsys) -> None:
     f = tmp_path / "test.yaml"
     f.write_text("a:\n  b: 1\n  c:\n    - x\n    - y\n")
     convert_yaml_to_json(str(f))
@@ -38,7 +38,7 @@ def test_convert_nested_structure_to_stdout(tmp_path, capsys):
     assert data["a"]["c"] == ["x", "y"]
 
 
-def test_convert_respects_indent_argument(tmp_path, capsys):
+def test_convert_respects_indent_argument(tmp_path, capsys) -> None:
     f = tmp_path / "test.yaml"
     f.write_text("key: value\n")
     convert_yaml_to_json(str(f), indent=4)
@@ -51,7 +51,7 @@ def test_convert_respects_indent_argument(tmp_path, capsys):
 # file output
 # ---------------------------------------------------------------------------
 
-def test_convert_writes_to_output_file(tmp_path):
+def test_convert_writes_to_output_file(tmp_path) -> None:
     yaml_file = tmp_path / "test.yaml"
     yaml_file.write_text("key: value\n")
     out_file = tmp_path / "out.json"
@@ -60,7 +60,7 @@ def test_convert_writes_to_output_file(tmp_path):
     assert data["key"] == "value"
 
 
-def test_convert_file_output_is_valid_json(tmp_path):
+def test_convert_file_output_is_valid_json(tmp_path) -> None:
     yaml_file = tmp_path / "test.yaml"
     yaml_file.write_text("a: 1\nb: true\nc: null\n")
     out_file = tmp_path / "out.json"
@@ -71,7 +71,7 @@ def test_convert_file_output_is_valid_json(tmp_path):
     assert data["c"] is None
 
 
-def test_convert_file_output_prints_path_to_stderr(tmp_path, capsys):
+def test_convert_file_output_prints_path_to_stderr(tmp_path, capsys) -> None:
     yaml_file = tmp_path / "test.yaml"
     yaml_file.write_text("k: v\n")
     out_file = tmp_path / "out.json"
@@ -80,7 +80,7 @@ def test_convert_file_output_prints_path_to_stderr(tmp_path, capsys):
     assert str(out_file) in captured.err
 
 
-def test_convert_file_output_nothing_on_stdout(tmp_path, capsys):
+def test_convert_file_output_nothing_on_stdout(tmp_path, capsys) -> None:
     yaml_file = tmp_path / "test.yaml"
     yaml_file.write_text("k: v\n")
     out_file = tmp_path / "out.json"
@@ -93,7 +93,7 @@ def test_convert_file_output_nothing_on_stdout(tmp_path, capsys):
 # data fidelity
 # ---------------------------------------------------------------------------
 
-def test_convert_list_values_preserved(tmp_path, capsys):
+def test_convert_list_values_preserved(tmp_path, capsys) -> None:
     f = tmp_path / "test.yaml"
     f.write_text("items:\n  - one\n  - two\n  - three\n")
     convert_yaml_to_json(str(f))
@@ -102,7 +102,7 @@ def test_convert_list_values_preserved(tmp_path, capsys):
     assert data["items"] == ["one", "two", "three"]
 
 
-def test_convert_empty_yaml_produces_null(tmp_path, capsys):
+def test_convert_empty_yaml_produces_null(tmp_path, capsys) -> None:
     f = tmp_path / "empty.yaml"
     f.write_text("")
     convert_yaml_to_json(str(f))

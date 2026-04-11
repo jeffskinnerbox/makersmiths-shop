@@ -4,10 +4,7 @@ Tests for scripts/parse-opp-tasks.py: escape() and generate_markdown().
 This script only handles the 'opportunities' root key and produces 5-column tables.
 """
 import importlib.util
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 _spec = importlib.util.spec_from_file_location(
     "parse_opp_tasks",
@@ -54,19 +51,19 @@ SAMPLE_YAML = {
 # escape()
 # ---------------------------------------------------------------------------
 
-def test_escape_pipe_character():
+def test_escape_pipe_character() -> None:
     assert escape("a|b") == "a\\|b"
 
 
-def test_escape_multiple_pipes():
+def test_escape_multiple_pipes() -> None:
     assert escape("x|y|z") == "x\\|y\\|z"
 
 
-def test_escape_no_pipe_unchanged():
+def test_escape_no_pipe_unchanged() -> None:
     assert escape("hello") == "hello"
 
 
-def test_escape_non_string_int():
+def test_escape_non_string_int() -> None:
     assert escape(99) == "99"
 
 
@@ -74,37 +71,37 @@ def test_escape_non_string_int():
 # generate_markdown() — structure
 # ---------------------------------------------------------------------------
 
-def test_generate_markdown_h1_heading():
+def test_generate_markdown_h1_heading() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "# Makersmiths Volunteer Opportunity Task List" in md
 
 
-def test_generate_markdown_shop_name():
+def test_generate_markdown_shop_name() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Makersmiths Leesburg" in md
 
 
-def test_generate_markdown_shop_address():
+def test_generate_markdown_shop_address() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "123 Main St" in md
 
 
-def test_generate_markdown_shop_steward():
+def test_generate_markdown_shop_steward() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Jeff Irland" in md
 
 
-def test_generate_markdown_area_h2_heading():
+def test_generate_markdown_area_h2_heading() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "## Main Level" in md
 
 
-def test_generate_markdown_location_h3_heading():
+def test_generate_markdown_location_h3_heading() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "### Metalshop" in md
 
 
-def test_generate_markdown_location_steward():
+def test_generate_markdown_location_steward() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Brad Hess" in md
 
@@ -113,7 +110,7 @@ def test_generate_markdown_location_steward():
 # generate_markdown() — 5-column table content
 # ---------------------------------------------------------------------------
 
-def test_generate_markdown_five_column_headers():
+def test_generate_markdown_five_column_headers() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Task" in md
     assert "Frequency" in md
@@ -122,27 +119,27 @@ def test_generate_markdown_five_column_headers():
     assert "Last Date" in md
 
 
-def test_generate_markdown_task_name():
+def test_generate_markdown_task_name() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Clean grinder" in md
 
 
-def test_generate_markdown_frequency_value():
+def test_generate_markdown_frequency_value() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Weekly" in md
 
 
-def test_generate_markdown_purpose_value():
+def test_generate_markdown_purpose_value() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Safety" in md
 
 
-def test_generate_markdown_instructions_value():
+def test_generate_markdown_instructions_value() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Use rag" in md
 
 
-def test_generate_markdown_last_date_value():
+def test_generate_markdown_last_date_value() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "2024-03-01" in md
 
@@ -151,7 +148,7 @@ def test_generate_markdown_last_date_value():
 # generate_markdown() — edge cases
 # ---------------------------------------------------------------------------
 
-def test_generate_markdown_missing_optional_fields_default_na():
+def test_generate_markdown_missing_optional_fields_default_na() -> None:
     data = {
         "opportunities": {
             "shop": {
@@ -177,7 +174,7 @@ def test_generate_markdown_missing_optional_fields_default_na():
     assert "NA" in md
 
 
-def test_generate_markdown_empty_tasks_shows_placeholder():
+def test_generate_markdown_empty_tasks_shows_placeholder() -> None:
     data = {
         "opportunities": {
             "shop": {
@@ -197,7 +194,7 @@ def test_generate_markdown_empty_tasks_shows_placeholder():
     assert "???" in md
 
 
-def test_generate_markdown_plain_string_task():
+def test_generate_markdown_plain_string_task() -> None:
     data = {
         "opportunities": {
             "shop": {
@@ -219,7 +216,7 @@ def test_generate_markdown_plain_string_task():
     assert "String task" in md
 
 
-def test_generate_markdown_plain_string_task_fills_na_columns():
+def test_generate_markdown_plain_string_task_fills_na_columns() -> None:
     data = {
         "opportunities": {
             "shop": {
@@ -242,7 +239,7 @@ def test_generate_markdown_plain_string_task_fills_na_columns():
     assert "NA" in md
 
 
-def test_generate_markdown_pipe_in_value_escaped():
+def test_generate_markdown_pipe_in_value_escaped() -> None:
     data = {
         "opportunities": {
             "shop": {
@@ -270,7 +267,7 @@ def test_generate_markdown_pipe_in_value_escaped():
     assert "A\\|B task" in md
 
 
-def test_generate_markdown_multiple_locations():
+def test_generate_markdown_multiple_locations() -> None:
     data = {
         "opportunities": {
             "shop": {

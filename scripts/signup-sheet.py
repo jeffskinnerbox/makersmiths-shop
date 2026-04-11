@@ -27,8 +27,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from signup_sheet_builder import load_yaml, extract_locations, attach_qr_codes, render_sheet
 
+DEFAULT_QR_URL = "https://makersmiths.org"
+DEFAULT_LOGO = "input/makersmiths-logo.png"
 
-def parse_args():
+
+def parse_args() -> argparse.Namespace:
     """Parse and return CLI arguments for the sign-up sheet renderer."""
     p = argparse.ArgumentParser(
         description="Render a Makersmiths sign-up sheet HTML from template + YAML"
@@ -50,17 +53,17 @@ def parse_args():
         help="Filter to a single location name (default: all)"
     )
     p.add_argument(
-        "-q", "--qr-url", default="https://makersmiths.org",
+        "-q", "--qr-url", default=DEFAULT_QR_URL,
         help="URL to encode in QR codes"
     )
     p.add_argument(
-        "-a", "--logo", default="input/makersmiths-logo.png",
-        help="Path to logo image file (default: input/makersmiths-logo.png)"
+        "-a", "--logo", default=DEFAULT_LOGO,
+        help=f"Path to logo image file (default: {DEFAULT_LOGO})"
     )
     return p.parse_args()
 
 
-def main():
+def main() -> None:
     """Load YAML, filter locations, attach QR codes, render HTML, and write output."""
     args = parse_args()
 

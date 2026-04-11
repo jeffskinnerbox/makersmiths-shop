@@ -1,35 +1,32 @@
 #!/usr/bin/env python3
-"""
-parse_tasks.py
+"""parse_tasks.py
 
-Parses a MSL-volunteer-opportunities.yaml file and generates a Markdown file where each
-location has its own table with columns: Task Name, Completion Date, Frequency.
+Parses a MSL-volunteer-opportunities.yaml file and generates a Markdown file
+where each location has its own 3-column table: Task Name, Completion Date,
+Frequency.
 """
 
 import sys
 from pathlib import Path
 
 from signup_sheet_builder import load_yaml
+from markdown_writer import ColumnDef, escape
+from markdown_writer import generate_markdown as _generate_markdown_doc
 
+_TITLE = "Makersmiths Task List"
 
-def escape(value) -> str:
-    """Escape pipe characters so the value is safe inside a Markdown table cell.
-
-    Args:
-        value: Any value; converted to str before escaping.
-
-    Returns:
-        String with literal '|' replaced by '\\|'.
-    """
-    return str(value).replace("|", "\\|")
+_COLUMNS = [
+    ColumnDef("Task Name", lambda t: t.get("task", t.get("name", "???"))),
+    ColumnDef("Completion Date", lambda t: t.get("completion_date", "NA")),
+    ColumnDef("Frequency", lambda t: t.get("frequency", "NA")),
+]
 
 
 def generate_markdown(data: dict) -> str:
     """Convert parsed YAML data to a Markdown document with per-location tables.
 
-    Each location gets a ### heading and a 3-column table: Task Name,
-    Completion Date, Frequency. Handles all supported root-key formats via
-    manual key lookup (opportunity, opportunities, tasks_list).
+    Handles all supported root-key formats (opportunity, opportunities,
+    tasks_list) and delegates table rendering to markdown_writer.
 
     Args:
         data: Top-level dict parsed from YAML.
@@ -37,63 +34,17 @@ def generate_markdown(data: dict) -> str:
     Returns:
         Markdown string with shop header and per-location task tables.
     """
-    lines = []
-    lines.append("# Makersmiths Task List\n")
-
-    root = data.get("tasks_list") or data.get("opportunities") or data.get("opportunity") or {}
+    root = (
+        data.get("tasks_list")
+        or data.get("opportunities")
+        or data.get("opportunity")
+        or {}
+    )
     shop = root.get("shop", {})
-    shop_name = shop.get("name", "Unknown Shop")
-    shop_address = shop.get("address", "")
-
-    lines.append(f"**Shop:** {shop_name}  ")
-    lines.append(f"**Address:** {shop_address}\n")
-
-    areas = shop.get("area", [])
-
-    for area in areas:
-        area_name = area.get("name", "Unknown Area")
-        lines.append(f"## {area_name}\n")
-
-        locations = area.get("location", [])
-
-        for location in locations:
-            loc_name = location.get("name", "Unknown Location")
-            steward = location.get("steward", "???")
-            tasks = location.get("work_tasks", location.get("task", []))
-
-            lines.append(f"### {loc_name}\n")
-            lines.append(f"**Steward:** {steward}  \n")
-
-            # Table header
-            lines.append("| Task Name | Completion Date | Frequency |")
-            lines.append("|-----------|----------------|-----------|")
-
-            if tasks:
-                for task in tasks:
-                    if isinstance(task, dict):
-                        task_name = task.get("task", task.get("name", "???"))
-                        completion_date = task.get("completion_date", "NA")
-                        frequency = task.get("frequency", "NA")
-                    else:
-                        task_name = str(task)
-                        completion_date = "NA"
-                        frequency = "NA"
-
-                    # Escape any pipe characters in values
-                    task_name = escape(task_name)
-                    completion_date = escape(completion_date)
-                    frequency = escape(frequency)
-
-                    lines.append(f"| {task_name} | {completion_date} | {frequency} |")
-            else:
-                lines.append("| ??? | NA | NA |")
-
-            lines.append("")  # blank line after each table
-
-    return "\n".join(lines)
+    return _generate_markdown_doc(_TITLE, shop, _COLUMNS)
 
 
-def main():
+def main() -> None:
     """Load YAML from argv[1] (or default), generate Markdown, write to argv[2] (or default)."""
     input_file = sys.argv[1] if len(sys.argv) > 1 else "input/MSL-volunteer-opportunities.yaml"
     output_file = sys.argv[2] if len(sys.argv) > 2 else "output/MSL-task-list.md"

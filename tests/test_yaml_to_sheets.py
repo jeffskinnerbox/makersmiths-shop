@@ -4,7 +4,6 @@ Tests for scripts/yaml-to-sheets.py: load_yaml, detect_shop, extract_rows,
 validate, backup_existing, write_xlsx.
 """
 import importlib.util
-import sys
 from pathlib import Path
 
 import pytest
@@ -65,13 +64,13 @@ SAMPLE_SHOP = {
 # load_yaml
 # ---------------------------------------------------------------------------
 
-def test_load_yaml_reads_simple_file(tmp_path):
+def test_load_yaml_reads_simple_file(tmp_path) -> None:
     f = tmp_path / "test.yaml"
     f.write_text("key: value\n")
     assert load_yaml(f)["key"] == "value"
 
 
-def test_load_yaml_reads_nested_structure(tmp_path):
+def test_load_yaml_reads_nested_structure(tmp_path) -> None:
     f = tmp_path / "test.yaml"
     f.write_text("a:\n  b:\n    c: 42\n")
     assert load_yaml(f)["a"]["b"]["c"] == 42
@@ -81,22 +80,22 @@ def test_load_yaml_reads_nested_structure(tmp_path):
 # detect_shop
 # ---------------------------------------------------------------------------
 
-def test_detect_shop_opportunities_key():
+def test_detect_shop_opportunities_key() -> None:
     result = detect_shop({"opportunities": {"shop": {"name": "Opp"}}})
     assert result["name"] == "Opp"
 
 
-def test_detect_shop_opportunity_key():
+def test_detect_shop_opportunity_key() -> None:
     result = detect_shop({"opportunity": {"shop": {"name": "Single"}}})
     assert result["name"] == "Single"
 
 
-def test_detect_shop_tasks_list_key():
+def test_detect_shop_tasks_list_key() -> None:
     result = detect_shop({"tasks_list": {"shop": {"name": "List"}}})
     assert result["name"] == "List"
 
 
-def test_detect_shop_unknown_key_raises_value_error():
+def test_detect_shop_unknown_key_raises_value_error() -> None:
     with pytest.raises(ValueError, match="Unknown YAML format"):
         detect_shop({"bad_key": {}})
 
@@ -105,54 +104,54 @@ def test_detect_shop_unknown_key_raises_value_error():
 # extract_rows
 # ---------------------------------------------------------------------------
 
-def test_extract_rows_returns_correct_count():
+def test_extract_rows_returns_correct_count() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     assert len(rows) == 2
 
 
-def test_extract_rows_area_name():
+def test_extract_rows_area_name() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     assert rows[0]["area name"] == "Main Level"
 
 
-def test_extract_rows_location_name():
+def test_extract_rows_location_name() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     assert rows[0]["location name"] == "Metalshop"
 
 
-def test_extract_rows_steward():
+def test_extract_rows_steward() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     assert rows[0]["steward"] == "Brad Hess"
 
 
-def test_extract_rows_task_name():
+def test_extract_rows_task_name() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     assert rows[0]["task"] == "Wipe machines"
 
 
-def test_extract_rows_task_id():
+def test_extract_rows_task_id() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     assert rows[0]["task_id"] == "MSL-METAL-001"
 
 
-def test_extract_rows_frequency():
+def test_extract_rows_frequency() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     assert rows[0]["frequency"] == "Weekly"
 
 
-def test_extract_rows_all_columns_present():
+def test_extract_rows_all_columns_present() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     for col in COLUMNS:
         assert col in rows[0], f"Missing column: {col}"
 
 
-def test_extract_rows_order_preserved():
+def test_extract_rows_order_preserved() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     assert rows[0]["task"] == "Wipe machines"
     assert rows[1]["task"] == "Sweep floor"
 
 
-def test_extract_rows_unknown_steward_key_returns_empty():
+def test_extract_rows_unknown_steward_key_returns_empty() -> None:
     """'stward' is not a recognised key; steward should default to ''."""
     shop = {
         "area": [
@@ -172,7 +171,7 @@ def test_extract_rows_unknown_steward_key_returns_empty():
     assert rows[0]["steward"] == ""
 
 
-def test_extract_rows_plain_string_task():
+def test_extract_rows_plain_string_task() -> None:
     shop = {
         "area": [
             {
@@ -191,7 +190,7 @@ def test_extract_rows_plain_string_task():
     assert rows[0]["task"] == "plain string task"
 
 
-def test_extract_rows_multiple_areas_flattened():
+def test_extract_rows_multiple_areas_flattened() -> None:
     shop = {
         "area": [
             {
@@ -214,7 +213,7 @@ def test_extract_rows_multiple_areas_flattened():
     assert rows[1]["area name"] == "Area B"
 
 
-def test_extract_rows_empty_work_tasks_produces_no_rows():
+def test_extract_rows_empty_work_tasks_produces_no_rows() -> None:
     shop = {
         "area": [
             {
@@ -233,24 +232,24 @@ def test_extract_rows_empty_work_tasks_produces_no_rows():
 # validate
 # ---------------------------------------------------------------------------
 
-def test_validate_passes_on_valid_data():
+def test_validate_passes_on_valid_data() -> None:
     rows = extract_rows(SAMPLE_SHOP)
     validate(rows)  # should not raise
 
 
-def test_validate_fails_on_missing_task_id():
+def test_validate_fails_on_missing_task_id() -> None:
     rows = [{"area name": "A", "location name": "L", "task": "T", "task_id": ""}]
     with pytest.raises(SystemExit):
         validate(rows)
 
 
-def test_validate_fails_on_whitespace_only_task_id():
+def test_validate_fails_on_whitespace_only_task_id() -> None:
     rows = [{"area name": "A", "location name": "L", "task": "T", "task_id": "   "}]
     with pytest.raises(SystemExit):
         validate(rows)
 
 
-def test_validate_fails_on_duplicate_task_id():
+def test_validate_fails_on_duplicate_task_id() -> None:
     rows = [
         {"area name": "A", "location name": "L", "task": "T1", "task_id": "X-001"},
         {"area name": "A", "location name": "L", "task": "T2", "task_id": "X-001"},
@@ -259,7 +258,7 @@ def test_validate_fails_on_duplicate_task_id():
         validate(rows)
 
 
-def test_validate_fails_on_duplicate_task_name_in_same_location():
+def test_validate_fails_on_duplicate_task_name_in_same_location() -> None:
     rows = [
         {"area name": "A", "location name": "L", "task": "Same Task", "task_id": "X-001"},
         {"area name": "A", "location name": "L", "task": "Same Task", "task_id": "X-002"},
@@ -268,7 +267,7 @@ def test_validate_fails_on_duplicate_task_name_in_same_location():
         validate(rows)
 
 
-def test_validate_duplicate_task_name_case_insensitive():
+def test_validate_duplicate_task_name_case_insensitive() -> None:
     rows = [
         {"area name": "A", "location name": "L", "task": "wipe machines", "task_id": "X-001"},
         {"area name": "A", "location name": "L", "task": "Wipe Machines", "task_id": "X-002"},
@@ -277,7 +276,7 @@ def test_validate_duplicate_task_name_case_insensitive():
         validate(rows)
 
 
-def test_validate_allows_same_task_name_in_different_locations():
+def test_validate_allows_same_task_name_in_different_locations() -> None:
     rows = [
         {"area name": "A", "location name": "Loc 1", "task": "Same Task", "task_id": "X-001"},
         {"area name": "A", "location name": "Loc 2", "task": "Same Task", "task_id": "X-002"},
@@ -285,7 +284,7 @@ def test_validate_allows_same_task_name_in_different_locations():
     validate(rows)  # should not raise
 
 
-def test_validate_allows_same_task_name_in_different_areas():
+def test_validate_allows_same_task_name_in_different_areas() -> None:
     rows = [
         {"area name": "Area 1", "location name": "L", "task": "Same Task", "task_id": "X-001"},
         {"area name": "Area 2", "location name": "L", "task": "Same Task", "task_id": "X-002"},
@@ -297,19 +296,19 @@ def test_validate_allows_same_task_name_in_different_areas():
 # backup_existing
 # ---------------------------------------------------------------------------
 
-def test_backup_creates_bak_file(tmp_path):
+def test_backup_creates_bak_file(tmp_path) -> None:
     f = tmp_path / "out.xlsx"
     f.write_bytes(b"data")
     backup_existing(f)
     assert (tmp_path / "out.xlsx.bak").exists()
 
 
-def test_backup_nonexistent_file_does_nothing(tmp_path):
+def test_backup_nonexistent_file_does_nothing(tmp_path) -> None:
     f = tmp_path / "nonexistent.xlsx"
     backup_existing(f)  # should not raise or create files
 
 
-def test_backup_bak_exists_creates_bak1(tmp_path):
+def test_backup_bak_exists_creates_bak1(tmp_path) -> None:
     f = tmp_path / "out.xlsx"
     f.write_bytes(b"data")
     (tmp_path / "out.xlsx.bak").write_bytes(b"old backup")
@@ -317,7 +316,7 @@ def test_backup_bak_exists_creates_bak1(tmp_path):
     assert (tmp_path / "out.xlsx.bak1").exists()
 
 
-def test_backup_preserves_original_file(tmp_path):
+def test_backup_preserves_original_file(tmp_path) -> None:
     f = tmp_path / "out.xlsx"
     f.write_bytes(b"original")
     backup_existing(f)
@@ -328,14 +327,14 @@ def test_backup_preserves_original_file(tmp_path):
 # write_xlsx
 # ---------------------------------------------------------------------------
 
-def test_write_xlsx_creates_output_file(tmp_path):
+def test_write_xlsx_creates_output_file(tmp_path) -> None:
     rows = extract_rows(SAMPLE_SHOP)
     out = tmp_path / "test.xlsx"
     write_xlsx(rows, out)
     assert out.exists()
 
 
-def test_write_xlsx_header_row_matches_columns(tmp_path):
+def test_write_xlsx_header_row_matches_columns(tmp_path) -> None:
     import openpyxl
     rows = extract_rows(SAMPLE_SHOP)
     out = tmp_path / "test.xlsx"
@@ -346,7 +345,7 @@ def test_write_xlsx_header_row_matches_columns(tmp_path):
     assert headers == COLUMNS
 
 
-def test_write_xlsx_data_row_task_value(tmp_path):
+def test_write_xlsx_data_row_task_value(tmp_path) -> None:
     import openpyxl
     rows = extract_rows(SAMPLE_SHOP)
     out = tmp_path / "test.xlsx"
@@ -357,7 +356,7 @@ def test_write_xlsx_data_row_task_value(tmp_path):
     assert ws.cell(2, task_col).value == "Wipe machines"
 
 
-def test_write_xlsx_row_count_matches_data(tmp_path):
+def test_write_xlsx_row_count_matches_data(tmp_path) -> None:
     import openpyxl
     rows = extract_rows(SAMPLE_SHOP)
     out = tmp_path / "test.xlsx"
@@ -368,7 +367,7 @@ def test_write_xlsx_row_count_matches_data(tmp_path):
     assert ws.max_row == len(rows) + 1
 
 
-def test_write_xlsx_creates_parent_dirs(tmp_path):
+def test_write_xlsx_creates_parent_dirs(tmp_path) -> None:
     rows = extract_rows(SAMPLE_SHOP)
     out = tmp_path / "subdir" / "nested" / "test.xlsx"
     write_xlsx(rows, out)

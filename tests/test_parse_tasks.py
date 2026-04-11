@@ -3,11 +3,7 @@
 Tests for scripts/parse-tasks.py: escape() and generate_markdown().
 """
 import importlib.util
-import sys
 from pathlib import Path
-
-# scripts dir must be on the path before loading — parse-tasks.py imports signup_sheet_builder
-sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 _spec = importlib.util.spec_from_file_location(
     "parse_tasks",
@@ -56,23 +52,23 @@ SAMPLE_YAML = {
 # escape()
 # ---------------------------------------------------------------------------
 
-def test_escape_pipe_character():
+def test_escape_pipe_character() -> None:
     assert escape("a|b") == "a\\|b"
 
 
-def test_escape_multiple_pipes():
+def test_escape_multiple_pipes() -> None:
     assert escape("a|b|c") == "a\\|b\\|c"
 
 
-def test_escape_no_pipe_unchanged():
+def test_escape_no_pipe_unchanged() -> None:
     assert escape("hello") == "hello"
 
 
-def test_escape_int_converted_to_string():
+def test_escape_int_converted_to_string() -> None:
     assert escape(42) == "42"
 
 
-def test_escape_none_converted_to_string():
+def test_escape_none_converted_to_string() -> None:
     assert escape(None) == "None"
 
 
@@ -80,32 +76,32 @@ def test_escape_none_converted_to_string():
 # generate_markdown() — structure
 # ---------------------------------------------------------------------------
 
-def test_generate_markdown_h1_heading():
+def test_generate_markdown_h1_heading() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert md.startswith("# Makersmiths Task List")
 
 
-def test_generate_markdown_contains_shop_name():
+def test_generate_markdown_contains_shop_name() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Makersmiths Leesburg" in md
 
 
-def test_generate_markdown_contains_shop_address():
+def test_generate_markdown_contains_shop_address() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "123 Main St" in md
 
 
-def test_generate_markdown_area_h2_heading():
+def test_generate_markdown_area_h2_heading() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "## Main Level" in md
 
 
-def test_generate_markdown_location_h3_heading():
+def test_generate_markdown_location_h3_heading() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "### Metalshop" in md
 
 
-def test_generate_markdown_steward_line():
+def test_generate_markdown_steward_line() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Brad Hess" in md
 
@@ -114,29 +110,29 @@ def test_generate_markdown_steward_line():
 # generate_markdown() — table content
 # ---------------------------------------------------------------------------
 
-def test_generate_markdown_table_headers():
+def test_generate_markdown_table_headers() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Task Name" in md
     assert "Completion Date" in md
     assert "Frequency" in md
 
 
-def test_generate_markdown_task_name_present():
+def test_generate_markdown_task_name_present() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Wipe machines" in md
 
 
-def test_generate_markdown_completion_date_present():
+def test_generate_markdown_completion_date_present() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "2024-01-01" in md
 
 
-def test_generate_markdown_frequency_present():
+def test_generate_markdown_frequency_present() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Weekly" in md
 
 
-def test_generate_markdown_multiple_tasks():
+def test_generate_markdown_multiple_tasks() -> None:
     md = generate_markdown(SAMPLE_YAML)
     assert "Sweep floor" in md
     assert "Daily" in md
@@ -146,7 +142,7 @@ def test_generate_markdown_multiple_tasks():
 # generate_markdown() — edge cases
 # ---------------------------------------------------------------------------
 
-def test_generate_markdown_empty_tasks_shows_placeholder():
+def test_generate_markdown_empty_tasks_shows_placeholder() -> None:
     data = {
         "tasks_list": {
             "shop": {
@@ -167,7 +163,7 @@ def test_generate_markdown_empty_tasks_shows_placeholder():
     assert "???" in md
 
 
-def test_generate_markdown_plain_string_task():
+def test_generate_markdown_plain_string_task() -> None:
     data = {
         "tasks_list": {
             "shop": {
@@ -188,7 +184,7 @@ def test_generate_markdown_plain_string_task():
     assert "Just a string task" in md
 
 
-def test_generate_markdown_pipe_in_task_name_escaped():
+def test_generate_markdown_pipe_in_task_name_escaped() -> None:
     data = {
         "tasks_list": {
             "shop": {
@@ -213,7 +209,7 @@ def test_generate_markdown_pipe_in_task_name_escaped():
     assert "Check A\\|B valve" in md
 
 
-def test_generate_markdown_opportunities_format():
+def test_generate_markdown_opportunities_format() -> None:
     data = {
         "opportunities": {
             "shop": {
@@ -239,7 +235,7 @@ def test_generate_markdown_opportunities_format():
     assert "Clean lens" in md
 
 
-def test_generate_markdown_multiple_locations():
+def test_generate_markdown_multiple_locations() -> None:
     data = {
         "tasks_list": {
             "shop": {
@@ -272,7 +268,7 @@ def test_generate_markdown_multiple_locations():
     assert "Task B" in md
 
 
-def test_generate_markdown_multiple_areas():
+def test_generate_markdown_multiple_areas() -> None:
     data = {
         "tasks_list": {
             "shop": {
@@ -300,7 +296,7 @@ def test_generate_markdown_multiple_areas():
     assert "## Lower Level" in md
 
 
-def test_generate_markdown_unknown_steward_key_shows_default():
+def test_generate_markdown_unknown_steward_key_shows_default() -> None:
     """'stward' is not a recognised key; steward should default to '???'."""
     data = {
         "tasks_list": {

@@ -96,11 +96,15 @@ python3 -m pytest tests/test_yaml_to_sheets.py::test_extract_rows_returns_correc
 
 `scripts/generate-signup-sheet-template.py` is self-contained — `build_template()` lives in the CLI file itself. Tests import it via `importlib.util.spec_from_file_location`.
 
-`scripts/parse-tasks.py` imports `detect_format` and `extract_locations` from `signup_sheet_builder.py`; tests must insert the `scripts/` dir into `sys.path` before loading.
+`scripts/parse-tasks.py` imports `load_yaml` from `signup_sheet_builder.py` and delegates table rendering to `markdown_writer.py`.
 
-`scripts/parse-opp-tasks.py` is standalone (no library split) — parses `opportunities`-format YAML and emits per-location Markdown tables with task, frequency, purpose, instructions, and last-date columns.
+`scripts/parse-opp-tasks.py` also uses `markdown_writer.py` for rendering — no longer standalone. Parses `opportunities`-format YAML; emits per-location tables with task, frequency, purpose, instructions, and last-date columns.
+
+`scripts/markdown_writer.py` — shared library for both parse scripts. Provides `ColumnDef` dataclass and `generate_markdown(title, shop, columns, extra_meta)` which handles the area/location/task loop.
 
 `scripts/yaml-to-sheets.py` exposes testable functions: `load_yaml`, `detect_shop`, `extract_rows`, `validate`, `backup_existing`, `write_xlsx`, and the `COLUMNS` list. `validate()` checks for blank/duplicate `task_id` and duplicate task names within the same location (case-insensitive); exits on failure.
+
+`tests/conftest.py` inserts `scripts/` into `sys.path` once for all tests — individual test files no longer need to do this themselves.
 
 Three YAML root keys, all handled by `detect_format()` in `signup_sheet_builder.py`:
 - `opportunity` — single-area extended format

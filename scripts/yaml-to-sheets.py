@@ -111,6 +111,57 @@ def extract_rows(shop: dict) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
+# Validation helpers
+# ---------------------------------------------------------------------------
+
+def _check_blank_task_ids(rows: list[dict]) -> list[str]:
+    """Return error messages for tasks missing a non-empty task_id."""
+    return [
+        f"  row {i+1}: area={r['area name']!r}  location={r['location name']!r}  task={r['task']!r}"
+        for i, r in enumerate(rows)
+        if not str(r.get("task_id", "")).strip()
+    ]
+
+
+def _check_duplicate_task_ids(rows: list[dict]) -> list[str]:
+    """Return error messages for duplicate task_ids across all rows."""
+    errors: list[str] = []
+    seen: dict[str, int] = {}
+    for i, r in enumerate(rows):
+        tid = str(r.get("task_id", "")).strip()
+        if not tid:
+            continue
+        if tid in seen:
+            errors.append(
+                f"Duplicate task_id {tid!r}: row {seen[tid]+1} "
+                f"(area={rows[seen[tid]]['area name']!r}, location={rows[seen[tid]]['location name']!r}) "
+                f"and row {i+1} "
+                f"(area={r['area name']!r}, location={r['location name']!r})"
+            )
+        else:
+            seen[tid] = i
+    return errors
+
+
+def _check_duplicate_task_names(rows: list[dict]) -> list[str]:
+    """Return error messages for duplicate task names within the same location (case-insensitive)."""
+    errors: list[str] = []
+    loc_tasks: dict[tuple, list[tuple]] = {}
+    for i, r in enumerate(rows):
+        key = (r["area name"], r["location name"])
+        task_lower = r["task"].strip().lower()
+        for prior_lower, prior_row in loc_tasks.get(key, []):
+            if prior_lower == task_lower:
+                errors.append(
+                    f"Duplicate task in area={r['area name']!r}, location={r['location name']!r}: "
+                    f"{r['task']!r} (rows {prior_row+1} and {i+1})"
+                )
+                break
+        loc_tasks.setdefault(key, []).append((task_lower, i))
+    return errors
+
+
+# ---------------------------------------------------------------------------
 # Validation
 # ---------------------------------------------------------------------------
 
@@ -130,46 +181,13 @@ def validate(rows: list[dict]) -> None:
     """
     errors: list[str] = []
 
-    # 1. task_id must be present on every task
-    missing = [
-        f"  row {i+1}: area={r['area name']!r}  location={r['location name']!r}  task={r['task']!r}"
-        for i, r in enumerate(rows)
-        if not str(r.get("task_id", "")).strip()
-    ]
-    if missing:
+    blank = _check_blank_task_ids(rows)
+    if blank:
         errors.append(
-            "task_id missing — add a task_id to each of these tasks:\n" + "\n".join(missing)
+            "task_id missing — add a task_id to each of these tasks:\n" + "\n".join(blank)
         )
-
-    # 2. task_ids must be globally unique
-    seen: dict[str, int] = {}
-    for i, r in enumerate(rows):
-        tid = str(r.get("task_id", "")).strip()
-        if not tid:
-            continue
-        if tid in seen:
-            errors.append(
-                f"Duplicate task_id {tid!r}: row {seen[tid]+1} "
-                f"(area={rows[seen[tid]]['area name']!r}, location={rows[seen[tid]]['location name']!r}) "
-                f"and row {i+1} "
-                f"(area={r['area name']!r}, location={r['location name']!r})"
-            )
-        else:
-            seen[tid] = i
-
-    # 3. no duplicate task names within a location
-    loc_tasks: dict[tuple, list[tuple]] = {}
-    for i, r in enumerate(rows):
-        key = (r["area name"], r["location name"])
-        task_lower = r["task"].strip().lower()
-        for j, (prior_lower, prior_row) in enumerate(loc_tasks.get(key, [])):
-            if prior_lower == task_lower:
-                errors.append(
-                    f"Duplicate task in area={r['area name']!r}, location={r['location name']!r}: "
-                    f"{r['task']!r} (rows {prior_row+1} and {i+1})"
-                )
-                break
-        loc_tasks.setdefault(key, []).append((task_lower, i))
+    errors.extend(_check_duplicate_task_ids(rows))
+    errors.extend(_check_duplicate_task_names(rows))
 
     if errors:
         print("ERROR: Validation failed. Fix the YAML then re-run.\n", file=sys.stderr)
@@ -202,6 +220,30 @@ def backup_existing(path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Excel writing helpers
+# ---------------------------------------------------------------------------
+
+def _write_styled_header_row(ws, header_fill, header_font, center_align) -> None:
+    """Write column names to row 1 and apply header styling."""
+    for col_idx, col_name in enumerate(COLUMNS, start=1):
+        cell = ws.cell(row=1, column=col_idx, value=col_name)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.alignment = center_align
+
+
+def _set_column_widths(ws, rows: list[dict]) -> None:
+    """Set column widths to fit content, capped at 60 characters."""
+    widths = {col: len(col) for col in COLUMNS}
+    for row in rows:
+        for col in COLUMNS:
+            widths[col] = max(widths[col], min(len(str(row.get(col) or "")), 60))
+    for col_idx, col_name in enumerate(COLUMNS, start=1):
+        letter = openpyxl.utils.get_column_letter(col_idx)
+        ws.column_dimensions[letter].width = widths[col_name] + 2
+
+
+# ---------------------------------------------------------------------------
 # Excel writing
 # ---------------------------------------------------------------------------
 
@@ -221,31 +263,18 @@ def write_xlsx(rows: list[dict], path: Path) -> None:
     ws = wb.active
     ws.title = "Volunteer Opportunities"
 
-    header_font  = Font(bold=True, color=HEADER_FG)
-    header_fill  = PatternFill(start_color=HEADER_BG, end_color=HEADER_BG, fill_type="solid")
+    header_font = Font(bold=True, color=HEADER_FG)
+    header_fill = PatternFill(start_color=HEADER_BG, end_color=HEADER_BG, fill_type="solid")
     center_align = Alignment(horizontal="center", wrap_text=True)
 
-    # Header row
-    for col_idx, col_name in enumerate(COLUMNS, start=1):
-        cell = ws.cell(row=1, column=col_idx, value=col_name)
-        cell.font      = header_font
-        cell.fill      = header_fill
-        cell.alignment = center_align
+    _write_styled_header_row(ws, header_fill, header_font, center_align)
 
-    # Data rows
     for row_idx, row in enumerate(rows, start=2):
         for col_idx, col_name in enumerate(COLUMNS, start=1):
             val = row.get(col_name)
             ws.cell(row=row_idx, column=col_idx, value="" if val is None else str(val))
 
-    # Column widths: max content length, capped at 60
-    widths = {col: len(col) for col in COLUMNS}
-    for row in rows:
-        for col in COLUMNS:
-            widths[col] = max(widths[col], min(len(str(row.get(col) or "")), 60))
-    for col_idx, col_name in enumerate(COLUMNS, start=1):
-        letter = openpyxl.utils.get_column_letter(col_idx)
-        ws.column_dimensions[letter].width = widths[col_name] + 2
+    _set_column_widths(ws, rows)
 
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = ws.dimensions
@@ -274,15 +303,15 @@ def main() -> None:
     args = parser.parse_args()
 
     yaml_path = Path(args.yaml)
-    out_path  = Path(args.output)
+    out_path = Path(args.output)
 
     if not yaml_path.exists():
         print(f"ERROR: YAML not found: {yaml_path}", file=sys.stderr)
         sys.exit(1)
 
-    data  = load_yaml(yaml_path)
-    shop  = detect_shop(data)
-    rows  = extract_rows(shop)
+    data = load_yaml(yaml_path)
+    shop = detect_shop(data)
+    rows = extract_rows(shop)
     validate(rows)
     backup_existing(out_path)
     write_xlsx(rows, out_path)

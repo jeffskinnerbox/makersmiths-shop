@@ -9,6 +9,10 @@ DEFAULT_LOCATION_FONT_SIZE = 12
 DEFAULT_STEWARD_FONT_SIZE = 10
 DEFAULT_TITLE_FONT_SIZE = 30
 DEFAULT_FOOTER_FONT_SIZE = 8
+DEFAULT_TITLE = "Volunteer Opportunities"
+DEFAULT_FOOTER = (
+    "Questions concerning the design & use of this form should be sent to Jeff Irland (xxx)"
+)
 
 TEMPLATE_BODY = r"""<!DOCTYPE html>
 <html lang="en">
@@ -123,7 +127,7 @@ def build_template(
     )
 
 
-def main():
+def main() -> None:
     """Parse CLI args, build the Jinja2 template, and write it to a file or stdout."""
     parser = argparse.ArgumentParser(
         description="Generate a Jinja2 HTML template for volunteer sign-up sheets."
@@ -137,13 +141,13 @@ def main():
     parser.add_argument(
         "-t",
         "--title",
-        default="Volunteer Opportunities",
-        help="Sheet title (default: Volunteer Opportunities)",
+        default=DEFAULT_TITLE,
+        help=f"Sheet title (default: {DEFAULT_TITLE})",
     )
     parser.add_argument(
         "-f",
         "--footer",
-        default="Questions concerning the design & use of this form should be sent to Jeff Irland (xxx)",
+        default=DEFAULT_FOOTER,
         help="Footer text",
     )
     parser.add_argument(
