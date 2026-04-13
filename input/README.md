@@ -2,12 +2,6 @@
 This directory contains key input files, required by Claude Code, to develop this application
 or input files key to the operation of this application.
 
-## Input to Claude Code
-* **`my-prompts.md`** -These are prompts give to Claude Code to guide it when creating
-application specification and implementation planning.
-They are provided here only as a reference and should not be considered
-relevant documentation to understanding this application.
-
 ## Data Modelling
 * **`metalshop-volunteer-opportunities.yaml` and `MSL-volunteer-opportunities.yaml`** -
   These YAML files organize the data relevant to the creating

@@ -1,38 +1,29 @@
 # Claude Code Prompts
 These prompts where used to create portions of this solution.
 
-## 1st Prompt: My Vision for Makersmiths Volunteer Program
-I'm a member of a makerspace call Makersmiths.
-All members are expected to volunteer 2 hours per month to perform work tasks
-for the care, up-keep, and expansion of the makerspace.
+## 1st Prompt
+For the document @docs/my-understanding.md, do the following:
 
-Work tasks are posted on 8.5 x 11 inch sign-up sheet posted around the makerspace
-and members are expected to voluntarily take one or more of these task and complete them.
-When completed, they will sign their name and date to the listed task on the sign-up sheet.
-Once completed, other members will see it as completed and must pick other task to perform.
+1. Improve the readability of this document and place the new version in @docs/requirements.md
+1. Make better use of section title to help the readers understanding.  Reformat and expand as needed.
+1. Be precise since this document will be used to create design specifications.
+1. Make use of tables or process diagrams if that can help.
+1. Put in one place a definition of all the actors, processes, etc. being discussed.
+1. We anticipate that this solution will be using Agentic AI via [Claude in Slack][03] but very little is said about this.
+   Say more about this to inform the reader and to help improve the future design specifications document.
+1. When writing, consider the fact that the excalidraw-diagram skill will be used to create some visuals.
 
-Periodically the data (task, member name, and date) on the sigh-up sheets
-must be gathered and put in a Google Sheets log.
-When this data is gathered, new sign-up sheets will be posted with additional uncompleted tasks.
-Google sheets will be used to create reports
-that will document what progress is being made within the makerspace.
-The Google Sheet is considered the "source of truth" for task completion,
-and so its timely & accurate update is important.
 
-It very important the this task volunteering process be as frictionless as possible.
-The effort a member puts in must be primarily doing the task and not the "book keeping" for the task.
-It important that easily managed tools be provided for the creating of the sign-up sheets,
-collection of the data on the sheets, the loading of the data into Google Sheets, and the creation of Google reports.
+----
 
-Things to consider to make the process automated and with minimal friction are:
-1. Use of mobile phone to capture picture of the sign-up sheet and OCR processing of those picture for data entry into Google Sheets.
-1. Use of QR codes on the sign-up sheets to pop-up a data entry form on the mobile phone
-1. Use of Claude AI agents to perform required data processing and workflow.
-1. Use of Claude in Slack so user can dialog with Claude to perform action to support the task management process.
 
+## 2nd Prompt
 Brainstorm on this topic and provide me some options.
 For the most promising option, provide me some high-level specifications
-and place your findings in @specifications.md.
+and place your findings in @docs/specifications.md.
+
+
+
 
 ----
 
@@ -96,8 +87,8 @@ The default output of `@scripts/generate-signup-sheet-template.py` should look l
 |-----------|-----------|---------------|------|-------------|
 | Clean welding tables | Weekly | _(sign here)_ | _(date)_ | [QR image] |
 
-- Physical columns remain unchanged — members can sign with pen as before
-- New **Log It** column adds a per-task QR code for digital logging
+* Physical columns remain unchanged — members can sign with pen as before
+* New **Log It** column adds a per-task QR code for digital logging
 
 Think Hard about what must be done to create a robust tool.
 I expect there will be some issues,
@@ -106,37 +97,37 @@ so use the AskUserQuestions tool for all things that require further clarificati
 ----
 
 ## 4th Prompt: MSL-volunteer-opportunities.yaml to `.xlsx` File
-- Create Python script that takes the `@input/MSL-volunteer-opportunities.yaml` file
+* Create Python script that takes the `@input/MSL-volunteer-opportunities.yaml` file
   and places its content in a Excel `.xlsx` file `@input/google-sheet.xlsx`.
-- The Python script will be called `@scripts/yaml-to-sheets.py`
-- There will be one row in the `.xlsx` file for each of the `task` key.
-- The column headings of the `.xlsx` file will be:
-  - area name
-  - location name
-  - steward
-  - task
-  - task_id
-  - frequency
-  - purpose
-  - instructions
-  - supervision
-  - last_date
-- The rows of the `.xlsx` file will be:
-  - "area name" value
-  - "location name" value
-  - "steward" value
-  - "task" value
-  - "task_id" value
-  - "frequency" value
-  - "purpose" value
-  - "instructions" value
-  - "supervision" value
-  - "last_date" value
-- Like things (e.g. same area, same location) should be in adjacent rows in the `.xlsx` file
-- make sure the "task_id" value is always present, and if not, stop and tell the user to fix it
-- make sure the "task_id" value is always unique, and if not, stop and tell the user to fix it
-- make sure there are no duplicate tasks for a location, and if so, stop and tell the user to fix it
-- if the `@input/google-sheet.xlsx` doesn't exist, create it
-- if the `@input/google-sheet.xlsx` already exist, create a backup call `@input/google-sheet.xlsx.bak`.
+* The Python script will be called `@scripts/yaml-to-sheets.py`
+* There will be one row in the `.xlsx` file for each of the `task` key.
+* The column headings of the `.xlsx` file will be:
+  * area name
+  * location name
+  * steward
+  * task
+  * task_id
+  * frequency
+  * purpose
+  * instructions
+  * supervision
+  * last_date
+* The rows of the `.xlsx` file will be:
+  * "area name" value
+  * "location name" value
+  * "steward" value
+  * "task" value
+  * "task_id" value
+  * "frequency" value
+  * "purpose" value
+  * "instructions" value
+  * "supervision" value
+  * "last_date" value
+* Like things (e.g. same area, same location) should be in adjacent rows in the `.xlsx` file
+* make sure the "task_id" value is always present, and if not, stop and tell the user to fix it
+* make sure the "task_id" value is always unique, and if not, stop and tell the user to fix it
+* make sure there are no duplicate tasks for a location, and if so, stop and tell the user to fix it
+* if the `@input/google-sheet.xlsx` doesn't exist, create it
+* if the `@input/google-sheet.xlsx` already exist, create a backup call `@input/google-sheet.xlsx.bak`.
   Increment the backup if that already exists (ex. if `@input/google-sheet.xlsx.bak` exist, create a .bak1 or bak2 or etc.)
 
