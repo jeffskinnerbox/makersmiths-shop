@@ -2,7 +2,7 @@
 These prompts where used to create portions of this solution.
 
 ## 1st Prompt
-For the document @docs/my-understanding.md, do the following:
+Read the document @docs/my-understanding.md, and do the following:
 
 1. Improve the readability of this document and place the new version in @docs/requirements.md
 1. Make better use of section title to help the readers understanding.  Reformat and expand as needed.
@@ -12,6 +12,9 @@ For the document @docs/my-understanding.md, do the following:
 1. We anticipate that this solution will be using Agentic AI via [Claude in Slack][03] but very little is said about this.
    Say more about this to inform the reader and to help improve the future design specifications document.
 1. When writing, consider the fact that the excalidraw-diagram skill will be used to create some visuals.
+1. This is a key document, iterate on it if that can help.
+1. Ask me questions to help clarify any issue you find.
+   There should be no limit to the number and type of question you ask.
 
 
 ----
