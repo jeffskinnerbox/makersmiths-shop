@@ -1,10 +1,10 @@
 # Shop Sergeant — System Requirements
 
-**Project:** Shop Sergeant
-**Organization:** Makersmiths Makerspace
-**Scope:** Makersmiths Leesburg (MSL) — initial release
-**Status:** Phase 0 complete; Phases 1–4 planned
-**Audience:** All stakeholders — members, stewards, shop stewards, shop sergeant, and developers
+* **Project:** Shop Sergeant
+* **Organization:** Makersmiths Makerspace
+* **Scope:** Makersmiths Leesburg (MSL) — initial release
+* **Status:** Phase 0 complete; Phases 1–4 planned
+* **Audience:** All stakeholders — members, stewards, shop stewards, shop sergeant, and developers
 
 ---
 
@@ -30,8 +30,8 @@
 This document defines the requirements for **Shop Sergeant**, an automated volunteer task tracking system for the Makersmiths makerspace. It is written for all stakeholders — members and stewards who will use the system, and developers who will build it.
 
 This document is the starting point for the design process. It is followed by:
-- `docs/specifications.md` — detailed system design, data flows, API contracts, and database schema
-- `docs/implementation-plan.md` — phased development plan with file maps and code structure
+* `docs/specifications.md` — detailed system design, data flows, API contracts, and database schema
+* `docs/implementation-plan.md` — phased development plan with file maps and code structure
 
 **Scope:** This initial release targets **Makersmiths Leesburg (MSL)** only. Extension to Makersmiths Purcellville (MSP) is a future milestone and is explicitly out of scope here. The system architecture must, however, support multi-shop expansion without structural changes.
 
@@ -140,7 +140,9 @@ Shop Sergeant is built around four pipelines, each handling a distinct part of t
 
 **Google Sheets** is the system's single source of truth. All pipelines read from and write to it. **Slack** is the primary user interface for both members and administrators. Physical sign-up sheets serve as the member-facing touchpoint on the shop floor.
 
-> *[Excalidraw diagram: end-to-end pipeline overview — four pipelines flowing through Google Sheets, with Slack as the interface layer and sign-up sheets as the physical touchpoint]*
+> **Diagram:** [`pipeline-overview.excalidraw`](pipeline-overview.excalidraw) — end-to-end pipeline overview
+
+![Pipeline Overview](pipeline-overview.png)
 
 ### 4.2 Technology Stack
 
@@ -158,10 +160,10 @@ Shop Sergeant is built around four pipelines, each handling a distinct part of t
 
 Phase 0 implemented the **Task Sheet Pipeline** tooling:
 
-- `scripts/signup-sheet.py` — CLI tool that renders a sign-up sheet HTML from a YAML task file
-- `scripts/generate-signup-sheet-template.py` — generates the reusable Jinja2 HTML template
-- `scripts/yaml-to-sheets.py` — converts YAML task definitions to Excel for Google Sheets import
-- `scripts/parse-tasks.py` and `parse-opp-tasks.py` — YAML to Markdown converters for review
+* `scripts/signup-sheet.py` — CLI tool that renders a sign-up sheet HTML from a YAML task file
+* `scripts/generate-signup-sheet-template.py` — generates the reusable Jinja2 HTML template
+* `scripts/yaml-to-sheets.py` — converts YAML task definitions to Excel for Google Sheets import
+* `scripts/parse-tasks.py` and `parse-opp-tasks.py` — YAML to Markdown converters for review
 
 All Phase 0 scripts have passing automated tests. The system is ready for trial with stewards and members. No Slack bot or Google Sheets integration exists yet.
 
@@ -173,7 +175,9 @@ All Phase 0 scripts have passing automated tests. The system is ready for trial 
 
 **Purpose:** Maintain the authoritative catalog of all volunteer tasks in Google Sheets.
 
-> *[Excalidraw diagram: YAML input → Python scripts → Google Sheets; Slack commands → bot → Google Sheets; change events → #shop-alerts]*
+> **Diagram:** [`task-database-pipeline.excalidraw`](task-database-pipeline.excalidraw)
+
+![Task Database Pipeline](task-database-pipeline.png)
 
 **Inputs:** YAML task definition files; Slack commands in `#shop-admin`
 
@@ -195,7 +199,9 @@ All Phase 0 scripts have passing automated tests. The system is ready for trial 
 
 **Purpose:** Generate printable sign-up sheets from the task database and notify stewards when new sheets are needed.
 
-> *[Excalidraw diagram: Google Sheets → YAML export → Jinja2 template → HTML → PDF → print; #shop-admin command triggers generation; #shop-bulletin notified]*
+> **Diagram:** [`task-sheet-pipeline.excalidraw`](task-sheet-pipeline.excalidraw)
+
+![Task Sheet Pipeline](task-sheet-pipeline.png)
 
 **Inputs:** Task YAML files (exported from Sheets); Slack commands in `#shop-admin`; optional logo and custom reference doc
 
@@ -216,7 +222,9 @@ All Phase 0 scripts have passing automated tests. The system is ready for trial 
 
 **Purpose:** Record task completions from members via mobile device, with minimum friction.
 
-> *[Excalidraw diagram: member scans QR on sign-up sheet → mobile form or Slack prefill → bot writes to Google Sheets → confirmation in #volunteer-log]*
+> **Diagram:** [`task-capture-pipeline.excalidraw`](task-capture-pipeline.excalidraw)
+
+![Task Capture Pipeline](task-capture-pipeline.png)
 
 **Inputs:** QR code scan from member's mobile device; OCR photo posted by admin to `#shop-admin`
 
@@ -245,7 +253,9 @@ Three capture methods are under consideration. One will be selected for implemen
 
 **Purpose:** Generate reports on task completion, member participation, and location health, accessible via Slack.
 
-> *[Excalidraw diagram: member or admin sends NL query in Slack → Claude agent reads Google Sheets → formatted report response in Slack]*
+> **Diagram:** [`task-reporting-pipeline.excalidraw`](task-reporting-pipeline.excalidraw)
+
+![Task Reporting Pipeline](task-reporting-pipeline.png)
 
 **Inputs:** Natural language queries in `#shop-queries` or `#shop-admin`; scheduled report triggers
 
@@ -302,16 +312,16 @@ Each task row on the sign-up sheet must include:
 
 ### 6.3 Task Display Rules
 
-- Tasks are grouped by location
-- Tasks that are TBD or have no defined work are silently omitted from the sheet
-- Task rows are ordered by frequency (most frequent first) within a location
+* Tasks are grouped by location
+* Tasks that are TBD or have no defined work are silently omitted from the sheet
+* Task rows are ordered by frequency (most frequent first) within a location
 
 ### 6.4 QR Code Placement
 
 The QR code placement depends on the capture method selected:
 
-- **Method 2 (per-task QR):** One QR code per task row, in the rightmost column
-- **Method 3 (single-sheet QR, likely):** One QR code in the sheet header or footer, covering the entire location
+* **Method 2 (per-task QR):** One QR code per task row, in the rightmost column
+* **Method 3 (single-sheet QR, likely):** One QR code in the sheet header or footer, covering the entire location
 
 ---
 
@@ -392,9 +402,9 @@ In `#shop-queries`:
 > **@alex_johnson:** How many tasks have I done this month?
 
 > **@shop-sergeant-bot:** You've completed 3 tasks in April 2026:
-> - Apr 2 — MSL-METAL-003 Clean and sweep metalshop floor
-> - Apr 7 — MSL-LASER-002 Clean laser cutter bed and optics
-> - Apr 11 — MSL-METAL-005 Check and top off cutting fluids
+> * Apr 2 — MSL-METAL-003 Clean and sweep metalshop floor
+> * Apr 7 — MSL-LASER-002 Clean laser cutter bed and optics
+> * Apr 11 — MSL-METAL-005 Check and top off cutting fluids
 >
 > You've met your 2-hour volunteer requirement for April.
 
@@ -406,11 +416,11 @@ In `#shop-admin`:
 > **@sarah_steward:** Add a new task to the metalshop — "Inspect welding equipment for damage", weekly, supervision required
 
 > **@shop-sergeant-bot:** Task created:
-> - ID: MSL-METAL-008
-> - Name: Inspect welding equipment for damage
-> - Location: Metalshop
-> - Frequency: Weekly
-> - Supervisor required: Yes
+> * ID: MSL-METAL-008
+> * Name: Inspect welding equipment for damage
+> * Location: Metalshop
+> * Frequency: Weekly
+> * Supervisor required: Yes
 >
 > Google Sheets updated. Generate a new sign-up sheet when ready: `sheet metalshop`
 
@@ -460,34 +470,34 @@ Sign up to help: [Metalshop Sign-Up Sheet QR →]
 
 The system's core design principle is **minimum friction for members**. Members must be able to record a task completion as easily and quickly as possible — the goal is to remove every barrier between finishing a task and logging it.
 
-- Task logging via mobile must require **≤ 2 taps** from QR scan to confirmation
-- Members must not be required to create an account, log in, or remember a password
-- The fallback (writing on the paper sheet) must always remain available alongside the digital method
+* Task logging via mobile must require **≤ 2 taps** from QR scan to confirmation
+* Members must not be required to create an account, log in, or remember a password
+* The fallback (writing on the paper sheet) must always remain available alongside the digital method
 
 ### 8.2 Record Retention and Compliance
 
-- All task completion records must be retained **indefinitely** in Google Sheets
-- Records must include: member name, Task ID, completion date, and capture method
-- Data must be exportable from Google Sheets in standard formats (CSV, Excel) for compliance reporting
-- These records may be required to support Makersmiths' **501(c)(3) tax-exempt status**
+* All task completion records must be retained **indefinitely** in Google Sheets
+* Records must include: member name, Task ID, completion date, and capture method
+* Data must be exportable from Google Sheets in standard formats (CSV, Excel) for compliance reporting
+* These records may be required to support Makersmiths' **501(c)(3) tax-exempt status**
 
 ### 8.3 Availability and Resilience
 
-- The Slack bot is the primary interface, but **Google Sheets is the durable store** — if the bot is temporarily unavailable, no data is lost
-- The physical sign-up sheet provides a manual fallback for task logging at all times
-- OCR processing allows admin to recover data from paper sheets even if real-time digital capture fails
+* The Slack bot is the primary interface, but **Google Sheets is the durable store** — if the bot is temporarily unavailable, no data is lost
+* The physical sign-up sheet provides a manual fallback for task logging at all times
+* OCR processing allows admin to recover data from paper sheets even if real-time digital capture fails
 
 ### 8.4 Access Control
 
-- Slack channel membership is the primary access control mechanism — `#shop-admin` and `#shop-alerts` are restricted channels
-- No separate authentication system is required
-- The bot must verify actor role before executing restricted actions (task CRUD, compliance reports, etc.)
+* Slack channel membership is the primary access control mechanism — `#shop-admin` and `#shop-alerts` are restricted channels
+* No separate authentication system is required
+* The bot must verify actor role before executing restricted actions (task CRUD, compliance reports, etc.)
 
 ### 8.5 Multi-Shop Extensibility
 
-- The data model must support multiple shops from the start (MSL, MSP)
-- All task IDs are shop-prefixed (`MSL-`, `MSP-`) to prevent collisions
-- The initial release deploys for MSL only, but adding MSP must not require architectural changes
+* The data model must support multiple shops from the start (MSL, MSP)
+* All task IDs are shop-prefixed (`MSL-`, `MSP-`) to prevent collisions
+* The initial release deploys for MSL only, but adding MSP must not require architectural changes
 
 ---
 
