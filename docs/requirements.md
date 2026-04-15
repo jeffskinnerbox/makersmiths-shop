@@ -3,8 +3,8 @@
 * **Project:** Shop Sergeant
 * **Organization:** Makersmiths Makerspace
 * **Scope:** Makersmiths Leesburg (MSL) — initial release
-* **Status:** Phase 0 complete; Phases 1–4 planned
-* **Audience:** All stakeholders — members, stewards, shop stewards, shop sergeant, and developers
+* **Status:** Phase 0 underway (Task Sheet Pipeline tooling)
+* **Audience:** All stakeholders — Members, Stewards, Shop Stewards, Shop Sergeant, and developers
 
 ---
 
@@ -27,19 +27,28 @@
 
 ### 1.1 Purpose and Scope
 
-This document defines the requirements for **Shop Sergeant**, an automated volunteer task tracking system for the Makersmiths makerspace. It is written for all stakeholders — members and stewards who will use the system, and developers who will build it.
-
-This document is the starting point for the design process. It is followed by:
+This document defines the requirements for **Shop Sergeant**,
+an automated task tracking system for the Makersmiths makerspace.
+It is written for all stakeholders — Members and Stewards who will use the system, and developers who will build it.
+This document is the starting point for the design process.
+It is followed by:
 * `docs/specifications.md` — detailed system design, data flows, API contracts, and database schema
 * `docs/implementation-plan.md` — phased development plan with file maps and code structure
 
-**Scope:** This initial release targets **Makersmiths Leesburg (MSL)** only. Extension to Makersmiths Purcellville (MSP) is a future milestone and is explicitly out of scope here. The system architecture must, however, support multi-shop expansion without structural changes.
+This initial release targets **Makersmiths Leesburg (MSL)** only.
+Extension to Makersmiths Purcellville (MSP) is potentially a future milestone, but is explicitly out of scope here.
+The system architecture must, however, support multi-shop expansion without structural changes.
+
+Also, it desirable for these requirements to be extensible so future Shop Sergeant features can be supported,
+and in addition, this solution could extended beyond it initial purpose.
+Such things as: reporting on location/equipment usage, shop entry/exit events, etc.
+There are no plans to extend this application at this time, but it is wise to design in extensibility.
 
 ### 1.2 Project Background
 
-All Makersmiths members are required to volunteer **2 hours per month** to help maintain, operate, and improve the makerspace. Today, this requirement is tracked entirely on paper: handwritten sign-up sheets are posted around the shop, members write their name and date when they complete a task, and the sheets are periodically replaced.
+All Makersmiths Members are required to volunteer 2 hours per month to help maintain, operate, and improve the makerspace. Today, this requirement is tracked entirely on paper: handwritten sign-up sheets are posted around the shop, Members write their name and date when they complete a task, and the sheets are periodically replaced.
 
-This paper-only process has significant gaps — completion records are often missing or illegible, there is no cumulative history, stewards have no visibility into whether their area's tasks are getting done, and members who regularly contribute go unrecognized.
+This paper-only process has significant gaps — completion records are often missing or illegible, there is no cumulative history, Stewards have no visibility into whether their area's tasks are getting done, and members who regularly contribute go unrecognized.
 
 **Shop Sergeant** replaces the manual bookkeeping with an automated system centered on **Slack** and **Google Sheets**, while keeping the physical sign-up sheet as the primary touchpoint for members on the shop floor.
 
@@ -105,7 +114,7 @@ The current paper-only task volunteering process has five significant weaknesses
 
 **Impact:** Problems in a location are only discovered when something breaks or a safety issue arises — not proactively.
 
-**Requirement:** Stewards must be able to query task status for their location at any time via Slack. The system must automatically alert stewards when tasks are overdue.
+**Requirement:** Stewards must be able to query task status for their location at any time via Slack. The system must automatically alert Stewards when tasks are overdue.
 
 ### 3.4 Periodic Tasks Have No Scheduling
 
@@ -119,9 +128,9 @@ The current paper-only task volunteering process has five significant weaknesses
 
 **Problem:** Members who consistently go above and beyond their 2-hour requirement are not identified or thanked, because no records exist.
 
-**Impact:** Highly engaged members receive no recognition. This reduces motivation and community goodwill.
+**Impact:** Highly engaged Members receive no recognition. This reduces motivation and community goodwill.
 
-**Requirement:** The system must generate periodic reports identifying top contributors so the shop sergeant and stewards can recognize them.
+**Requirement:** The system must generate periodic reports identifying top contributors so the Shop Sergeant and Stewards can recognize them.
 
 ---
 
@@ -135,8 +144,8 @@ Shop Sergeant is built around four pipelines, each handling a distinct part of t
 |---|---|
 | **Task Database** | Maintains the master list of all tasks in Google Sheets; supports add, update, and delete |
 | **Task Sheet** | Generates printable sign-up sheets from the task database and posts them around the shop |
-| **Task Capture** | Records task completions from members via QR code scan or OCR photo scan |
-| **Task Reporting** | Generates reports on task completion, member participation, and location health |
+| **Task Capture** | Records task completions from Members via QR code scan or OCR photo scan |
+| **Task Reporting** | Generates reports on task completion, Member participation, and location health |
 
 **Google Sheets** is the system's single source of truth. All pipelines read from and write to it. **Slack** is the primary user interface for both members and administrators. Physical sign-up sheets serve as the member-facing touchpoint on the shop floor.
 
@@ -156,16 +165,30 @@ Shop Sergeant is built around four pipelines, each handling a distinct part of t
 | Scheduling | APScheduler | Sends recurring reminders; monitors overdue periodic tasks |
 | Testing | pytest | Unit and integration tests for all pipeline components |
 
-### 4.3 Current State (Phase 0 — Complete)
-
-Phase 0 implemented the **Task Sheet Pipeline** tooling:
+### 4.3 Current State
+The current state of the project, a prototyping step that will be called Phase 0,
+has implemented the tooling for the **Task Sheet Pipeline** process and passing automated tests.
 
 * `scripts/signup-sheet.py` — CLI tool that renders a sign-up sheet HTML from a YAML task file
 * `scripts/generate-signup-sheet-template.py` — generates the reusable Jinja2 HTML template
 * `scripts/yaml-to-sheets.py` — converts YAML task definitions to Excel for Google Sheets import
 * `scripts/parse-tasks.py` and `parse-opp-tasks.py` — YAML to Markdown converters for review
 
-All Phase 0 scripts have passing automated tests. The system is ready for trial with stewards and members. No Slack bot or Google Sheets integration exists yet.
+#### Phase 0: Sign-Up Sheet Prototype
+Using the above scripts, the project is ready for prototyping of
+the Volunteer Opportunities sign-up sheet with a limited number of stewards and members.
+No mobile phone, Slack bot, or Google Sheets integration exists yet.
+
+The objective is to assess the easy of use of different sign-up sheet formats with a mobile phone.
+Will the user know how to use their mobile device and how error prone will that use be?
+
+#### Phase 0: Task Capture Prototype
+The next prototyping step will be the creation of the mobile phone experience of reading QR code
+and photographing the sign-up sheet via mobile phone.
+Some small parts of the mobile phone, Slack bot, or Google Sheets integration may be simulated.
+
+The objective is to assess the easy of use of a mobile phone interaction.
+Will the user know how to use their mobile device and how error prone will that use be?
 
 ---
 
@@ -228,30 +251,30 @@ All Phase 0 scripts have passing automated tests. The system is ready for trial 
 
 **Inputs:** QR code scan from member's mobile device; OCR photo posted by admin to `#shop-admin`
 
-**Outputs:** Completion record written to Google Sheets; confirmation message in `#volunteer-log`; notification in `#shop-alerts`
+**Outputs:** Completion record written to Google Sheets; confirmation message in `#shop-log`; notification in `#shop-alerts`
 
-Three capture methods are under consideration. One will be selected for implementation based on a trial with stewards and members.
+Three capture methods are under consideration. One will be selected for implementation based on a trial with Stewards and Members.
 
 | Method | Description | Status |
 |---|---|---|
-| **Method 1 — OCR** | Admin photographs a completed sign-up sheet and posts it to `#shop-admin`. Claude vision extracts member names, task IDs, and dates. Bot writes records to Google Sheets with `source=OCR`. | Alternative |
+| **Method 1 — OCR** | Admin photographs a completed sign-up sheet and posts it to `#shop-admin`. Claude vision extracts Member names, task IDs, and dates. Bot writes records to Google Sheets with `source=OCR`. | Alternative |
 | **Method 2 — Per-Task QR** | Each task row has its own QR code. Scanning it pre-fills a Slack message `task-done <task_id>`. Sending the message logs the completion. | Alternative |
-| **Method 3 — Single-Sheet QR** | A single QR code appears on each sign-up sheet. Scanning opens a mobile web form where the member selects their name, the task completed, and confirms. The form posts to the bot, which logs to Sheets. | **Likely selection** |
+| **Method 3 — Single-Sheet QR** | A single QR code appears on each sign-up sheet. Scanning opens a mobile web form where the Member selects their name, the task completed, and confirms. The form posts to the bot, which logs to Sheets. | **Likely selection** |
 
 **Requirements (all methods):**
 
 | # | Requirement |
 |---|---|
-| TC-1 | Every completion record must include: member name, Task ID, completion date, and capture method (`QR`, `OCR`, or `form`) |
+| TC-1 | Every completion record must include: Member name, Task ID, completion date, and capture method (`QR`, `OCR`, or `form`) |
 | TC-2 | Completion records must be written to Google Sheets immediately upon submission |
-| TC-3 | A confirmation message must appear in `#volunteer-log` for every logged completion |
+| TC-3 | A confirmation message must appear in `#shop-log` for every logged completion |
 | TC-4 | `#shop-alerts` must be notified whenever a capture event is processed |
 | TC-5 | The capture flow must require ≤ 2 taps on a mobile device from QR scan to confirmation (Method 3) |
-| TC-6 | The system must not require members to create an account or log in to record a completion |
+| TC-6 | The system must not require Members to create an account or log in to record a completion |
 
 ### 5.4 Task Reporting Pipeline
 
-**Purpose:** Generate reports on task completion, member participation, and location health, accessible via Slack.
+**Purpose:** Generate reports on task completion, Member participation, and location health, accessible via Slack.
 
 > **Diagram:** [`task-reporting-pipeline.excalidraw`](task-reporting-pipeline.excalidraw)
 
@@ -265,27 +288,28 @@ Three capture methods are under consideration. One will be selected for implemen
 
 | Report | Description | Access |
 |---|---|---|
-| **Member report** | Tasks completed by a specific member; compliance status | Member (own only), stewards+ (any member) |
-| **Location report** | Task completion status for a specific location; overdue tasks | All members (public data) |
-| **Shop report** | Aggregate compliance, overdue tasks, top contributors across all locations | All members (public data) |
-| **Compliance report** | Which members have/have not met the 2hr/month requirement | Shop steward and shop sergeant only |
+| **Member report** | Tasks completed by a specific Member; compliance status | Member (own only), Stewards+ (any Member) |
+| **Location report** | Task completion status for a specific location; overdue tasks | All Members (public data) |
+| **Shop report** | Aggregate compliance, overdue tasks, top contributors, errors logged, availability across all locations | All Members (public data) |
+| **Compliance report** | Which Members have/have not met the 2hr/month requirement | Shop Steward and Shop Sergeant only |
 
 **Requirements:**
 
 | # | Requirement |
 |---|---|
 | TR-1 | Members may request reports via natural language in `#shop-queries` (public data only) |
-| TR-2 | Stewards and above may request any report type via `#shop-admin` |
+| TR-2 | Stewards, Shop Stewards, and Shop Sergeants may request any report type via `#shop-admin` |
 | TR-3 | The bot must respond to report requests inline in Slack |
 | TR-4 | `#shop-alerts` must be notified when any report is generated |
 | TR-5 | A monthly summary report must be automatically posted to `#shop-bulletin` |
 | TR-6 | A monthly top-contributors report must be automatically posted to `#shop-bulletin` |
+| TR-7 | A weekly report of errors logged, availability across all locations posted to `#shop-bulletin` |
 
 ---
 
 ## 6. Physical Sign-Up Sheet Requirements
 
-The sign-up sheet is the primary member-facing touchpoint. Most members will interact with the system only through this physical sheet.
+The sign-up sheet is the primary Member-facing touchpoint. Most Members will interact with the system only through this physical sheet.
 
 ### 6.1 Format
 
@@ -295,7 +319,7 @@ The sign-up sheet is the primary member-facing touchpoint. Most members will int
 | One sheet per location | Each location (e.g., Metalshop, Laser Cutter) gets its own sheet |
 | Print compatibility | Must be legible when printed in black and white |
 | Logo | Makersmiths logo in the sheet header |
-| Header info | Location name, steward name, date generated |
+| Header info | Location name, Steward name, date generated |
 
 ### 6.2 Columns
 
@@ -305,9 +329,9 @@ Each task row on the sign-up sheet must include:
 |---|---|
 | Task Name | Human-readable task description |
 | Frequency | How often the task should be done (e.g., Weekly, Monthly) |
-| Supervisor Required | Y/N — whether a steward must be present |
-| Completion Date | Blank — member writes the date by hand (fallback if QR not used) |
-| Member Name | Blank — member writes their name by hand (fallback if QR not used) |
+| Supervisor Required | Yes/No — whether a Steward must be present |
+| Completion Date | Blank — Member writes the date by hand (fallback if QR not used) |
+| Member Name | Blank — Member writes their name by hand (fallback if QR not used) |
 | QR Code | Scannable code for digital task logging |
 
 ### 6.3 Task Display Rules
@@ -326,41 +350,83 @@ The QR code placement depends on the capture method selected:
 ---
 
 ## 7. Agentic AI and Slack Bot Requirements
+Shop Sergeant uses a **custom Slack bot** built with the Slack Bolt framework (Python) and the Claude API.
+This is distinct from Anthropic's "Claude in Slack" product — the custom bot can read from
+and write to Google Sheets, execute task management commands, and send structured notifications.
 
-Shop Sergeant uses a **custom Slack bot** built with the Slack Bolt framework (Python) and the Claude API. This is distinct from Anthropic's "Claude in Slack" product — the custom bot can read from and write to Google Sheets, execute task management commands, and send structured notifications.
+The Claude AI model powers two capabilities: **natural language query handling**
+(members and stewards ask questions in plain English) and **OCR processing**
+(extracting completion data from photos of sign-up sheets via the Claude vision API).
 
-The Claude AI model powers two capabilities: **natural language query handling** (members and stewards ask questions in plain English) and **OCR processing** (extracting completion data from photos of sign-up sheets via the Claude vision API).
+### 7.1 Action Definitions
+* **Log task completion (QR/form):** Submit a record that a specific task has been completed.
+  Triggered by scanning a QR code and submitting the mobile web form (Method 3)
+  or by sending a Slack message prefilled by a per-task QR scan (Method 2).
+  The bot writes a completion record to Google Sheets with member name, Task ID, date, and capture method.
+* **Query own task history:** Ask the bot to retrieve the requesting member's own completion records
+  — how many tasks completed, which ones, and whether the 2hr/month requirement has been met.
+* **Query any Member's task history:** Ask the bot to retrieve completion records for a specific other member by name or Slack handle.
+  Restricted to protect member privacy.
+* **Query open tasks / location status:** Ask the bot which tasks are currently open
+  (not yet completed within their scheduled period) for a given location or across the shop. Returns public task data only.
+* **Add / update / delete a task:** Instruct the bot to create a new task, modify an existing task's fields
+  (name, frequency, instructions, supervisor requirement), or remove a task from the catalog.
+  Changes are written to Google Sheets and trigger a `#shop-alerts` notification.
+* **Generate / print sign-up sheet:** Instruct the bot to render a new printable sign-up sheet PDF for a
+  given location (or all locations) from the current task catalog. The bot posts the sheet and notifies `#shop-bulletin`.
+* **Upload OCR photo for processing:** Post a photograph of a completed paper sign-up sheet to `#shop-admin`.
+  The bot passes the image to the Claude vision API, extracts Member names, Task IDs, and completion dates,
+  and writes the resulting records to Google Sheets with `source=OCR`.
+* **Request location or shop report:** Ask the bot to generate a summary report — either for a specific location
+  (task completion status, overdue tasks) or shop-wide (aggregate compliance, top contributors).
+  Public-data reports are available to all Members; the compliance report
+  (which Members have/have not met the 2hr/month requirement) is restricted to Shop Steward and Shop Sergeant.
+* **Trigger overdue reminder blast:** Instruct the bot to immediately send an overdue-task reminder message to `#shop-bulletin`
+  for all locations with tasks past their scheduled period, rather than waiting for the next scheduled reminder.
+* **View bot errors / audit log:** Read the `#shop-alerts` channel, which contains every significant system event
+  — task CRUD operations, capture events, report generation, and bot errors. Provides the full audit trail for the system.
+* **Suspend / restore actions — area or location scope:** Disable or re-enable any bot action
+  (e.g., task logging, sign-up sheet generation, OCR processing) for a specific area or location within the shop.
+  While suspended, the bot rejects affected actions for that scope and posts a notice to `#shop-alerts`.
+  Used by Shop Stewards to lock down a location during an incident, equipment removal, or process review.
+  Shop Stewards may only suspend/restore actions within their own area; Shop Sergeants may act on any area or location.
+* **Suspend / restore actions — shop scope:** Disable or re-enable any bot action across the entire shop.
+  While suspended, the bot rejects the affected actions shop-wide and posts a notice to `#shop-alerts`.
+  Reserved for Shop Sergeant use only — intended for system-wide incidents, emergency shutdowns, or major process changes.
 
-### 7.1 Slack Channel Structure
+### 7.2 Slack Channel Structure
 
 | Channel | Access | Who Posts | Purpose |
 |---|---|---|---|
-| `#volunteer-log` | All members (read), Bot (write) | Bot only | Task completion confirmations; one message per logged completion |
-| `#shop-bulletin` | All members (read), Bot (write) | Bot only | Announcements: new sign-up sheets available, overdue reminders, monthly summaries, top contributors |
-| `#shop-queries` | All members | Members + Bot | Natural language queries about tasks, member history, location status, and public reports |
-| `#shop-admin` 🔒 | Stewards, shop steward, shop sergeant | Admins + Bot | Task add/update/delete, sign-up sheet generation, OCR photo uploads, restricted report requests, compliance queries |
-| `#shop-alerts` 🔒 | Shop sergeant | Bot only | Bot errors, audit trail, system event log — every significant system action generates an entry here |
+| `#shop-log` | All Members (read), Bot (write) | Bot only | Task completion confirmations; one message per logged completion |
+| `#shop-bulletin` | All Members (read), Bot (write) | Bot only | Announcements: new sign-up sheets available, overdue reminders, monthly summaries, top contributors |
+| `#shop-queries` | All Members | Members + Bot | Natural language queries about tasks, Member history, location status, and public reports |
+| `#shop-admin` 🔒 | Stewards, Shop Steward, Shop Sergeant | Admins + Bot | Task add/update/delete, sign-up sheet generation, OCR photo uploads, restricted report requests, compliance queries |
+| `#shop-alerts` 🔒 | Shop Sergeant | Bot only | Bot errors, audit trail, system event log — every significant system action generates an entry here |
 
-### 7.2 Permission Model
+### 7.3 Permission Model
 
 The following table defines what each actor may ask the bot to do, and where:
 
 | Action | Member | Steward | Shop Steward | Shop Sergeant | Channel |
-|---|---|---|---|---|---|
-| Log task completion (QR/form) | x | ✅ | ✅ | ✅ | `#volunteer-log` |
-| Query own task history | x | ✅ | ✅ | ✅ | `#shop-queries` |
-| Query any member's task history |   |   | x | x | `#shop-admin` |
-| Query open tasks / location status | x | ✅ | ✅ | ✅ | `#shop-queries` |
-| Add / update / delete a task |   | x (own location) | x | x | `#shop-admin` |
-| Generate / print sign-up sheet |   | x (own location) | x | x | `#shop-admin` |
+|---|:---:|:---:|:---:|:---:|---|
+| Log task completion (QR/form) | ✅ | ✅ | ✅ | ✅ | `#shop-log` |
+| Query own task history | ✅ | ✅ | ✅ | ✅ | `#shop-queries` |
+| Query any Member's task history |❌|  ❌   | ✅ | ✅ | `#shop-admin` |
+| Query open tasks / location status | ✅ | ✅ | ✅ | ✅ | `#shop-queries` |
+| Add / update / delete a task |  ❌   | ✅ (own location) | ✅ | ✅ | `#shop-admin` |
+| Generate / print sign-up sheet |   ❌  | ✅ (own location) | ✅ | ✅ | `#shop-admin` |
 | Upload OCR photo for processing | ❌ | ✅ | ✅ | ✅ | `#shop-admin` |
-| Request location or shop report | x (public data) | x | x | x | `#shop-queries` / `#shop-admin` |
-| Trigger overdue reminder blast |   | ❌ | x | x | `#shop-admin` |
-| View bot errors / audit log |   | ❌ | x | x | `#shop-alerts` |
+| Request location or shop report | ✅ (public data) | ✅ | ✅ | ✅ | `#shop-queries` / `#shop-admin` |
+| Trigger overdue reminder blast |   ❌  | ❌ | ✅ | ✅ | `#shop-admin` |
+| View bot errors / audit log |   ❌  | ❌ | ✅ | ✅ | `#shop-alerts` |
+| Suspend / restore actions — area or location scope | ❌ | ✅ | ✅ | ✅ | `#shop-admin` |
+| Suspend / restore actions — shop scope | ❌ | ✅ | ✅ | ✅ | `#shop-admin` |
 
-> **Note:** Steward permissions are scoped to their own location. A Metalshop steward cannot modify Laser Cutter tasks.
+> **Note:** Steward permissions are scoped to their own location. A Metalshop steward cannot modify Laser Cutter tasks,
+>but Stewards are given permission to do Suspend / restore actions so they can take action in the event of a problem.
 
-### 7.3 Agent Capabilities
+### 7.4 Agent Capabilities
 
 The Claude-powered bot agent must be able to:
 
@@ -372,9 +438,9 @@ The Claude-powered bot agent must be able to:
 | **Task management** | Execute add, update, and delete operations on Google Sheets in response to Slack commands from authorized users |
 | **Report generation** | Query Google Sheets and return formatted reports inline in Slack — member, location, shop, and compliance report types |
 | **Scheduled reminders** | Use APScheduler to send periodic reminders to `#shop-bulletin`: overdue task alerts, monthly compliance summaries, top-contributor recognition |
-| **Notification routing** | Route system event notifications to the correct channel (`#volunteer-log`, `#shop-bulletin`, or `#shop-alerts`) based on event type |
+| **Notification routing** | Route system event notifications to the correct channel (`#shop-log`, `#shop-bulletin`, or `#shop-alerts`) based on event type |
 
-### 7.4 Example Interactions
+### 7.5 Example Interactions
 
 The following examples illustrate how actors will interact with the Slack bot.
 
@@ -384,7 +450,7 @@ The following examples illustrate how actors will interact with the Slack bot.
 
 > Member scans QR code on the Metalshop sign-up sheet. A mobile web form opens showing the Metalshop task list. Member taps "Clean and sweep metalshop floor" and taps "Submit."
 
-Bot posts to `#volunteer-log`:
+Bot posts to `#shop-log`:
 
 ```
 ✅ Task logged
@@ -410,7 +476,36 @@ In `#shop-queries`:
 
 ---
 
-**Example 3: Steward adds a task**
+**Example 3: Shop steward queries another member's task history**
+
+In `#shop-admin`:
+> **@mike_shopsteward:** How many tasks has @dave_m completed this month?
+
+> **@shop-sergeant-bot:** @dave_m has completed 2 tasks in April 2026:
+> * Apr 3 — MSL-WOOD-001 Clean and sweep wood shop floor
+> * Apr 9 — MSL-LASER-004 Empty laser cutter exhaust filter
+>
+> He has not yet met the 2-hour volunteer requirement for April.
+
+---
+
+**Example 4: Member queries open tasks for a location**
+
+In `#shop-queries`:
+> **@alex_johnson:** What tasks are still open in the metalshop?
+
+> **@shop-sergeant-bot:** **Metalshop — Open Tasks (April 2026)**
+>
+> | Task | Frequency | Last Done |
+> |---|---|---|
+> | MSL-METAL-001 — Inspect and clean bandsaw | Weekly | 18 days ago |
+> | MSL-METAL-006 — Replace worn grinding wheels | Monthly | 47 days ago |
+>
+> 2 of 7 metalshop tasks are currently overdue.
+
+---
+
+**Example 5: Steward adds a task**
 
 In `#shop-admin`:
 > **@sarah_steward:** Add a new task to the metalshop — "Inspect welding equipment for damage", weekly, supervision required
@@ -426,7 +521,107 @@ In `#shop-admin`:
 
 ---
 
-**Example 4: Shop sergeant requests monthly compliance report**
+**Example 6: Steward updates a task**
+
+In `#shop-admin`:
+> **@sarah_steward:** Change MSL-METAL-006 frequency from monthly to quarterly
+
+> **@shop-sergeant-bot:** Task updated:
+> * ID: MSL-METAL-006
+> * Field changed: Frequency — Monthly → Quarterly
+>
+> Google Sheets updated. `#shop-alerts` notified.
+
+---
+
+**Example 7: Steward deletes a task**
+
+In `#shop-admin`:
+> **@sarah_steward:** Delete MSL-METAL-002 — the plasma cutter has been removed from the shop
+
+> **@shop-sergeant-bot:** Task deleted:
+> * ID: MSL-METAL-002 — Clean plasma cutter work surface
+> * Reason logged: equipment removed
+>
+> Google Sheets updated. Generate a new sign-up sheet when ready: `sheet metalshop`
+
+---
+
+**Example 8: Steward generates a sign-up sheet**
+
+In `#shop-admin`:
+> **@sarah_steward:** sheet metalshop
+
+> **@shop-sergeant-bot:** Metalshop sign-up sheet generated.
+> * Tasks included: 7
+> * Generated: 2026-04-13
+>
+> [Download PDF →]
+>
+> `#shop-bulletin` notified that a new sheet is ready for printing.
+
+---
+
+**Example 9: Admin uploads OCR photo for processing**
+
+In `#shop-admin`:
+> **@sarah_steward:** *(uploads photo of completed Metalshop sign-up sheet)*
+
+> **@shop-sergeant-bot:** OCR processing complete — 4 completions extracted:
+>
+> | Member | Task ID | Date |
+> |---|---|---|
+> | Alex Johnson | MSL-METAL-003 | 2026-04-10 |
+> | Maria W | MSL-METAL-001 | 2026-04-11 |
+> | Dave M | MSL-METAL-005 | 2026-04-12 |
+> | Chris R | MSL-METAL-003 | 2026-04-13 |
+>
+> All 4 records written to Google Sheets with `source=OCR`.
+
+---
+
+**Example 10: Member requests a public location report**
+
+In `#shop-queries`:
+> **@alex_johnson:** Give me a status report on the laser cutter area
+
+> **@shop-sergeant-bot:** **Laser Cutter — April 2026 Status**
+>
+> | Metric | Value |
+> |---|---|
+> | Tasks defined | 5 |
+> | Completed on time | 4 |
+> | Overdue | 1 |
+> | Completion rate | 80% |
+>
+> Overdue: MSL-LASER-003 — Calibrate laser alignment (Monthly — last done 38 days ago)
+
+---
+
+**Example 11: Shop Steward triggers overdue reminder blast**
+
+In `#shop-admin`:
+> **@mike_shopsteward:** Send an overdue reminder now — don't wait for the scheduled one
+
+> **@shop-sergeant-bot:** Overdue reminder blast sent to `#shop-bulletin`. 3 locations have overdue tasks: Metalshop (2), Laser Cutter (1), Wood Shop (1).
+
+---
+
+**Example 12: Shop sergeant views bot errors / audit log**
+
+In `#shop-alerts` (Shop Sergeant reads recent entries):
+
+```
+[2026-04-13 14:02] TASK_CREATED  MSL-METAL-008 by @sarah_steward
+[2026-04-13 14:05] SHEET_GENERATED  Metalshop by @sarah_steward (7 tasks)
+[2026-04-13 15:30] OCR_PROCESSED  4 records written, source=OCR, uploaded by @sarah_steward
+[2026-04-13 16:00] REMINDER_BLAST  triggered by @mike_shopsteward — 4 overdue tasks across 3 locations
+[2026-04-13 16:01] BOT_ERROR  Google Sheets write timeout — retry succeeded after 2s
+```
+
+---
+
+**Example 13: Shop sergeant requests monthly compliance report** *(restricted report)*
 
 In `#shop-admin`:
 > **@jeff_sergeant:** Give me the April compliance report
@@ -446,7 +641,7 @@ In `#shop-admin`:
 
 ---
 
-**Example 5: Bot-initiated overdue task reminder**
+**Example 14: Bot-initiated overdue task reminder** *(scheduled, not user-triggered)*
 
 Bot posts to `#shop-bulletin` (automated, weekly):
 
@@ -464,11 +659,67 @@ Sign up to help: [Metalshop Sign-Up Sheet QR →]
 
 ---
 
+**Example 15: Shop Steward suspends actions for a location**
+
+In `#shop-admin`:
+> **@mike_shopsteward:** Suspend all actions for the metalshop — we're doing a full equipment audit and don't want any task logging until further notice
+
+> **@shop-sergeant-bot:** ⚠️ Actions suspended — Metalshop
+> * Scope: location
+> * Actions suspended: all
+> * Suspended by: @mike_shopsteward
+> * Effective: immediately
+>
+> Members attempting to log tasks or generate sheets for Metalshop will be told the location is temporarily unavailable. Restore with: `restore metalshop`
+>
+> `#shop-alerts` notified.
+
+Later, after the audit:
+
+In `#shop-admin`:
+> **@mike_shopsteward:** restore metalshop
+
+> **@shop-sergeant-bot:** ✅ Actions restored — Metalshop
+> * All actions re-enabled for Metalshop
+> * Restored by: @mike_shopsteward
+>
+> `#shop-alerts` notified.
+
+---
+
+**Example 16: Shop Sergeant suspends actions shop-wide**
+
+In `#shop-admin`:
+> **@jeff_sergeant:** Suspend all bot actions shop-wide — we have a Google Sheets API outage and I don't want failed writes going unnoticed
+
+> **@shop-sergeant-bot:** ⚠️ Actions suspended — Shop-wide (MSL)
+> * Scope: entire shop
+> * Actions suspended: all
+> * Suspended by: @jeff_sergeant
+> * Effective: immediately
+>
+> All bot actions are disabled. Members will receive a maintenance notice if they attempt to interact with the bot. Restore with: `restore shop`
+>
+> `#shop-alerts` notified.
+
+Later, after the outage is resolved:
+
+In `#shop-admin`:
+> **@jeff_sergeant:** restore shop
+
+> **@shop-sergeant-bot:** ✅ Actions restored — Shop-wide (MSL)
+> * All actions re-enabled across all locations
+> * Restored by: @jeff_sergeant
+>
+> `#shop-alerts` notified.
+
+---
+
 ## 8. Non-Functional Requirements
 
 ### 8.1 Frictionless Member Experience
 
-The system's core design principle is **minimum friction for members**. Members must be able to record a task completion as easily and quickly as possible — the goal is to remove every barrier between finishing a task and logging it.
+The system's core design principle is **minimum friction for Members**. Members must be able to record a task completion as easily and quickly as possible — the goal is to remove every barrier between finishing a task and logging it.
 
 * Task logging via mobile must require **≤ 2 taps** from QR scan to confirmation
 * Members must not be required to create an account, log in, or remember a password
@@ -477,7 +728,7 @@ The system's core design principle is **minimum friction for members**. Members 
 ### 8.2 Record Retention and Compliance
 
 * All task completion records must be retained **indefinitely** in Google Sheets
-* Records must include: member name, Task ID, completion date, and capture method
+* Records must include: Member name, Task ID, completion date, and capture method
 * Data must be exportable from Google Sheets in standard formats (CSV, Excel) for compliance reporting
 * These records may be required to support Makersmiths' **501(c)(3) tax-exempt status**
 
@@ -503,25 +754,112 @@ The system's core design principle is **minimum friction for members**. Members 
 
 ## 9. Success Criteria (KPIs)
 
-The shop sergeant is responsible for monitoring the following KPIs to assess system health and process effectiveness.
+The Shop Sergeant is responsible for monitoring the following KPIs to assess system health and process effectiveness.
 
 ### Member-Facing Metrics
 
 | ID | Metric | Definition | Target |
 |---|---|---|---|
-| **M1** | Member Compliance Rate | % of active members who log ≥ 2 volunteer hours in a given month | ≥ 80% monthly |
+| **M1** | Member Compliance Rate | % of active Members who log volunteer some hours in a given month | ≥ 50% monthly |
 | **M2** | Task Completion Rate | % of posted work tasks completed within their scheduled period | ≥ 90% |
 | **M3** | Data Completeness Rate | % of completed tasks with a full record in Google Sheets (name + date + Task ID) | ≥ 95% |
-| **M4** | Capture Friction Score | Average number of taps required for a member to log a completed task via mobile | ≤ 2 taps |
+
+#### M1 — Member Compliance Rate
+
+**Formula:** `(# unique members with ≥ 1 completion record in month) / (# active members) × 100`
+
+**Data available:**
+* ✅ **Numerator** — `completions` sheet in Google Sheets; count distinct `member_name` values where `completion_date` falls in the target month.
+* ❌ **Denominator** — the system has no member registry. The total count of "active members" does not exist anywhere in the current design.
+
+**Gap & recommendation:** Add a `members` sheet to Google Sheets listing all active members (name, Slack handle, join date, status). This sheet becomes the denominator for M1 and enables the compliance report (TR-2, §5.4). Alternatively, pull the active member list from the Slack workspace API, but that ties the KPI to Slack membership which may not perfectly match makerspace membership. The Google Sheets registry is preferred as the authoritative source.
+
+---
+
+#### M2 — Task Completion Rate
+
+**Formula:** `(# tasks with ≥ 1 completion record within their frequency window) / (# total active tasks) × 100`
+
+**Frequency windows:** weekly = last 7 days; monthly = last 30 days; quarterly = last 90 days.
+
+**Data available:**
+* ✅ **Task catalog** — `tasks` sheet in Google Sheets contains each task's `task_id`, `frequency`, and `location`.
+* ✅ **Completion records** — `completions` sheet contains `task_id` and `completion_date` for every logged event.
+* ✅ **Calculation** — for each task, find its most recent `completion_date` and compare `today - last_done ≤ frequency_window`. If yes, the task is "completed within schedule."
+
+**No data gaps.** This KPI is fully computable from existing system data. The Task Reporting pipeline (§5.4) query agent should be able to answer this on demand.
+
+---
+
+#### M3 — Data Completeness Rate
+
+**Formula:** `(# completion records with non-null member_name AND task_id AND completion_date) / (# total completion records) × 100`
+
+**Data available:**
+* ✅ All three required fields (`member_name`, `task_id`, `completion_date`) are required by TC-1 and written to the `completions` sheet on every capture event.
+* ✅ For QR/form capture (Method 3), all fields are enforced by the form before submission — completeness should be 100% for this method.
+* ⚠️ For OCR capture (Method 1), the Claude vision model may fail to extract a field if handwriting is illegible. The bot should write a partial record with a `NULL` or `"UNKNOWN"` placeholder rather than dropping the record, so it can be counted in the denominator.
+
+**Note:** This metric only covers records that *entered* the system. It cannot measure tasks that were completed on the shop floor but never recorded at all — that unmeasured gap is exactly the problem M1 and M2 are designed to surface indirectly.
+
+---
 
 ### Operational Metrics
 
 | ID | Metric | Definition | Target |
 |---|---|---|---|
-| **O1** | Steward Adoption Rate | % of stewards actively using the system to manage tasks | 100% within 60 days of launch |
-| **O2** | Sheet Refresh Latency | Time between a steward requesting a new sign-up sheet and it being physically posted | ≤ 24 hours |
+| **O1** | Steward Adoption Rate | % of Stewards actively using the system to manage tasks | 100% within 60 days of launch |
+| **O2** | Sheet Refresh Latency | Time between a Steward requesting a new sign-up sheet and it being physically posted | ≤ 24 hours |
 | **O3** | Overdue Task Alert Rate | % of overdue tasks that triggered an automated reminder before going unnoticed | 100% |
 | **O4** | Top Contributor Recognition | Monthly top-contributor report generated and posted to `#shop-bulletin` on time | 100% monthly |
+
+#### O1 — Steward Adoption Rate
+
+**Formula:** `(# stewards who issued ≥ 1 bot command in the period) / (# total stewards) × 100`
+
+**Data available:**
+* ✅ **Numerator** — the bot audit log (accessible to Shop Sergeant per §7.3) records every Slack command with the issuing user. Count distinct steward users who issued any `#shop-admin` command.
+* ❌ **Denominator** — same gap as M1: the system has no steward registry.
+
+**Gap & recommendation:** The `members` sheet recommended for M1 should include a `role` column (`member`, `steward`, `shop_steward`, `shop_sergeant`). Filtering that sheet by `role = steward` gives the denominator for O1 at no additional cost.
+
+---
+
+#### O2 — Sheet Refresh Latency
+
+**Formula:** `sheet_posted_timestamp - sheet_requested_timestamp` (per sheet generation event)
+
+**Data available:**
+* ✅ **Request timestamp** — the bot logs the `sheet <location>` command to the audit log with a timestamp (per TS-5, #shop-alerts is notified on every generation). The Slack message timestamp is the request time.
+* ✅ **Generation timestamp** — the bot writes the PDF generation completion event to #shop-alerts; this timestamp is also capturable.
+* ❌ **Posted-to-wall timestamp** — when a steward physically takes the sheet off the printer and posts it on the shop wall is a manual action with no digital signal. The system cannot observe this.
+
+**Gap & recommendation:** Redefine O2 as **"time from Slack command to PDF available for download"** — this is fully measurable and is the portion the system controls. The physical posting step is outside the system boundary. Optionally, add a lightweight `!sheet-posted MSL-METAL` Slack command that stewards send after posting the sheet; logging that message would make the full latency measurable, but adds friction and may not be worth it.
+
+---
+
+#### O3 — Overdue Task Alert Rate
+
+**Formula:** `(# overdue tasks for which an APScheduler reminder was sent) / (# overdue tasks detected) × 100`
+
+**Data available:**
+* ✅ **Overdue tasks** — same computation as M2: compare `last_completion_date + frequency_window` to today. Any task past its window is overdue.
+* ✅ **Alerts sent** — APScheduler (§4.2) runs the overdue check and posts to `#shop-bulletin`. If each alert post is logged to the audit log with `task_id`, the numerator is derivable.
+
+**Requirement:** The bot must log each overdue-task reminder event to the audit log (or a dedicated `alerts` sheet) with `task_id` and `alert_timestamp`. Without this log, the numerator is unknowable. This is not currently stated as an explicit requirement — it should be added to §5.4 (TR requirements) or §7.3 (audit log requirements).
+
+---
+
+#### O4 — Top Contributor Recognition
+
+**Formula:** Binary — was the monthly top-contributor report posted to `#shop-bulletin` within the first N days of the month?
+
+**Data available:**
+* ✅ **Report data** — top contributors are derived from the `completions` sheet: count records per `member_name` for the prior month, rank descending.
+* ✅ **Execution confirmation** — APScheduler fires the report on a fixed schedule. The Slack message timestamp in `#shop-bulletin` confirms it ran and when.
+
+**No data gaps.** Both the report content and the on-time check are computable from existing data. The Task Reporting pipeline (TR-6, §5.4) already requires this report. Monitoring O4 requires only checking whether the expected `#shop-bulletin` post appeared within the window.
+
 
 ---
 
@@ -531,7 +869,7 @@ The following are explicitly **not** part of this initial release:
 
 | Item | Notes |
 |---|---|
-| **Makersmiths Purcellville (MSP)** | Future release. The system architecture must accommodate MSP without structural changes, but no MSP deployment is planned in Phases 1–4. |
+| **Makersmiths Purcellville (MSP)** | Future release. The system architecture must accommodate MSP without structural changes, but no MSP deployment is planned at this time. |
 | **Capture methods not selected** | Once a capture method is chosen from the three options in §5.3, the remaining methods are documented for reference only and will not be implemented. |
 | **Member billing or dues tracking** | Shop Sergeant tracks volunteer hours only. Membership dues and billing are managed separately. |
 | **Non-Slack notification channels** | Email and SMS notifications are not in scope. Slack is the sole notification channel. |
@@ -540,5 +878,5 @@ The following are explicitly **not** part of this initial release:
 
 ---
 
-*This document is maintained by the shop sergeant. For questions, open a thread in `#shop-admin` or contact the shop sergeant directly.*
+*This document is maintained by the Shop Sergeant. For questions, open a thread in `#shop-admin` or contact the Shop Sergeant directly.*
 

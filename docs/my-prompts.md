@@ -16,17 +16,26 @@ Read the document @docs/my-understanding.md, and do the following:
 1. Ask me questions to help clarify any issue you find.
    There should be no limit to the number and type of question you ask.
 
+----
+
+## 2nd Prompt
+Read the @docs/requirements.md document and create the missing Excalidraw files referenced in the document
+using the excalidraw-diagram skill. Place the files you create in @docs.
 
 ----
+
+
+
+
+
+
+
 
 
 ## 2nd Prompt
 Brainstorm on this topic and provide me some options.
 For the most promising option, provide me some high-level specifications
 and place your findings in @docs/specifications.md.
-
-
-
 
 ----
 

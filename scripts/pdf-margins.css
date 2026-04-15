@@ -1,0 +1,12 @@
+body {
+  max-width: none;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

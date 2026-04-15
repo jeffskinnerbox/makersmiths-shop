@@ -1,0 +1,172 @@
+<h2>Proposed Structure for <code>docs/requirements.md</code></h2>
+<p class="subtitle">Review the outline — click any section to flag it for discussion</p>
+
+<div class="section">
+  <h3>1. Introduction</h3>
+  <div class="options" data-multiselect>
+    <div class="option" data-choice="1.1" onclick="toggleSelect(this)">
+      <div class="letter">1.1</div>
+      <div class="content">
+        <h3>Purpose & Scope</h3>
+        <p>Why this doc exists; what it covers (MSL only, all stakeholders); relationship to specifications.md and implementation-plan.md</p>
+      </div>
+    </div>
+    <div class="option" data-choice="1.2" onclick="toggleSelect(this)">
+      <div class="letter">1.2</div>
+      <div class="content">
+        <h3>Project Background</h3>
+        <p>Makersmiths 2hr/month volunteer requirement; why the current paper-only process fails; what Shop Sergeant fixes</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>2. Glossary</h3>
+  <div class="options" data-multiselect>
+    <div class="option" data-choice="2.1" onclick="toggleSelect(this)">
+      <div class="letter">2.1</div>
+      <div class="content">
+        <h3>Physical Spaces</h3>
+        <p>Shop, Area, Location — definitions with MSL examples</p>
+      </div>
+    </div>
+    <div class="option" data-choice="2.2" onclick="toggleSelect(this)">
+      <div class="letter">2.2</div>
+      <div class="content">
+        <h3>Actors</h3>
+        <p>Member, Steward, Shop Steward, Shop Sergeant — roles, permissions, and responsibilities as a table</p>
+      </div>
+    </div>
+    <div class="option" data-choice="2.3" onclick="toggleSelect(this)">
+      <div class="letter">2.3</div>
+      <div class="content">
+        <h3>System Terms</h3>
+        <p>Task, Task ID, Sign-Up Sheet, QR Code, Pipeline — precise definitions for spec writers</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>3. Problem Statement</h3>
+  <p class="subtitle">Reformatted from my-understanding.md § Shortcomings — expanded with impact statements</p>
+</div>
+
+<div class="section">
+  <h3>4. System Overview</h3>
+  <div class="options" data-multiselect>
+    <div class="option" data-choice="4.1" onclick="toggleSelect(this)">
+      <div class="letter">4.1</div>
+      <div class="content">
+        <h3>Architecture Summary</h3>
+        <p>Four pipelines at a glance; Google Sheets as source of truth; Slack as primary UI; <em>[Excalidraw: pipeline overview diagram]</em></p>
+      </div>
+    </div>
+    <div class="option" data-choice="4.2" onclick="toggleSelect(this)">
+      <div class="letter">4.2</div>
+      <div class="content">
+        <h3>Technology Stack</h3>
+        <p>Python, Slack Bolt, Claude API, Google Sheets API, Jinja2, QR codes, APScheduler — with role of each</p>
+      </div>
+    </div>
+    <div class="option" data-choice="4.3" onclick="toggleSelect(this)">
+      <div class="letter">4.3</div>
+      <div class="content">
+        <h3>Current State (Phase 0)</h3>
+        <p>What is already built and tested; what comes next</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>5. Functional Requirements — by Pipeline</h3>
+  <div class="options" data-multiselect>
+    <div class="option" data-choice="5.1" onclick="toggleSelect(this)">
+      <div class="letter">5.1</div>
+      <div class="content">
+        <h3>Task Database Pipeline</h3>
+        <p>Google Sheets as source of truth; YAML input; add/delete/update access control; Slack notifications on changes; <em>[Excalidraw: data flow]</em></p>
+      </div>
+    </div>
+    <div class="option" data-choice="5.2" onclick="toggleSelect(this)">
+      <div class="letter">5.2</div>
+      <div class="content">
+        <h3>Task Sheet Pipeline</h3>
+        <p>YAML → HTML → PDF sign-up sheet; printing; access control; sheet refresh notifications; <em>[Excalidraw: sheet pipeline]</em></p>
+      </div>
+    </div>
+    <div class="option" data-choice="5.3" onclick="toggleSelect(this)">
+      <div class="letter">5.3</div>
+      <div class="content">
+        <h3>Task Capture Pipeline</h3>
+        <p>Three capture methods with method-3 (single QR → web form) as likely choice; mobile UX goal: 1–2 taps; <em>[Excalidraw: capture flow]</em></p>
+      </div>
+    </div>
+    <div class="option" data-choice="5.4" onclick="toggleSelect(this)">
+      <div class="letter">5.4</div>
+      <div class="content">
+        <h3>Task Reporting Pipeline</h3>
+        <p>Report types (member, location, shop); Slack-requested reports; access control; <em>[Excalidraw: reporting flow]</em></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>6. Physical Sign-Up Sheet Requirements</h3>
+  <p class="subtitle">Format constraints (landscape 8.5×11"), columns, QR placement, task grouping — since sheet is primary member touchpoint</p>
+</div>
+
+<div class="section">
+  <h3>7. Agentic AI / Slack Bot Requirements</h3>
+  <div class="options" data-multiselect>
+    <div class="option" data-choice="7.1" onclick="toggleSelect(this)">
+      <div class="letter">7.1</div>
+      <div class="content">
+        <h3>Slack Channel Structure</h3>
+        <p>Planned channels: #shop-sergeant (queries), #task-intake (OCR photos), #task-done (completions), #shop-announcements (notifications)</p>
+      </div>
+    </div>
+    <div class="option" data-choice="7.2" onclick="toggleSelect(this)">
+      <div class="letter">7.2</div>
+      <div class="content">
+        <h3>Permission Model</h3>
+        <p>Table: which Slack commands/actions each actor can invoke</p>
+      </div>
+    </div>
+    <div class="option" data-choice="7.3" onclick="toggleSelect(this)">
+      <div class="letter">7.3</div>
+      <div class="content">
+        <h3>Agent Capabilities</h3>
+        <p>Natural language queries; task logging; task add/update/delete; report generation; reminder scheduling; OCR processing</p>
+      </div>
+    </div>
+    <div class="option" data-choice="7.4" onclick="toggleSelect(this)">
+      <div class="letter">7.4</div>
+      <div class="content">
+        <h3>Example Interactions</h3>
+        <p>Sample dialogs for: member logging a task, steward adding a task, shop sergeant requesting a report, reminder trigger</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>8. Non-Functional Requirements</h3>
+  <p class="subtitle">501(c)(3) record retention; frictionless UX principle; availability; MSL-only scope; future MSP expansion path</p>
+</div>
+
+<div class="section">
+  <h3>9. Success Criteria (KPIs)</h3>
+  <p class="subtitle">To be defined together — member participation rate, task completion rate, data completeness, steward adoption</p>
+</div>
+
+<div class="section">
+  <h3>10. Out of Scope</h3>
+  <p class="subtitle">MSP shop (initial release); unchosen capture methods; billing/dues tracking</p>
+</div>
+
+<hr style="margin: 2rem 0; border-color: var(--border);">
+<p class="subtitle">Click any section that needs changes or discussion. Then respond in the terminal.</p>

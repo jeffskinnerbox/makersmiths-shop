@@ -59,9 +59,10 @@ Things the shop sergeant will consider to make the process automated and with mi
 1. Use of scripts to perform required data processing and notifications.
    Such things as reminding members about task that are over due,
    reminding members of work events, generating period reports, etc.
-1. This could potentially be further automated via [Claude in Slack][03].
-   This could allow a member to dialog via Slack with an AI agent monitoring the task volunteering process.
-   For example, letting a steward add/delete/update a work task
+1. This is further automated via a custom Slack bot built with Slack Bolt (Python) calling
+   the Claude API directly — distinct from Anthropic's "Claude in Slack" product. This allows
+   members and stewards to dialog with an AI agent via Slack that can read from and write to
+   Google Sheets. For example, letting a steward add/delete/update a work task
    or request a reminder be sent about work tasks they see are falling behind
    via a special Slack channel.
 
@@ -91,14 +92,15 @@ The new task volunteering process will contain the following sub-processes (aka 
   * The Excel/Google Sheet will be used to create reports concerning work task completion progress.
   * Reports will be requested via a Slack channel.
   * Several report types will be available covering individual or group status.
-  * All members will have access to these reports and they will contain reports for a member, a location, or the full shop.
+  * Most reports (member, location, shop) are accessible to all members. The compliance report
+    (which members have/have not met the 2hr/month requirement) is restricted to Shop Steward
+    and Shop Sergeant only.
   * The Slack channel will notify the shop sergeant when a report is generated
 
 
 
 [01]:https://makersmiths.org/
 [02]:https://www.kpi.org/kpi-basics/
-[03]:https://code.claude.com/docs/en/slack
 [04]:https://en.wikipedia.org/wiki/Optical_character_recognition
 
 

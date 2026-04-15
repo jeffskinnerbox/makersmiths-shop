@@ -1,0 +1,102 @@
+<h2>Proposed Slack Bot Permission Model</h2>
+<p class="subtitle">Does this look right? Click anything that needs changing, then respond in the terminal.</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:0.85em">
+  <thead>
+    <tr style="border-bottom:2px solid #555;background:#1a1a2e">
+      <th style="text-align:left;padding:8px 10px">Action</th>
+      <th style="text-align:center;padding:8px 6px">Member</th>
+      <th style="text-align:center;padding:8px 6px">Steward</th>
+      <th style="text-align:center;padding:8px 6px">Shop Steward</th>
+      <th style="text-align:center;padding:8px 6px">Shop Sergeant</th>
+      <th style="text-align:left;padding:8px 10px">Channel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid #333">
+      <td style="padding:7px 10px">Log task completion (QR scan)</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#volunteer-log</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;background:#111">
+      <td style="padding:7px 10px">Query own task history</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-queries</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333">
+      <td style="padding:7px 10px">Query any member's task history</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-admin</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;background:#111">
+      <td style="padding:7px 10px">Query open tasks / location status</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-queries</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333">
+      <td style="padding:7px 10px">Add / update / delete a task</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">✅ <span style="font-size:0.8em;color:#aaa">(own location)</span></td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-admin</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;background:#111">
+      <td style="padding:7px 10px">Generate / print sign-up sheet</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">✅ <span style="font-size:0.8em;color:#aaa">(own location)</span></td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-admin</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333">
+      <td style="padding:7px 10px">Upload OCR photo for processing</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-admin</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;background:#111">
+      <td style="padding:7px 10px">Request location/shop report</td>
+      <td style="text-align:center;padding:7px 6px">✅ <span style="font-size:0.8em;color:#aaa">(public data only)</span></td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-queries / #shop-admin</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333">
+      <td style="padding:7px 10px">Trigger overdue reminder blast</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-admin</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;background:#111">
+      <td style="padding:7px 10px">View bot errors / audit log</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">❌</td>
+      <td style="text-align:center;padding:7px 6px">✅</td>
+      <td style="padding:7px 10px">#shop-alerts</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="subtitle" style="margin-top:1.5rem">
+  Key assumption: stewards manage their own location only; shop steward and shop sergeant have shop-wide access.<br>
+  Tell me in the terminal if any row is wrong or missing.
+</p>
