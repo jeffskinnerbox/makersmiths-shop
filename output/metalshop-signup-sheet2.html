@@ -9,9 +9,9 @@
   .title { font-size: 30pt; font-weight: bold; color: red; }
   .footer { font-size: 8pt; font-weight: bold; }
   table { width: 100%; border-collapse: collapse; }
-  th, td { border: 1px solid #888; padding: 1px 6px; line-height: 1.2; }
+  th, td { border: 1px solid #888; padding: 1px 6px; line-height: 1.2; vertical-align: top; }
   th { background-color: #ddd; }
-  .col-task { width: 46%; }
+  .col-task { width: 55%; }
   .col-last-done { width: 10%; text-align: center; }
   .col-freq { width: 8%; text-align: center; }
   .col-member-date { width: 9%; }
@@ -22,9 +22,9 @@
 
 <div class="page" style="page-break-after: always; padding: 0.3in;">
   <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #333; padding-bottom:4px; margin-bottom:6px;">
-    <div style="flex:0 0 90px; text-align:center;">
+    <div style="flex:0 0 170px; text-align:center;">
       
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAAB70lEQVR4nO2bQY6jMBBFXw3emxv0UczV5khzAzhKbmCWkRz9WWAISW/ISCQedXkRYXiLL5Wq/KkiJg6u6ddREhx11FFHHXX0TNTqCpj1N7NhDsC83h5OF+DoK2iSJGUAOul3v15J0iN6jgBHX0HnNYXSxQzi1QAws/AeAY4eWOFpr+mrBKD77uw/rtXR52hZugQsZbD05x0CHP2HaEUBM4i5Kzb1GS3bswU4+jo6mZlZDzYApEvABm6LJXyHAEePrCW37imkqe/Q9FXQY2Y1oNVRFo+eVPY3kySIEinXrcaPa3V0i9b2kztpXB6UHeLRagBdQ7Fadil30hi3VIs1jB6tBtBdbmmMBSmvEaytDbwStofeDOYAxIINVHfonaem0DUeUdK4VT1lWM+y4udWM+iWPQ/eIuWHtPJK2BaaMkCUzHrQGMsyO7nbj3a0/mB0dRkZgG518Jsn3LLMc6sBdOtlbH2LeDXSJUAawXbox7U6uqD32TGTBWr9WyyiZMPpAhx9Bd3NjpfD62awlMObaTxfgKOvoNvsGKimY1rb7/VBM1p/Lvo8jYQ5FDF3hWnoHlq9H9fq6LdJP4ARryZidpfRJhqlejwB0iXU72mqtT9fgKNH1r4TSFfHJvs3L+/Bt4Oa/2vBUUcdddTR/wj9C3WSNNjjltvmAAAAAElFTkSuQmCC" width="80" height="80" alt="QR">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAAB70lEQVR4nO2bQY6jMBBFXw3emxv0UczV5khzAzhKbmCWkRz9WWAISW/ISCQedXkRYXiLL5Wq/KkiJg6u6ddREhx11FFHHXX0TNTqCpj1N7NhDsC83h5OF+DoK2iSJGUAOul3v15J0iN6jgBHX0HnNYXSxQzi1QAws/AeAY4eWOFpr+mrBKD77uw/rtXR52hZugQsZbD05x0CHP2HaEUBM4i5Kzb1GS3bswU4+jo6mZlZDzYApEvABm6LJXyHAEePrCW37imkqe/Q9FXQY2Y1oNVRFo+eVPY3kySIEinXrcaPa3V0i9b2kztpXB6UHeLRagBdQ7Fadil30hi3VIs1jB6tBtBdbmmMBSmvEaytDbwStofeDOYAxIINVHfonaem0DUeUdK4VT1lWM+y4udWM+iWPQ/eIuWHtPJK2BaaMkCUzHrQGMsyO7nbj3a0/mB0dRkZgG518Jsn3LLMc6sBdOtlbH2LeDXSJUAawXbox7U6uqD32TGTBWr9WyyiZMPpAhx9Bd3NjpfD62awlMObaTxfgKOvoNvsGKimY1rb7/VBM1p/Lvo8jYQ5FDF3hWnoHlq9H9fq6LdJP4ARryZidpfRJhqlejwB0iXU72mqtT9fgKNH1r4TSFfHJvs3L+/Bt4Oa/2vBUUcdddTR/wj9C3WSNNjjltvmAAAAAElFTkSuQmCC" width="160" height="160" alt="QR">
       
     </div>
     <div>
@@ -49,76 +49,68 @@
         <th class="col-member-date">Member Name / Date</th>
         <th class="col-member-date">Member Name / Date</th>
         <th class="col-member-date">Member Name / Date</th>
-        <th class="col-member-date">Member Name / Date</th>
       </tr>
     </thead>
     <tbody>
       
       <tr>
-        <td class="col-task" style="position:relative;"><span style="color:red; font-weight:bold;">Dust & Wipe Down Machine</span><br><span style="font-size:8pt; font-weight:normal;">Do not use any cleaning solvant. Just a dry or damp cloth should be used.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-001</div></td>
+        <td class="col-task" style="position:relative; padding-bottom:14px;"><span style="color:red; font-weight:bold;">Dust & Wipe Down Machine</span><br><span style="font-size:8pt; font-weight:normal;">Do not use any cleaning solvant. Just a dry or damp cloth should be used.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-001</div></td>
         <td class="col-last-done">NA</td>
         <td class="col-freq">Weekly</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
-        <td class="col-member-date">&nbsp;</td>
       </tr>
       
       <tr>
-        <td class="col-task" style="position:relative;"><span style="color:red; font-weight:bold;">Clear Off & Organize Tabletops</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-002</div></td>
+        <td class="col-task" style="position:relative; padding-bottom:14px;"><span style="color:red; font-weight:bold;">Clear Off & Organize Tabletops</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-002</div></td>
         <td class="col-last-done">NA</td>
         <td class="col-freq">Daily</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
-        <td class="col-member-date">&nbsp;</td>
       </tr>
       
       <tr>
-        <td class="col-task" style="position:relative;"><span style="color:red; font-weight:bold;">Remove Anything That is Not CNC and Put Away</span><br><span style="font-size:8pt; font-weight:normal;">Every CNC / Big Red thing has its place, so place it there.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-003</div></td>
+        <td class="col-task" style="position:relative; padding-bottom:14px;"><span style="color:red; font-weight:bold;">Remove Anything That is Not CNC and Put Away</span><br><span style="font-size:8pt; font-weight:normal;">Every CNC / Big Red thing has its place, so place it there.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-003</div></td>
         <td class="col-last-done">NA</td>
         <td class="col-freq">Daily</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
-        <td class="col-member-date">&nbsp;</td>
       </tr>
       
       <tr>
-        <td class="col-task" style="position:relative;"><span style="color:red; font-weight:bold;">Vaccum Floor</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-004</div></td>
+        <td class="col-task" style="position:relative; padding-bottom:14px;"><span style="color:red; font-weight:bold;">Vaccum Floor</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-004</div></td>
         <td class="col-last-done">NA</td>
         <td class="col-freq">Daily</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
-        <td class="col-member-date">&nbsp;</td>
       </tr>
       
       <tr>
-        <td class="col-task" style="position:relative;"><span style="color:red; font-weight:bold;">Check Dust Collection and Empty if Needed</span><br><span style="font-size:8pt; font-weight:normal;">Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-005</div></td>
+        <td class="col-task" style="position:relative; padding-bottom:14px;"><span style="color:red; font-weight:bold;">Check Dust Collection and Empty if Needed</span><br><span style="font-size:8pt; font-weight:normal;">Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-005</div></td>
         <td class="col-last-done">NA</td>
         <td class="col-freq">Weekly</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
-        <td class="col-member-date">&nbsp;</td>
       </tr>
       
       <tr>
-        <td class="col-task" style="position:relative;"><span style="color:red; font-weight:bold;">Empty Shop Vac</span><br><span style="font-size:8pt; font-weight:normal;">Dump its contents in the dumpster in the back of the building.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-006</div></td>
+        <td class="col-task" style="position:relative; padding-bottom:14px;"><span style="color:red; font-weight:bold;">Empty Shop Vac</span><br><span style="font-size:8pt; font-weight:normal;">Dump its contents in the dumpster in the back of the building.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-006</div></td>
         <td class="col-last-done">NA</td>
         <td class="col-freq">Bi-Weekly</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
-        <td class="col-member-date">&nbsp;</td>
       </tr>
       
       <tr>
-        <td class="col-task" style="position:relative;"><span style="color:red; font-weight:bold;">Empty Saw Dust</span><br><span style="font-size:8pt; font-weight:normal;">On the front of the machine, remove the small basket and put in the dumpster.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-007</div></td>
+        <td class="col-task" style="position:relative; padding-bottom:14px;"><span style="color:red; font-weight:bold;">Empty Saw Dust</span><br><span style="font-size:8pt; font-weight:normal;">On the front of the machine, remove the small basket and put in the dumpster.</span><div style="position:absolute; bottom:1px; left:6px; font-size:8pt; font-weight:normal;">MSL-METAL-007</div></td>
         <td class="col-last-done">NA</td>
         <td class="col-freq">Bi-Weekly</td>
-        <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
         <td class="col-member-date">&nbsp;</td>
