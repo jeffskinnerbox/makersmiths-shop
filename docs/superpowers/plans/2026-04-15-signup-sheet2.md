@@ -364,6 +364,7 @@ python3 scripts/signup-sheet2.py \
 ```
 
 Expected stderr:
+
 ```
 Sign-up sheet written to output/metalshop-signup-sheet2.html
 Open in browser and use File > Print to save as PDF.
