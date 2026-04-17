@@ -3,7 +3,7 @@
 #
 # DESCRIPTION
 #   loosely follows this diagram: https://makersmiths.org/locations/leesburg
-#                                https://makersmiths.org/locations/purcellville
+#                                 https://makersmiths.org/locations/purcellville
 #
 #   Data Model
 #      shop --------> area --------> location --------> work_tasks --------> task
@@ -39,7 +39,7 @@
 #   Run this command to re-initialized everything
 #       scripts/clean-up.sh
 #
-# PRINT SIGNUP SHEET 
+# PRINT SIGNUP SHEET
 #   To print the signup sheet in PDF format for all these location, use the following
 #       scripts/generate-signup-sheet-template.py --output output/signup-sheet-template.html.j2
 #       scripts/signup-sheet.py --template output/signup-sheet-template.html.j2 --yaml input/MSL-volunteer-opportunities.yaml --output output/MSL-signup-sheet.html
@@ -61,10 +61,13 @@ opportunities:
             work_tasks:
               - task: Ensure all trash & recycling is in bins, not beside or on top.
                 task_id: MSL-ENTERANCE-001
+                time: 15
               - task: Sweep sidewalks, clearing any gravel.
                 task_id: MSL-ENTERANCE-002
+                time: 15
               - task: Sweep front steps and patio.
                 task_id: MSL-ENTERANCE-003
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -76,12 +79,16 @@ opportunities:
             work_tasks:
               - task: Pick up any debris in back garden/patio area.
                 task_id: MSL-GARDEN-001
+                time: 15
               - task: Pick up any debris in side garden/patio area.
                 task_id: MSL-GARDEN-002
+                time: 15
               - task: Sweep side patio.
                 task_id: MSL-GARDEN-003
+                time: 15
               - task: Clean grill on side patio and empty ash into bagged trash can.
                 task_id: MSL-GARDEN-004
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -93,8 +100,10 @@ opportunities:
             work_tasks:
               - task: Ensure drain & pipe from A/C condenser near locked gate doors are unobstructed.
                 task_id: MSL-MISCOUTDOOR-001
+                time: 15
               - task: Windex all windows.
                 task_id: MSL-MISCOUTDOOR-002
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -108,10 +117,13 @@ opportunities:
             work_tasks:
               - task: Wipe down all light switches and doorknobs.
                 task_id: MSL-MISC-001
+                time: 15
               - task: Remove cobwebs.
                 task_id: MSL-MISC-002
+                time: 15
               - task: Check and reset mousetraps, ant & roach traps as needed.
                 task_id: MSL-MISC-003
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -123,20 +135,28 @@ opportunities:
             work_tasks:
               - task: Vacuum carpets including behind furniture.
                 task_id: MSL-LOBBY-001
+                time: 15
               - task: ShopVac chairs.
                 task_id: MSL-LOBBY-002
+                time: 15
               - task: Clean microwave inside & out.
                 task_id: MSL-LOBBY-003
+                time: 15
               - task: Clean refrigerator inside & out.
                 task_id: MSL-LOBBY-004
+                time: 15
               - task: Dust monitors.
                 task_id: MSL-LOBBY-005
+                time: 15
               - task: Dust inside & ortside of display cases.
                 task_id: MSL-LOBBY-006
+                time: 15
               - task: Windex windows and display cases.
                 task_id: MSL-LOBBY-007
+                time: 15
               - task: Empty wastebasket.
                 task_id: MSL-LOBBY-008
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -148,24 +168,34 @@ opportunities:
             work_tasks:
               - task: ShopVac doormat.
                 task_id: MSL-MAINROOM-001
+                time: 15
               - task: Dust & windex windows.
                 task_id: MSL-MAINROOM-002
+                time: 15
               - task: Sweep & swiffer floors including behind and under furniture & equipment.
                 task_id: MSL-MAINROOM-003
+                time: 15
               - task: Clean tabletops.
                 task_id: MSL-MAINROOM-004
+                time: 15
               - task: Organize benchtops.
                 task_id: MSL-MAINROOM-005
+                time: 15
               - task: Dust monitors, computer tables and printers.
                 task_id: MSL-MAINROOM-006
+                time: 15
               - task: Empty trash & recycling.
                 task_id: MSL-MAINROOM-007
+                time: 15
               - task: Clean trash & recycling cans as necessary.
                 task_id: MSL-MAINROOM-008
+                time: 15
               - task: Organize Supply Closet.
                 task_id: MSL-MAINROOM-009
+                time: 15
               - task: Empty Shopvac into bagged trash can.
                 task_id: MSL-MAINROOM-010
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -177,16 +207,22 @@ opportunities:
             work_tasks:
               - task: Windex mirror.
                 task_id: MSL-UPBATH-001
+                time: 15
               - task: Scrub toilet, inside & out.
                 task_id: MSL-UPBATH-002
+                time: 15
               - task: Scrub sink.
                 task_id: MSL-UPBATH-003
+                time: 15
               - task: Wipe down walls to mitigate grime & stains.
                 task_id: MSL-UPBATH-004
+                time: 15
               - task: Restock paper products.
                 task_id: MSL-UPBATH-005
+                time: 15
               - task: Empty wastebasket.
                 task_id: MSL-UPBATH-006
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -198,10 +234,13 @@ opportunities:
             work_tasks:
               - task: Wipe down walls to mitigate grime & stains.
                 task_id: MSL-UPHALLWAY-001
+                time: 15
               - task: Vacuum carpets.
                 task_id: MSL-UPHALLWAY-002
+                time: 15
               - task: Empty vacuum into bagged trash can.
                 task_id: MSL-UPHALLWAY-003
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -213,6 +252,7 @@ opportunities:
             work_tasks:
               - task: Dust & Wipe Down Machines
                 task_id: MSL-3D-PRINT-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -221,6 +261,7 @@ opportunities:
 
               - task: Clean-Off & Organize Tabletops
                 task_id: MSL-3D-PRINT-002
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -229,6 +270,7 @@ opportunities:
 
               - task: Remove Anything That is Not 3D Printing and Put Away
                 task_id: MSL-3D-PRINT-003
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -237,6 +279,7 @@ opportunities:
 
               - task: Vaccum Floor & Clean-Up Filament Srapes
                 task_id: MSL-3D-PRINT-004
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -245,6 +288,7 @@ opportunities:
 
               - task: Clean Resin Wash Station
                 task_id: MSL-3D-PRINT-005
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -253,6 +297,7 @@ opportunities:
 
               - task: ReSpool Red PLA
                 task_id: MSL-3D-PRINT-006
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -264,6 +309,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-VINYL-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -275,6 +321,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-CLASSROOM-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -286,6 +333,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-CO2-LASER-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -297,6 +345,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-COSPLAY-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -308,6 +357,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-FUME-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -319,6 +369,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-LEATHER-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -330,6 +381,7 @@ opportunities:
             work_tasks:
               - task: Dust & Wipe Down Machine
                 task_id: MSL-METAL-001
+                time: 15
                 frequency: Weekly
                 purpose: Keep shop clean, safe, and easy for all to use
                 instructions: Do not use any cleaning solvant. Just a dry or damp cloth should be used.
@@ -338,6 +390,7 @@ opportunities:
 
               - task: Clear Off & Organize Tabletops
                 task_id: MSL-METAL-002
+                time: 15
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
                 instructions: Every CNC / Big Red thing has its place, so place it there.
@@ -346,6 +399,7 @@ opportunities:
 
               - task: Remove Anything That is Not CNC and Put Away
                 task_id: MSL-METAL-003
+                time: 15
                 frequency: Daily
                 purpose: Keep the work area as open & free of object for safety
                 instructions: Every CNC / Big Red thing has its place, so please it there.
@@ -354,6 +408,7 @@ opportunities:
 
               - task: Vaccum Floor
                 task_id: MSL-METAL-004
+                time: 15
                 frequency: Daily
                 purpose: Keeping the floor clean is important for safety
                 instructions: If there is significant dust on the floor, sweap / vaccum it up.
@@ -362,6 +417,7 @@ opportunities:
 
               - task: Check Dust Collection and Empty if Needed
                 task_id: MSL-METAL-005
+                time: 15
                 frequency: Weekly
                 purpose: Keep shop clean, safe, and easy for all to use.
                 instructions: Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.
@@ -370,6 +426,7 @@ opportunities:
 
               - task: Empty Shop Vac
                 task_id: MSL-METAL-006
+                time: 15
                 frequency: Bi-Weekly
                 purpose: As the Vac fills up, it losses power and not nearly as effective when clean.
                 instructions: Dump its contents in the dumpster in the back of the building.
@@ -378,6 +435,7 @@ opportunities:
 
               - task: Empty Saw Dust
                 task_id: MSL-METAL-007
+                time: 15
                 frequency: Bi-Weekly
                 purpose: This helps keep the machine from clogging up while in use.
                 instructions: On the front of the machine, remove the small basket and put in the dumpster.
@@ -389,6 +447,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-PRINT-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -400,6 +459,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-CRAFT-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -411,6 +471,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-SUBPRINT-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -422,6 +483,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-UVPRINT-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -433,6 +495,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-WOOD-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -444,6 +507,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-WOODTURN-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -457,6 +521,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-ELECTRONICS-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -468,22 +533,31 @@ opportunities:
             work_tasks:
               - task: Sweep & swiffer floors.
                 task_id: MSL-BASEROOM-001
+                time: 15
               - task: ShopVac stairs.
                 task_id: MSL-BASEROOM-002
+                time: 15
               - task: Ensure dehumidifier is on 'Hi' and set to 'Dry' '35'.
                 task_id: MSL-BASEROOM-003
+                time: 15
               - task: Ensure waste water pump behind dehumidifier is not overflowing.
                 task_id: MSL-BASEROOM-004
+                time: 15
               - task: Clean tabletops.
                 task_id: MSL-BASEROOM-005
+                time: 15
               - task: Clean chairs & stools.
                 task_id: MSL-BASEROOM-006
+                time: 15
               - task: Dust monitors.
                 task_id: MSL-BASEROOM-007
+                time: 15
               - task: Organize slop sink room.
                 task_id: MSL-BASEROOM-008
+                time: 15
               - task: Scrub sink and ensure drain is unclogged.
                 task_id: MSL-BASEROOM-009
+                time: 15
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -495,21 +569,27 @@ opportunities:
             work_tasks:
               - task: Windex mirror.
                 task_id: MSL-DOWNBATH-001
+                time: 15
 
               - task: Scrub toilet, inside & out.
                 task_id: MSL-DOWNBATH-002
+                time: 15
 
               - task: Scrub sink.
                 task_id: MSL-DOWNBATH-003
+                time: 15
 
               - task: Wipe down walls to mitigate grime & stains.
                 task_id: MSL-DOWNBATH-004
+                time: 15
 
               - task: Restock paper products.
                 task_id: MSL-DOWNBATH-005
+                time: 15
 
               - task: Empty wastebasketr
                 task_id: MSL-DOWNBATH-006
+                time: 15
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -518,6 +598,7 @@ opportunities:
 
               - task: Swiffer / Mop Floor
                 task_id: MSL-DOWNBATH-007
+                time: 15
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -526,6 +607,7 @@ opportunities:
 
               - task: Replace Toilet Papar & Paper Towels
                 task_id: MSL-DOWNBATH-008
+                time: 15
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -534,6 +616,7 @@ opportunities:
 
               - task: Empty Waste Basket
                 task_id: MSL-DOWNBATH-009
+                time: 15
                 frequency: Daily
                 purpose: NA
                 instructions: NA
@@ -545,6 +628,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-STORAGE-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -558,6 +642,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-CLOUD-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA
@@ -569,6 +654,7 @@ opportunities:
             work_tasks:
               - task: TBD
                 task_id: MSL-WIKI-001
+                time: 15
                 frequency: NA
                 purpose: NA
                 instructions: NA

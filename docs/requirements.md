@@ -6,6 +6,8 @@
 * **Status:** Phase 0 underway (Task Sheet Pipeline tooling)
 * **Audience:** All stakeholders — Members, Stewards, Shop Stewards, Shop Sergeant
 
+*This document is maintained by the Shop Sergeant. If you have questions, contact the Shop Sergeant directly.*
+
 ---
 
 ## Table of Contents
@@ -20,7 +22,10 @@
 8. [Non-Functional Requirements](#8-non-functional-requirements)
 9. [Success Criteria (KPIs)](#9-success-criteria-kpis)
 10. [Out of Scope](#10-out-of-scope)
-11. [Appendix: Things Worth Considering](#appendix-things-worth-considering)
+11. [Appendix](#appendix)
+    * [Things Worth Considering](#things-worth-considering)
+    * [Work Tasks Data Model](#work-tasks-data-model)
+    * [Volunteer Opportunity Signup Sheet](#volunteer-opportunity-signup-sheet)
 
 ---
 
@@ -900,21 +905,157 @@ The following are explicitly **not** part of this initial release:
 
 ---
 
-*This document is maintained by the Shop Sergeant. For questions, open a thread in `#shop-admin` or contact the Shop Sergeant directly.*
+## Appendix
 
----
+### Things Worth Considering
 
-## Appendix: Things Worth Considering
+The items below are not requirements — they are ideas that surfaced during design
+and are worth a deliberate discussion before the relevant phase is implemented.
+Each may add value, but each also carries cost or complexity that needs to be weighed.
 
-The items below are not requirements — they are ideas that surfaced during design and are worth a deliberate discussion before the relevant phase is implemented. Each may add value, but each also carries cost or complexity that needs to be weighed.
+* **Should Method 1 (OCR) and Method 2 (per-task QR) be dropped from the Task Capture Pipeline?**
+Section 5.3 lists three capture methods as "under consideration," with Method 3 (single-sheet QR → mobile web form)
+already flagged as the likely selection.
+Keeping Methods 1 and 2 in the requirements creates ambiguity — developers may feel obligated to design for all three,
+and stewards trialing the system may not understand which path is real.
+Method 2 is particularly suspect: per-task QR codes are small (they must fit in a table row on an 8.5×11" sheet),
+and scanning a tiny QR code reliably with a phone camera in a noisy shop environment is not guaranteed.
+Method 1 (OCR) relies on handwriting legibility and Claude vision accuracy, both of which are variable.
+If the Phase 0 trial confirms that Method 3 works well,
+the other two should be formally retired from the requirements to reduce scope and avoid design debt.
 
-* **Should Method 1 (OCR) and Method 2 (per-task QR) be dropped from the Task Capture Pipeline?** Section 5.3 lists three capture methods as "under consideration," with Method 3 (single-sheet QR → mobile web form) already flagged as the likely selection. Keeping Methods 1 and 2 in the requirements creates ambiguity — developers may feel obligated to design for all three, and stewards trialing the system may not understand which path is real. Method 2 is particularly suspect: per-task QR codes are small (they must fit in a table row on an 8.5×11" sheet), and scanning a tiny QR code reliably with a phone camera in a noisy shop environment is not guaranteed. Method 1 (OCR) relies on handwriting legibility and Claude vision accuracy, both of which are variable. If the Phase 0 trial confirms that Method 3 works well, the other two should be formally retired from the requirements to reduce scope and avoid design debt.
+* **Is the §7.3 permission model too open or too tight?**
+The current permission table grants Stewards the ability to suspend/restore actions at the location scope
+— a power normally associated with oversight roles — while denying them the ability to query another member's task history.
+The suspension capability was included so stewards can act quickly in an emergency
+(equipment removal, safety incident), which is reasonable.
+However, it also means any steward can unilaterally disable task logging for their location without Shop Steward approval.
+On the other side, the table shows Stewards cannot trigger an overdue reminder blast, even for their own location
+— which may frustrate a steward who notices a task is overdue and wants to nudge members immediately.
+Both edges are worth a deliberate conversation with actual stewards before the bot permission model is implemented.
 
-* **Is the §7.3 permission model too open or too tight?** The current permission table grants Stewards the ability to suspend/restore actions at the location scope — a power normally associated with oversight roles — while denying them the ability to query another member's task history. The suspension capability was included so stewards can act quickly in an emergency (equipment removal, safety incident), which is reasonable. However, it also means any steward can unilaterally disable task logging for their location without Shop Steward approval. On the other side, the table shows Stewards cannot trigger an overdue reminder blast, even for their own location — which may frustrate a steward who notices a task is overdue and wants to nudge members immediately. Both edges are worth a deliberate conversation with actual stewards before the bot permission model is implemented.
+* **Should additional functional prototyping be added to Phase 0?**
+Section 4.3 describes two Phase 0 prototyping steps: sign-up sheet generation (complete)
+and a QR-to-mobile-form interaction trial (planned).
+A third prototype worth considering is a minimal OCR proof-of-concept — photograph a completed paper sheet,
+pass it to the Claude vision API, and see how accurately it extracts member names and task completions under real shop conditions
+(variable lighting, handwriting quality, sheet wear).
+This would validate or invalidate Method 1 before the implementation plan is finalized,
+and would also stress-test the assumption that Method 3 completely eliminates the need for OCR as a fallback.
+The cost is low — it requires only a test image and a short Python script — but the signal it produces could meaningfully shape Phase 1 scope.
 
-* **Should additional functional prototyping be added to Phase 0?** Section 4.3 describes two Phase 0 prototyping steps: sign-up sheet generation (complete) and a QR-to-mobile-form interaction trial (planned). A third prototype worth considering is a minimal OCR proof-of-concept — photograph a completed paper sheet, pass it to the Claude vision API, and see how accurately it extracts member names and task completions under real shop conditions (variable lighting, handwriting quality, sheet wear). This would validate or invalidate Method 1 before the implementation plan is finalized, and would also stress-test the assumption that Method 3 completely eliminates the need for OCR as a fallback. The cost is low — it requires only a test image and a short Python script — but the signal it produces could meaningfully shape Phase 1 scope.
+* **Should the §8.1 requirement that the paper fallback "must always remain available" be dropped?**
+Section 8.1 lists as a hard requirement that members must always be able to write on the physical sheet as a fallback alongside the digital method. The intent is resilience — if the QR form is unavailable, no completion goes unrecorded.
+In practice, however, keeping the paper fallback alive indefinitely has a cost:
+the sign-up sheet must always include hand-entry columns, OCR must remain a viable recovery path,
+and the system can never fully deprecate the manual process. If Method 3 proves reliable during the
+Phase 0 trial and shop Wi-Fi is consistently available, the paper fallback may be more of a crutch than a safety net
+— one that dilutes the incentive to use the digital flow and keeps OCR complexity in scope longer than necessary.
+The question is whether the fallback is a permanent design principle or a launch-period hedge that should have a planned sunset.
 
-* **Should the §8.1 requirement that the paper fallback "must always remain available" be dropped?** Section 8.1 lists as a hard requirement that members must always be able to write on the physical sheet as a fallback alongside the digital method. The intent is resilience — if the QR form is unavailable, no completion goes unrecorded. In practice, however, keeping the paper fallback alive indefinitely has a cost: the sign-up sheet must always include hand-entry columns, OCR must remain a viable recovery path, and the system can never fully deprecate the manual process. If Method 3 proves reliable during the Phase 0 trial and shop Wi-Fi is consistently available, the paper fallback may be more of a crutch than a safety net — one that dilutes the incentive to use the digital flow and keeps OCR complexity in scope longer than necessary. The question is whether the fallback is a permanent design principle or a launch-period hedge that should have a planned sunset.
+* **Should the mobile experience be a Progressive Web App (PWA)?**
+The current design calls for a lightweight mobile web form opened by scanning a QR code — no app installation required.
+A PWA would preserve that zero-install property while adding capabilities not available to a plain web page:
+an "Add to Home Screen" prompt so frequent users get a native-looking icon,
+offline support via a service worker so the form still loads even with spotty shop Wi-Fi,
+and optional push notifications so members can receive reminders without Slack.
+The tradeoff is complexity: PWAs require a service worker, a web app manifest, and HTTPS
+— all achievable but meaningfully more infrastructure than a single-page form.
+If member re-engagement (repeat task logging, reminders) proves important after the Phase 0 trial,
+a PWA upgrade is a natural next step. If most members log tasks infrequently and connectivity is reliable,
+the added complexity is likely not justified.
 
-* **Should the mobile experience be a Progressive Web App (PWA)?** The current design calls for a lightweight mobile web form opened by scanning a QR code — no app installation required. A PWA would preserve that zero-install property while adding capabilities not available to a plain web page: an "Add to Home Screen" prompt so frequent users get a native-looking icon, offline support via a service worker so the form still loads even with spotty shop Wi-Fi, and optional push notifications so members can receive reminders without Slack. The tradeoff is complexity: PWAs require a service worker, a web app manifest, and HTTPS — all achievable but meaningfully more infrastructure than a single-page form. If member re-engagement (repeat task logging, reminders) proves important after the Phase 0 trial, a PWA upgrade is a natural next step. If most members log tasks infrequently and connectivity is reliable, the added complexity is likely not justified.
+* **The goal for Members is 2 hr/month of volunteer work but the process doesn't measure hours.**
+The system currently tracks task completions as binary events — a member either completed a task or did not.
+There is no notion of how long a task takes, which makes it impossible to tell whether a
+member who logged two tasks in a month actually contributed 2 hours or 20 minutes.
+A practical fix is to attach an estimated duration to each task in the data model
+— a Steward-supplied guess, defaulting to a minimum of 15 minutes for any task that isn't explicitly rated.
+With per-task estimates in place, the reporting pipeline can sum estimated hours per member per month
+and flag members who are technically compliant on task count but well short of the 2-hour intent.
+This also gives Stewards a lever for balancing workload:
+if a location's tasks are all 15-minute jobs, a compliant member may only be contributing half an hour.
+Estimated hours are inherently imprecise — the same task might take a new member 45 minutes and an experienced one 10
+— but even a rough estimate is more useful than no estimate at all.
+The question is whether to add a `time` field to the task schema now,
+while the data model is still being designed, or defer it until compliance reporting becomes a real need.
 
+### Work Tasks Data Model
+
+```yaml
+opportunities:
+  shop:
+    name: Makersmiths Leesburg (MSL)
+    address: 106 Royal St SW, Leesburg, VA 20175
+    steward: John Carter
+    area:
+      - name: Main Level
+        location:
+          - name: Metalshop
+            steward: Brad Hess
+            work_tasks:
+              - task: Dust & Wipe Down Machine
+                task_id: MSL-METAL-001
+                time: 15
+                frequency: Weekly
+                purpose: Keep shop clean, safe, and easy for all to use
+                instructions: Do not use any cleaning solvant. Just a dry or damp cloth should be used.
+                supervision: false
+                last_date: NA
+
+              - task: Clear Off & Organize Tabletops
+                task_id: MSL-METAL-002
+                time: 15
+                frequency: Daily
+                purpose: Keep the work area as open & free of object for safety
+                instructions: NA
+                supervision: false
+                last_date: NA
+
+              - task: Remove Anything That is Not CNC and Put Away
+                task_id: MSL-METAL-003
+                time: 15
+                frequency: Daily
+                purpose: Keep the work area as open & free of object for safety
+                instructions: Every CNC / Big Red thing has its place, so place it there.
+                supervision: false
+                last_date: NA
+
+              - task: Vaccum Floor
+                task_id: MSL-METAL-004
+                time: 15
+                frequency: Daily
+                purpose: Keeping the floor clean is important for safety
+                instructions: NA
+                supervision: false
+                last_date: NA
+
+              - task: Check Dust Collection and Empty if Needed
+                task_id: MSL-METAL-005
+                time: 15
+                frequency: Weekly
+                purpose: Keep shop clean, safe, and easy for all to use.
+                instructions: Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.
+                supervision: true
+                last_date: NA
+
+              - task: Empty Shop Vac
+                task_id: MSL-METAL-006
+                time: 15
+                frequency: Bi-Weekly
+                purpose: As the Vac fills up, it losses power and not nearly as effective when clean.
+                instructions: Dump its contents in the dumpster in the back of the building.
+                supervision: false
+                last_date: NA
+
+              - task: Empty Saw Dust
+                task_id: MSL-METAL-007
+                time: 15
+                frequency: Bi-Weekly
+                purpose: This helps keep the machine from clogging up while in use.
+                instructions: On the front of the machine, remove the small basket and put in the dumpster.
+                supervision: true
+                last_date: NA
+```
+
+### Volunteer Opportunity Signup Sheet

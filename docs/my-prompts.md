@@ -68,7 +68,9 @@ Additional entries for the appendix are:
 * Any concerns about the section "7.3 Permission Model" being too open or too tight?
 * Should additional additional functional prototyping be added to the section "4.3 Current State"?
 * Should we drop the requirement in Sections 8.1
-that a fallback (writing on the paper sheet) must always remain available alongside the digital method?
+  that a fallback (writing on the paper sheet) must always remain available alongside the digital method?
+* The goal for Members is 2 hr/wk of volunteer work but the process doesn't measure hours.
+  * We should guestimate the hour of each task with a minimum of 15 minutes for a task. This will help set exceptions.
 
 ----
 
