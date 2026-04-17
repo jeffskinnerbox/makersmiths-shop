@@ -4,7 +4,15 @@ This directory contains project documentation, primarily created by Claude Code,
 They where created via the prompts documented in the `@/docs/my-understanding.md` file.
 
 ```text
+                           use-cases.md
+                                ^
+                                |
 my-understanding.md ----> requirements.md ----> specifications.md ----> architecture.md ----> implementation-plan.md
+                                ^                       ^                     ^                       ^
+                                |                       |                     |                       |
+                                +-----------------------+-----------+---------+-----------------------+
+                                                                    |
+                                                               my-prompts.md
 ```
 
 ----
@@ -20,6 +28,9 @@ my-understanding.md ----> requirements.md ----> specifications.md ----> architec
 * **`specifications.md`** - The Claude Code developed design specifications for this project
 * **`architecture.md`** - Could be within the `specifications.md` document
 * **`implementation-plan.md`** - Claude Code developed implementation plan that Claude Code will follow.
+
+* **`use-cases.md`** -
+* **`test-cases.md`** -
 
 ### How It Works
 

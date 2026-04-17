@@ -15,7 +15,11 @@ Google Sheets is the authoritative data store.
 
 ## Current State
 
-Phase 0 complete: sign-up sheet tools built and tested (`generate-signup-sheet-template.py`, `signup-sheet.py`). Ready for trial with stewards/members. No bot code yet. The 5-phase implementation plan is in `docs/implementation-plan.md`.
+Phase 0 complete: sign-up sheet tools built and tested (`generate-signup-sheet-template.py`, `signup-sheet.py`, `signup-sheet2.py`). Ready for trial with stewards/members. No bot code yet. The 5-phase implementation plan is in `docs/implementation-plan.md`.
+
+Two sign-up sheet variants exist:
+- **v1** (`signup-sheet.py`) — one QR code per task row, 3 sign-off columns
+- **v2** (`signup-sheet2.py`) — single QR code in page header, 4 sign-off columns, no per-task QR
 
 ## Data Model
 
@@ -43,10 +47,20 @@ python3 scripts/signup-sheet.py \
 #   --qr-url "https://..."      override QR placeholder URL
 #   --logo input/logo.png       override logo image path
 
+# v2 sign-up sheet: single QR in header (run once for template, then render)
+python3 scripts/generate-signup-sheet2-template.py --output output/signup-sheet2-template.html.j2
+python3 scripts/signup-sheet2.py \
+    --template output/signup-sheet2-template.html.j2 \
+    --yaml input/metalshop-volunteer-opportunities.yaml \
+    --output output/metalshop-signup-sheet2.html
+
 # Step 3: Convert HTML to PDF (Phase 0 — requires wkhtmltopdf)
 wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/metalshop-signup-sheet.pdf
 # Convenience scripts (template + HTML + PDF, then open PDF): bash scripts/print-metalshop.sh  or  bash scripts/print-MSL.sh
 # Post scripts (template + HTML only, then open HTML in Chrome): bash scripts/post-metalshop.sh  or  bash scripts/post-MSL.sh
+
+# Convert requirements.md → requirements.pdf
+bash scripts/requirements-to-pdf.sh
 
 # Convert YAML → Excel (for Google Sheets import)
 python3 scripts/yaml-to-sheets.py --yaml input/MSL-volunteer-opportunities.yaml --output output/google-sheet.xlsx
@@ -61,6 +75,8 @@ python3 -m pytest tests/ -v
 python3 -m pytest tests/test_signup_sheet_builder.py::test_extract_locations_opportunity_count -v
 python3 -m pytest tests/test_signup_sheet_template.py::test_build_template_contains_jinja2_for_loop -v
 python3 -m pytest tests/test_yaml_to_sheets.py::test_extract_rows_returns_correct_count -v
+python3 -m pytest tests/test_parse_opp_tasks.py -v
+python3 -m pytest tests/test_yaml_to_json.py -v
 ```
 
 ### Debugging / utility scripts (not production, no further development planned)
@@ -75,6 +91,7 @@ pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-oppo
     --reference-doc input/custom-reference.docx
 # Convert YAML → JSON
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
+# Note: scripts/pdf-margins.css is used by requirements-to-pdf.sh only; not a standalone tool
 ```
 
 ## Tech Stack (Planned)
@@ -96,10 +113,14 @@ Key public API of `signup_sheet_builder.py`:
 | `load_yaml(source)` | Load YAML from file path or stdin |
 | `detect_format(data)` | Return root key (`opportunity`/`opportunities`/`tasks_list`) |
 | `extract_locations(data)` | Parse shop→area→location→task hierarchy |
-| `attach_qr_codes(locations, url)` | Generate QR codes and attach to tasks |
+| `attach_qr_codes(locations, url)` | Generate QR codes and attach to tasks (v1) |
+| `make_qr_b64(url)` | Return base64-encoded QR PNG (used by v2) |
+| `_logo_data_uri(path)` | Return base64 data URI for logo image |
 | `render_sheet(template, locations, meta)` | Render Jinja2 HTML with location/task data |
 
-`scripts/generate-signup-sheet-template.py` is self-contained — `build_template()` lives in the CLI file itself. Tests import it via `importlib.util.spec_from_file_location`.
+`scripts/generate-signup-sheet-template.py` (v1) and `scripts/generate-signup-sheet2-template.py` (v2) are both self-contained — `build_template()` lives in each CLI file. Tests import them via `importlib.util.spec_from_file_location`.
+
+`scripts/signup-sheet2.py` imports `load_yaml`, `extract_locations`, `make_qr_b64`, `_logo_data_uri` from `signup_sheet_builder.py`. Its `render_sheet2()` takes `template_path`, `locations`, `logo_path`, and `qr_b64` (top-level, not per-task).
 
 `scripts/parse-tasks.py` imports `load_yaml` from `signup_sheet_builder.py` and delegates table rendering to `markdown_writer.py`.
 
@@ -109,7 +130,7 @@ Key public API of `signup_sheet_builder.py`:
 
 `scripts/yaml-to-sheets.py` exposes testable functions: `load_yaml`, `detect_shop`, `extract_rows`, `validate`, `backup_existing`, `write_xlsx`, and the `COLUMNS` list. `validate()` checks for blank/duplicate `task_id` and duplicate task names within the same location (case-insensitive); exits on failure.
 
-`tests/conftest.py` inserts `scripts/` into `sys.path` once for all tests — individual test files no longer need to do this themselves.
+`tests/conftest.py` inserts `scripts/` into `sys.path` once for all tests — individual test files no longer need to do this themselves. Tests for scripts with hyphens (e.g. `parse-opp-tasks.py`, `yaml-to-json.py`) use `importlib.util.spec_from_file_location` since the filenames are not valid Python module identifiers.
 
 Three YAML root keys, all handled by `detect_format()` in `signup_sheet_builder.py`:
 - `opportunity` — single-area extended format
@@ -123,6 +144,13 @@ Logo and image assets live in `input/`. The default logo path is `input/makersmi
 `input/my-prompts.md` is a log of the original design prompts used to bootstrap this project — not input data for any script.
 
 Generated files in `output/` are tracked in git (`.gitignore` entries for `output/*` are commented out). Run `bash scripts/clean-up.sh` to remove them before regenerating.
+
+## Diagrams
+
+All diagrams created for this project must include both human actors and system actors as defined in `docs/requirements.md` §2.2 and §2.3:
+
+- **Human actors:** Member, Steward, Shop Steward, Shop Sergeant
+- **System actors:** Physical Sign-Up Sheet, QR Code, Mobile Phone, Mobile Web Form, Slack, Google Sheets, Claude AI Model, APScheduler, Agentic Workers
 
 ## Debugging
 

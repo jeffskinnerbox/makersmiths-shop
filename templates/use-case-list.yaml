@@ -1,4 +1,5 @@
 # software use case
+# Use cases: The ultimate guide - https://medium.com/@60949161/use-cases-to-model-processes-1fb77d4efb30
 
 ---
 
@@ -16,7 +17,10 @@ use-case:
     - 3. User clicks "Login"
     - 4. System validates credentials
     - 5. System redirects to homepage
-  alternatives:
+  alternate-flow:
+    - step: 1
+      description: User request login creation, system system redirects to create credentials
+  exception-flow:
     - step: 4
       description: Invalid password, system displays error
   post-conditions:

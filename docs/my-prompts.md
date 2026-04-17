@@ -19,10 +19,64 @@ Read the document @docs/my-understanding.md, and do the following:
 ----
 
 ## 2nd Prompt
-Read the @docs/requirements.md document and create the missing Excalidraw files referenced in the document
-using the excalidraw-diagram skill. Place the files you create in @docs.
+Read the @docs/requirements.md document and notice that the only Actors identified are human
+(Member, Steward, Shop Steward, and Shop Sergeant).
+There are no system actors explicitly identified in section "2.2 Actors" of the document.
+System actors include: QR-Code, Mobile Phone, Slack, Google Sheets, Agentic Workers.
+Think deeply about any other actors that might be missing and should also be included.
+
+Here are very brief descriptions of what these system actors I identified do.
+You should expand this description to fully clarify what the actor is, what it does, and why.
+* Mobile Phone - used to read a QR-code and bring up a website on the phone or initiate an action in the process
+* QR-Code - trigger to initiate a process activity like bring up a website on a mobile phone or communicating on Slack
+  or initiating an action via an Agentic Worker
+* Slack - this is the communications network used by human actors and Agentic Workers to support this process
+* Google Sheets - single sources of truth for the state of the work task process
+* Agentic Workers - communicate on their assigned Slack channels and performing actions,
+  using tools provided, to support the work task process.
+
+Here is what you need to do:
+1. Include the system actors within @docs/requirements.md anywhere it help clarify the requirements
+2. Similar to section "2.2 Actors", create a table for System Actors
+3. Put in CLAUDE.md that all actors (human and system) need to be include in any diagrams that are created for this document.
 
 ----
+
+## 3rd Prompt
+Read the @docs/requirements.md document and create the missing Excalidraw files referenced in the document
+using the excalidraw-diagram skill.
+Make sure the Excalidraw files you create includes all the actors defined in the @docs/requirement.md document.
+There is potentially one exception, that being the "Pipeline Overview" diagram.
+
+* All human actors should have the same shape and the system actors another shape.
+* All actors should have a unique color.
+* All diagram titles need to be colored black, using bold fonts, and centered
+* Place the files you create in @docs.
+
+----
+
+## 4th Prompt
+Read the @docs/requirements.md document and create an appendix section title "Appendix: Things Worth Considering".
+These are things that should be talked about for their potential value.
+Format it as a bullet list with a bold short full sentence title, followed by a short paragraph describing the idea and its value.
+First, and only entry at this time is "Should the mobile experience be a Progressive Web App (PWA)?"
+Place this in the document and provide the missing description and value statement.
+
+Additional entries for the appendix are:
+* Within the "5.3 Task Capture Pipeline"" section of this document, Should Method 1 — OCR and Method 2 — Per-Task QR be dropped from consideration?
+  * Why? Concerns about reading small QR-Code, reliability of OCR
+* Any concerns about the section "7.3 Permission Model" being too open or too tight?
+* Should additional additional functional prototyping be added to the section "4.3 Current State"?
+* Should we drop the requirement in Sections 8.1
+that a fallback (writing on the paper sheet) must always remain available alongside the digital method?
+
+----
+
+
+
+
+
+
 
 
 
