@@ -431,7 +431,7 @@ Settings: `fontSize: 16`, `fontFamily: 1`, `textAlign: "center"`, `verticalAlign
 **Always use `fontFamily: 1` (Virgil — the hand-drawn font).** Never use `fontFamily: 2` (normal/Helvetica) or `fontFamily: 3` (Cascadia Code/monospace).
 
 ### List Items
-**Every list inside a text element MUST begin each item with `* `.** This applies to all multi-line text blocks that enumerate things.
+**Every list inside a text element MUST begin each item with `*`.** This applies to all multi-line text blocks that enumerate things.
 
 ```
 "* First item\n* Second item\n* Third item"
@@ -559,7 +559,7 @@ uv run playwright install chromium
 16. **Text clean**: `text` contains only readable words
 17. **Font**: `fontFamily: 1` (Virgil — hand-drawn) on every text element
 18. **Roughness**: `roughness: 2` on every shape, line, arrow, and frame
-19. **List bullets**: Every list item begins with `* `
+19. **List bullets**: Every list item begins with `*`
 20. **Opacity**: `opacity: 100` for all elements (no transparency)
 21. **Container ratio**: <30% of text elements should be inside containers
 

@@ -46,7 +46,7 @@
 # claude's backup files
 #*.bak
 
-# git worktrees
+# claude's git worktrees
 #.worktrees/
 
 # generated PDF output
