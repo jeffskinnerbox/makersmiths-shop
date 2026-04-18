@@ -75,6 +75,7 @@ python3 -m pytest tests/ -v
 python3 -m pytest tests/test_signup_sheet_builder.py::test_extract_locations_opportunity_count -v
 python3 -m pytest tests/test_signup_sheet_template.py::test_build_template_contains_jinja2_for_loop -v
 python3 -m pytest tests/test_yaml_to_sheets.py::test_extract_rows_returns_correct_count -v
+python3 -m pytest tests/test_parse_tasks.py::test_escape_pipe_character -v
 python3 -m pytest tests/test_parse_opp_tasks.py -v
 python3 -m pytest tests/test_yaml_to_json.py -v
 ```

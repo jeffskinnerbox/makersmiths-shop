@@ -368,13 +368,14 @@ Colors encode information, not decoration. Every color choice should come from `
 
 ## Modern Aesthetics
 
-For clean, professional diagrams:
+All diagrams use a **hand-drawn style** by default. Every shape, line, and arrow must look like it was sketched on paper.
 
 ### Roughness
-- `roughness: 0` — Clean, crisp edges. Use for modern/technical diagrams.
-- `roughness: 1` — Hand-drawn, organic feel. Use for brainstorming/informal diagrams.
+- `roughness: 2` — Hand-drawn, sketchy edges. **This is the required default for ALL elements.**
+- `roughness: 1` — Lightly organic. Use only when explicitly asked for a cleaner look.
+- `roughness: 0` — Clean, crisp. Never use unless the user explicitly requests a "clean" or "polished" style.
 
-**Default to 0** for most professional use cases.
+**Default to `roughness: 2` for every element without exception.**
 
 ### Stroke Width
 - `strokeWidth: 1` — Thin, elegant. Good for lines, dividers, subtle connections.
@@ -425,6 +426,18 @@ Position alone doesn't show relationships. If A relates to B, there must be an a
 ```
 
 Settings: `fontSize: 16`, `fontFamily: 1`, `textAlign: "center"`, `verticalAlign: "middle"`
+
+### Font
+**Always use `fontFamily: 1` (Virgil — the hand-drawn font).** Never use `fontFamily: 2` (normal/Helvetica) or `fontFamily: 3` (Cascadia Code/monospace).
+
+### List Items
+**Every list inside a text element MUST begin each item with `* `.** This applies to all multi-line text blocks that enumerate things.
+
+```
+"* First item\n* Second item\n* Third item"
+```
+
+Never use `•`, `-`, or plain text without a prefix for list items.
 
 ---
 
@@ -544,16 +557,17 @@ uv run playwright install chromium
 
 ### Technical
 16. **Text clean**: `text` contains only readable words
-17. **Font**: `fontFamily: 1`
-18. **Roughness**: `roughness: 0` for clean/modern (unless hand-drawn style requested)
-19. **Opacity**: `opacity: 100` for all elements (no transparency)
-20. **Container ratio**: <30% of text elements should be inside containers
+17. **Font**: `fontFamily: 1` (Virgil — hand-drawn) on every text element
+18. **Roughness**: `roughness: 2` on every shape, line, arrow, and frame
+19. **List bullets**: Every list item begins with `* `
+20. **Opacity**: `opacity: 100` for all elements (no transparency)
+21. **Container ratio**: <30% of text elements should be inside containers
 
 ### Visual Validation (Render Required)
-21. **Rendered to PNG**: Diagram has been rendered and visually inspected
-22. **No text overflow**: All text fits within its container
-23. **No overlapping elements**: Shapes and text don't overlap unintentionally
-24. **Even spacing**: Similar elements have consistent spacing
-25. **Arrows land correctly**: Arrows connect to intended elements without crossing others
-26. **Readable at export size**: Text is legible in the rendered PNG
-27. **Balanced composition**: No large empty voids or overcrowded regions
+22. **Rendered to PNG**: Diagram has been rendered and visually inspected
+23. **No text overflow**: All text fits within its container
+24. **No overlapping elements**: Shapes and text don't overlap unintentionally
+25. **Even spacing**: Similar elements have consistent spacing
+26. **Arrows land correctly**: Arrows connect to intended elements without crossing others
+27. **Readable at export size**: Text is legible in the rendered PNG
+28. **Balanced composition**: No large empty voids or overcrowded regions
