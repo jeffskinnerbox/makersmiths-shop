@@ -31,6 +31,13 @@
 
 ## 1. Introduction
 
+Makersmiths' current paper-only work task volunteering process has several weaknesses.
+A new automated process, called Shop Sergeant, is proposed to remove much of the friction in the current process,
+make work task activity more visible, and gather the data for our non-profit status.
+The process uses Slack as its primary communication/control medium,
+but can also be trigger via a few clicks on a mobile phone web form.
+Proposed requirements have been written here and early prototyping of the solution is underway.
+
 ### 1.1 Purpose and Scope
 
 This document defines the requirements for **Shop Sergeant**,
@@ -52,11 +59,15 @@ There are no plans to extend this application at this time, but it is wise to de
 
 ### 1.2 Project Background
 
-All Makersmiths Members are required to volunteer 2 hours per month to help maintain, operate, and improve the makerspace. Today, this requirement is tracked entirely on paper: handwritten sign-up sheets are posted around the shop, Members write their name and date when they complete a task, and the sheets are periodically replaced.
+All Makersmiths Members are required to volunteer 2 hours per month to help maintain, operate, and improve the makerspace.
+Today, this requirement is tracked entirely on paper: handwritten sign-up sheets are posted around the shop,
+Members write their name and date when they complete a task, and the sheets are periodically replaced.
 
-This paper-only process has significant gaps — completion records are often missing or illegible, there is no cumulative history, Stewards have no visibility into whether their area's tasks are getting done, and members who regularly contribute go unrecognized.
+This paper-only process has significant gaps — completion records are often missing or illegible, there is no cumulative history,
+Stewards have no visibility into whether their area's tasks are getting done, and members who regularly contribute go unrecognized.
 
-**Shop Sergeant** replaces the manual bookkeeping with an automated system centered on **Slack** and **Google Sheets**, while keeping the physical sign-up sheet as the primary touchpoint for members on the shop floor.
+**Shop Sergeant** replaces the manual bookkeeping with an automated system centered on **Slack** and **Google Sheets**,
+while keeping the physical sign-up sheet as the primary touchpoint for members on the shop floor.
 
 ---
 

@@ -17,8 +17,6 @@ Version:      0.0.0
 * [Claude Cowork Slack integration: A complete guide for teams in 2026](https://www.eesel.ai/blog/claude-cowork-slack-integration)
 
 
-
-
 # README
 It is generally believed that our current process for recording volunteer hours of our Makersmiths members
 presents too much friction to our member.
