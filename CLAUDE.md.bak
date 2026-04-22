@@ -59,9 +59,6 @@ wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/me
 # Convenience scripts (template + HTML + PDF, then open PDF): bash scripts/print-metalshop.sh  or  bash scripts/print-MSL.sh
 # Post scripts (template + HTML only, then open HTML in Chrome): bash scripts/post-metalshop.sh  or  bash scripts/post-MSL.sh
 
-# Generate presentation slides as Excalidraw files → output/slides/slide-NN.excalidraw
-python3 scripts/generate_slides.py
-
 # Convert requirements.md → requirements.pdf
 bash scripts/requirements-to-pdf.sh
 

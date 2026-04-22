@@ -74,6 +74,48 @@ Additional entries for the appendix are:
 
 ----
 
+## 5th Prompt
+I plan to be a regular user of Excalidraw within Claude Code to create slide presentations and diagrams for documents.
+These presentations will often be outside of my home office and often with a audience joining via zoom or
+other type of conferencing service.
+I do not think the Excalidraw will be my best choose for me to present my slides.
+I'm considering using [slidev](https://sli.dev/) as my presenting tool and create content via [Excalidraw](https://docs.excalidraw.com/).
+
+Can I make this work, and if so, what would be the work flow?
+What tools do I need to install and what are their installation procedures?
+Show me your answer, we'll dialog if need, and then put this information in a markdown file.
+
+Give me a script for preparing the Excalidraw files, and then including them into a slidev for presentation.
+Make sure to put in your scripts a description of what the script is doing.
+
+Put everything you create in the @presentations directory.
+
+Think hard about this and give me options to select from if the exist.
+
+----
+
+## 6th Prompt
+I have a requirements document for a AI enabled process.  For the most part, these requirements are
+independent of technology platforms but with the exception that Claude, Slack, Google Sheets,
+and mobile phone (Android and iPhone) technologies are referenced.
+
+I'm in the process of getting the requirements reviewed and approved.
+Once that is done, I would like to do some prototyping to further expose design & architecture considerations.
+I also want to create specification, architecture, and implementation plan documents  to support this project.
+
+What is the best order to d this work.
+For example, should I do the architecture document prior to doing any prototyping?
+Give me a roadmap of documentation & prototyping  and the justification for that plan.
+Consider multiple approachable and look at the pros and cons of each approach.
+Give me a markdown document that captures your work and  a Excalidraw diagram that illustrate your approach.
+
+----
+
+## 7th Prompt
+Read @docs/requirements.md, and using the insight from that document,
+update the files @ai_project_roadmap.md and @ai_project_roadmap.excalidraw.
+Make the @ai_project_roadmap.* more specific in what will be accomplished.
+Call the new plans @ai_project_roadmap_V2.md and @ai_project_roadmap_V2.excalidraw.
 
 
 
@@ -88,14 +130,17 @@ Additional entries for the appendix are:
 
 
 
-## 2nd Prompt
+
+
+
+## X Prompt
 Brainstorm on this topic and provide me some options.
 For the most promising option, provide me some high-level specifications
 and place your findings in @docs/specifications.md.
 
 ----
 
-## 2nd Prompt: Modification to Plan
+## X Prompt: Modification to Plan
 The first step of `@docs/implementation-plan.md` needs to be the creation of
 the Python tools defined in `@input/my-prompts.md` file,
 section titled "Task List Formatting Tools".
@@ -116,7 +161,7 @@ When complete review all documents in `@docs` and `@input` for completeness and 
 
 ----
 
-## 3rd Prompt: Task List Formatting Tools
+## X Prompt: Task List Formatting Tools
 I need two Python program that will convert `@metalshop-volunteer-opportunity.yaml`
 into a 8.5 x 11 inch sign-up sheet that can be posted in the makerspace.
 
@@ -164,7 +209,7 @@ so use the AskUserQuestions tool for all things that require further clarificati
 
 ----
 
-## 4th Prompt: MSL-volunteer-opportunities.yaml to `.xlsx` File
+## X Prompt: MSL-volunteer-opportunities.yaml to `.xlsx` File
 * Create Python script that takes the `@input/MSL-volunteer-opportunities.yaml` file
   and places its content in a Excel `.xlsx` file `@input/google-sheet.xlsx`.
 * The Python script will be called `@scripts/yaml-to-sheets.py`
