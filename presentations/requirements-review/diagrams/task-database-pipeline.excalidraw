@@ -1,0 +1,298 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "text", "id": "db_title",
+      "x": 100, "y": 18, "width": 1300, "height": 38,
+      "text": "Task Database Pipeline",
+      "originalText": "Task Database Pipeline",
+      "fontSize": 30, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#000000", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20001, "version": 1, "versionNonce": 20002,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "db_trigger",
+      "x": 100, "y": 62, "width": 1300, "height": 22,
+      "text": "Triggers: Steward / Shop Steward / Shop Sergeant issues a Slack command in #shop-admin  ·  OR  ·  YAML bulk-load via CLI",
+      "originalText": "Triggers: Steward / Shop Steward / Shop Sergeant issues a Slack command in #shop-admin  ·  OR  ·  YAML bulk-load via CLI",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#c2410c", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20003, "version": 1, "versionNonce": 20004,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "ellipse", "id": "db_steward",
+      "x": 60, "y": 150, "width": 145, "height": 58,
+      "strokeColor": "#047857", "backgroundColor": "#a7f3d0", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20010, "version": 1, "versionNonce": 20011,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_steward_t", "type": "text"}], "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "db_steward_t",
+      "x": 60, "y": 150, "width": 145, "height": 58,
+      "text": "Steward", "originalText": "Steward",
+      "fontSize": 14, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20012, "version": 1, "versionNonce": 20013,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_steward", "lineHeight": 1.25
+    },
+    {
+      "type": "ellipse", "id": "db_shopsteward",
+      "x": 60, "y": 225, "width": 145, "height": 58,
+      "strokeColor": "#6d28d9", "backgroundColor": "#ddd6fe", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20014, "version": 1, "versionNonce": 20015,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_shopsteward_t", "type": "text"}], "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "db_shopsteward_t",
+      "x": 60, "y": 225, "width": 145, "height": 58,
+      "text": "Shop Steward", "originalText": "Shop Steward",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20016, "version": 1, "versionNonce": 20017,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_shopsteward", "lineHeight": 1.25
+    },
+    {
+      "type": "ellipse", "id": "db_shopsgt",
+      "x": 60, "y": 300, "width": 145, "height": 58,
+      "strokeColor": "#b91c1c", "backgroundColor": "#fecaca", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20018, "version": 1, "versionNonce": 20019,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_shopsgt_t", "type": "text"}], "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "db_shopsgt_t",
+      "x": 60, "y": 300, "width": 145, "height": 58,
+      "text": "Shop Sergeant", "originalText": "Shop Sergeant",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20020, "version": 1, "versionNonce": 20021,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_shopsgt", "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "db_issue_lbl",
+      "x": 60, "y": 374, "width": 145, "height": 20,
+      "text": "issue commands in ↓",
+      "originalText": "issue commands in ↓",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#64748b", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20022, "version": 1, "versionNonce": 20023,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "db_slack",
+      "x": 60, "y": 400, "width": 200, "height": 65,
+      "strokeColor": "#6d28d9", "backgroundColor": "#c4b5fd", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20024, "version": 1, "versionNonce": 20025,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_slack_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "db_slack_t",
+      "x": 60, "y": 400, "width": 200, "height": 65,
+      "text": "Slack\n#shop-admin", "originalText": "Slack\n#shop-admin",
+      "fontSize": 14, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20026, "version": 1, "versionNonce": 20027,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_slack", "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "db_or_lbl",
+      "x": 80, "y": 490, "width": 160, "height": 22,
+      "text": "— OR —",
+      "originalText": "— OR —",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#94a3b8", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20028, "version": 1, "versionNonce": 20029,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "db_yaml",
+      "x": 60, "y": 520, "width": 200, "height": 65,
+      "strokeColor": "#b45309", "backgroundColor": "#fef3c7", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20030, "version": 1, "versionNonce": 20031,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_yaml_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "db_yaml_t",
+      "x": 60, "y": 520, "width": 200, "height": 65,
+      "text": "YAML Task File\n(CLI bulk-load)", "originalText": "YAML Task File\n(CLI bulk-load)",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20032, "version": 1, "versionNonce": 20033,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_yaml", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "db_workers",
+      "x": 370, "y": 380, "width": 240, "height": 90,
+      "strokeColor": "#1e40af", "backgroundColor": "#dbeafe", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20034, "version": 1, "versionNonce": 20035,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_workers_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "db_workers_t",
+      "x": 370, "y": 380, "width": 240, "height": 90,
+      "text": "Agentic Workers\n(validates Task IDs\nrejects duplicates)", "originalText": "Agentic Workers\n(validates Task IDs\nrejects duplicates)",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20036, "version": 1, "versionNonce": 20037,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_workers", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "db_gs",
+      "x": 720, "y": 380, "width": 240, "height": 90,
+      "strokeColor": "#047857", "backgroundColor": "#bbf7d0", "fillStyle": "solid",
+      "strokeWidth": 3, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20038, "version": 1, "versionNonce": 20039,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_gs_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "db_gs_t",
+      "x": 720, "y": 380, "width": 240, "height": 90,
+      "text": "Google Sheets\n(tasks sheet)", "originalText": "Google Sheets\n(tasks sheet)",
+      "fontSize": 14, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20040, "version": 1, "versionNonce": 20041,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_gs", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "db_alerts",
+      "x": 1070, "y": 392, "width": 210, "height": 65,
+      "strokeColor": "#6d28d9", "backgroundColor": "#c4b5fd", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20042, "version": 1, "versionNonce": 20043,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_alerts_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "db_alerts_t",
+      "x": 1070, "y": 392, "width": 210, "height": 65,
+      "text": "Slack\n#shop-alerts", "originalText": "Slack\n#shop-alerts",
+      "fontSize": 14, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20044, "version": 1, "versionNonce": 20045,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_alerts", "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "db_slack_to_aw",
+      "x": 260, "y": 432, "width": 110, "height": 0,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20046, "version": 1, "versionNonce": 20047,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [110, 0]],
+      "startBinding": {"elementId": "db_slack", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "db_workers", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "db_yaml_to_aw",
+      "x": 260, "y": 552, "width": 110, "height": -127,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20048, "version": 1, "versionNonce": 20049,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [110, -127]],
+      "startBinding": {"elementId": "db_yaml", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "db_workers", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "db_aw_to_gs",
+      "x": 610, "y": 425, "width": 110, "height": 0,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20050, "version": 1, "versionNonce": 20051,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_aw_gs_lbl", "type": "text"}], "link": null, "locked": false,
+      "points": [[0, 0], [110, 0]],
+      "startBinding": {"elementId": "db_workers", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "db_gs", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "text", "id": "db_aw_gs_lbl",
+      "x": 618, "y": 405, "width": 100, "height": 18,
+      "text": "add / update\n/ delete",
+      "originalText": "add / update\n/ delete",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20052, "version": 1, "versionNonce": 20053,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_aw_to_gs", "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "db_gs_to_alerts",
+      "x": 960, "y": 425, "width": 110, "height": 0,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20054, "version": 1, "versionNonce": 20055,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "db_gs_alerts_lbl", "type": "text"}], "link": null, "locked": false,
+      "points": [[0, 0], [110, 0]],
+      "startBinding": {"elementId": "db_gs", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "db_alerts", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "text", "id": "db_gs_alerts_lbl",
+      "x": 968, "y": 408, "width": 100, "height": 18,
+      "text": "notify on change",
+      "originalText": "notify on change",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20056, "version": 1, "versionNonce": 20057,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "db_gs_to_alerts", "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "db_requirements",
+      "x": 370, "y": 510, "width": 960, "height": 80,
+      "text": "Requirements: DB-1 Google Sheets is single source of truth · DB-2 YAML bulk-load supported · DB-3 Slack commands in #shop-admin\nDB-4 Only authorized roles can modify tasks · DB-5 Every task needs unique Task ID (SHOP-LOCATION-NNN), name, frequency, location\nDB-6 Reject duplicate Task IDs and duplicate names within location · DB-7 Every modification triggers #shop-alerts notification",
+      "originalText": "Requirements: DB-1 Google Sheets is single source of truth · DB-2 YAML bulk-load supported · DB-3 Slack commands in #shop-admin\nDB-4 Only authorized roles can modify tasks · DB-5 Every task needs unique Task ID (SHOP-LOCATION-NNN), name, frequency, location\nDB-6 Reject duplicate Task IDs and duplicate names within location · DB-7 Every modification triggers #shop-alerts notification",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#64748b", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 20060, "version": 1, "versionNonce": 20061,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    }
+  ],
+  "appState": {"viewBackgroundColor": "#ffffff", "gridSize": 20},
+  "files": {}
+}

@@ -1,0 +1,358 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "text", "id": "ts_title",
+      "x": 100, "y": 18, "width": 1400, "height": 38,
+      "text": "Task Sheet Pipeline",
+      "originalText": "Task Sheet Pipeline",
+      "fontSize": 30, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#000000", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30001, "version": 1, "versionNonce": 30002,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "ts_trigger",
+      "x": 100, "y": 62, "width": 1400, "height": 22,
+      "text": "Trigger: Steward / Shop Steward / Shop Sergeant issues a Slack command in #shop-admin  ·  OR  ·  Periodic reminder from APScheduler",
+      "originalText": "Trigger: Steward / Shop Steward / Shop Sergeant issues a Slack command in #shop-admin  ·  OR  ·  Periodic reminder from APScheduler",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#c2410c", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30003, "version": 1, "versionNonce": 30004,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "ellipse", "id": "ts_steward",
+      "x": 60, "y": 130, "width": 145, "height": 58,
+      "strokeColor": "#047857", "backgroundColor": "#a7f3d0", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30010, "version": 1, "versionNonce": 30011,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_steward_t", "type": "text"}], "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "ts_steward_t",
+      "x": 60, "y": 130, "width": 145, "height": 58,
+      "text": "Steward", "originalText": "Steward",
+      "fontSize": 14, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30012, "version": 1, "versionNonce": 30013,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_steward", "lineHeight": 1.25
+    },
+    {
+      "type": "ellipse", "id": "ts_shopsteward",
+      "x": 60, "y": 205, "width": 145, "height": 58,
+      "strokeColor": "#6d28d9", "backgroundColor": "#ddd6fe", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30014, "version": 1, "versionNonce": 30015,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_shopsteward_t", "type": "text"}], "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "ts_shopsteward_t",
+      "x": 60, "y": 205, "width": 145, "height": 58,
+      "text": "Shop Steward", "originalText": "Shop Steward",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30016, "version": 1, "versionNonce": 30017,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_shopsteward", "lineHeight": 1.25
+    },
+    {
+      "type": "ellipse", "id": "ts_shopsgt",
+      "x": 60, "y": 280, "width": 145, "height": 58,
+      "strokeColor": "#b91c1c", "backgroundColor": "#fecaca", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30018, "version": 1, "versionNonce": 30019,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_shopsgt_t", "type": "text"}], "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "ts_shopsgt_t",
+      "x": 60, "y": 280, "width": 145, "height": 58,
+      "text": "Shop Sergeant", "originalText": "Shop Sergeant",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30020, "version": 1, "versionNonce": 30021,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_shopsgt", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "ts_slack_cmd",
+      "x": 60, "y": 370, "width": 200, "height": 65,
+      "strokeColor": "#6d28d9", "backgroundColor": "#c4b5fd", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30022, "version": 1, "versionNonce": 30023,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_slack_cmd_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "ts_slack_cmd_t",
+      "x": 60, "y": 370, "width": 200, "height": 65,
+      "text": "Slack #shop-admin\n`sheet metalshop`", "originalText": "Slack #shop-admin\n`sheet metalshop`",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30024, "version": 1, "versionNonce": 30025,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_slack_cmd", "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "ts_or_lbl",
+      "x": 80, "y": 460, "width": 160, "height": 22,
+      "text": "— OR —",
+      "originalText": "— OR —",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#94a3b8", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30026, "version": 1, "versionNonce": 30027,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "ts_scheduler",
+      "x": 60, "y": 490, "width": 200, "height": 65,
+      "strokeColor": "#dc2626", "backgroundColor": "#fee2e2", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30028, "version": 1, "versionNonce": 30029,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_scheduler_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "ts_scheduler_t",
+      "x": 60, "y": 490, "width": 200, "height": 65,
+      "text": "APScheduler\n(periodic reminder)", "originalText": "APScheduler\n(periodic reminder)",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30030, "version": 1, "versionNonce": 30031,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_scheduler", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "ts_workers",
+      "x": 360, "y": 370, "width": 230, "height": 80,
+      "strokeColor": "#1e40af", "backgroundColor": "#dbeafe", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30032, "version": 1, "versionNonce": 30033,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_workers_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "ts_workers_t",
+      "x": 360, "y": 370, "width": 230, "height": 80,
+      "text": "Agentic Workers\n(bot)", "originalText": "Agentic Workers\n(bot)",
+      "fontSize": 14, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30034, "version": 1, "versionNonce": 30035,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_workers", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "ts_gs",
+      "x": 690, "y": 360, "width": 210, "height": 100,
+      "strokeColor": "#047857", "backgroundColor": "#bbf7d0", "fillStyle": "solid",
+      "strokeWidth": 3, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30036, "version": 1, "versionNonce": 30037,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_gs_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "ts_gs_t",
+      "x": 690, "y": 360, "width": 210, "height": 100,
+      "text": "Google Sheets\n(reads tasks\ncatalog)", "originalText": "Google Sheets\n(reads tasks\ncatalog)",
+      "fontSize": 13, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30038, "version": 1, "versionNonce": 30039,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_gs", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "ts_pdf",
+      "x": 1010, "y": 370, "width": 200, "height": 80,
+      "strokeColor": "#b45309", "backgroundColor": "#fef3c7", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30040, "version": 1, "versionNonce": 30041,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_pdf_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "ts_pdf_t",
+      "x": 1010, "y": 370, "width": 200, "height": 80,
+      "text": "PDF Sign-Up Sheet\n(Jinja2 + wkhtmltopdf\n+ QR code)", "originalText": "PDF Sign-Up Sheet\n(Jinja2 + wkhtmltopdf\n+ QR code)",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30042, "version": 1, "versionNonce": 30043,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_pdf", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "ts_bulletin",
+      "x": 1320, "y": 320, "width": 200, "height": 65,
+      "strokeColor": "#6d28d9", "backgroundColor": "#c4b5fd", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30044, "version": 1, "versionNonce": 30045,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_bulletin_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "ts_bulletin_t",
+      "x": 1320, "y": 320, "width": 200, "height": 65,
+      "text": "Slack\n#shop-bulletin", "originalText": "Slack\n#shop-bulletin",
+      "fontSize": 14, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30046, "version": 1, "versionNonce": 30047,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_bulletin", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "ts_alerts",
+      "x": 1320, "y": 415, "width": 200, "height": 65,
+      "strokeColor": "#6d28d9", "backgroundColor": "#c4b5fd", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30048, "version": 1, "versionNonce": 30049,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_alerts_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "ts_alerts_t",
+      "x": 1320, "y": 415, "width": 200, "height": 65,
+      "text": "Slack\n#shop-alerts", "originalText": "Slack\n#shop-alerts",
+      "fontSize": 14, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30050, "version": 1, "versionNonce": 30051,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_alerts", "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "ts_sheet",
+      "x": 1320, "y": 510, "width": 200, "height": 80,
+      "strokeColor": "#b45309", "backgroundColor": "#fef3c7", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30052, "version": 1, "versionNonce": 30053,
+      "isDeleted": false, "groupIds": [], "boundElements": [{"id": "ts_sheet_t", "type": "text"}], "link": null, "locked": false,
+      "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "ts_sheet_t",
+      "x": 1320, "y": 510, "width": 200, "height": 80,
+      "text": "Physical Sign-Up Sheet\n(printed & posted\nin shop)", "originalText": "Physical Sign-Up Sheet\n(printed & posted\nin shop)",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30054, "version": 1, "versionNonce": 30055,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": "ts_sheet", "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "ts_cmd_to_aw",
+      "x": 260, "y": 402, "width": 100, "height": 0,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30060, "version": 1, "versionNonce": 30061,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [100, 0]],
+      "startBinding": {"elementId": "ts_slack_cmd", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "ts_workers", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "ts_sched_to_aw",
+      "x": 260, "y": 522, "width": 100, "height": -112,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30062, "version": 1, "versionNonce": 30063,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [100, -112]],
+      "startBinding": {"elementId": "ts_scheduler", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "ts_workers", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "ts_aw_to_gs",
+      "x": 590, "y": 410, "width": 100, "height": 0,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30064, "version": 1, "versionNonce": 30065,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [100, 0]],
+      "startBinding": {"elementId": "ts_workers", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "ts_gs", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "ts_gs_to_pdf",
+      "x": 900, "y": 410, "width": 110, "height": 0,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30066, "version": 1, "versionNonce": 30067,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [110, 0]],
+      "startBinding": {"elementId": "ts_gs", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "ts_pdf", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "ts_pdf_to_bull",
+      "x": 1210, "y": 395, "width": 110, "height": -42,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30068, "version": 1, "versionNonce": 30069,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [110, -42]],
+      "startBinding": {"elementId": "ts_pdf", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "ts_bulletin", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "ts_pdf_to_alerts",
+      "x": 1210, "y": 410, "width": 110, "height": 37,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30070, "version": 1, "versionNonce": 30071,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [110, 37]],
+      "startBinding": {"elementId": "ts_pdf", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "ts_alerts", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "ts_pdf_to_sheet",
+      "x": 1210, "y": 425, "width": 110, "height": 125,
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30072, "version": 1, "versionNonce": 30073,
+      "isDeleted": false, "groupIds": [], "boundElements": [], "link": null, "locked": false,
+      "points": [[0, 0], [110, 125]],
+      "startBinding": {"elementId": "ts_pdf", "focus": 0, "gap": 2},
+      "endBinding": {"elementId": "ts_sheet", "focus": 0, "gap": 2},
+      "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "text", "id": "ts_requirements",
+      "x": 360, "y": 510, "width": 900, "height": 80,
+      "text": "Requirements: TS-1 Generate sheet for single location or all locations · TS-2 Only authorized roles may generate sheets\nTS-3 Via Slack command in #shop-admin or CLI · TS-4 #shop-bulletin notified when ready\nTS-5 #shop-alerts notified each time · TS-6 Bot periodically reminds stewards when task changes make refresh advisable",
+      "originalText": "Requirements: TS-1 Generate sheet for single location or all locations · TS-2 Only authorized roles may generate sheets\nTS-3 Via Slack command in #shop-admin or CLI · TS-4 #shop-bulletin notified when ready\nTS-5 #shop-alerts notified each time · TS-6 Bot periodically reminds stewards when task changes make refresh advisable",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#64748b", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 2, "opacity": 100,
+      "angle": 0, "seed": 30080, "version": 1, "versionNonce": 30081,
+      "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "containerId": null, "lineHeight": 1.25
+    }
+  ],
+  "appState": {"viewBackgroundColor": "#ffffff", "gridSize": 20},
+  "files": {}
+}
