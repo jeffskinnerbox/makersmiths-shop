@@ -74,6 +74,14 @@ Additional entries for the appendix are:
 
 ----
 
+## ++4th Prompt
+Read the @docs/requirements.md document and focus on the appendix section title "Appendix: Things Worth Considering".
+Using the same writing style in this appendix, add the following topic:
+Should we consider Claude Routines as an alternative to APScheduler?
+Update @docs/requirements.md with this addition.
+
+----
+
 ## 5th Prompt
 I plan to be a regular user of Excalidraw within Claude Code to create slide presentations and diagrams for documents.
 These presentations will often be outside of my home office and often with a audience joining via zoom or
@@ -103,7 +111,7 @@ I'm in the process of getting the requirements reviewed and approved.
 Once that is done, I would like to do some prototyping to further expose design & architecture considerations.
 I also want to create specification, architecture, and implementation plan documents  to support this project.
 
-What is the best order to d this work.
+What is the best order to do this work?
 For example, should I do the architecture document prior to doing any prototyping?
 Give me a roadmap of documentation & prototyping  and the justification for that plan.
 Consider multiple approachable and look at the pros and cons of each approach.

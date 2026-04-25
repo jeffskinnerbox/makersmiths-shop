@@ -27,7 +27,7 @@ If you have questions/input, contact me directly via Slack (jeff.irland)._
     * [Things Worth Considering](#things-worth-considering)
     * [Work Tasks Data Model](#work-tasks-data-model)
     * [Is it a Pipeline or Workflow?](#is-it-a-pipeline-or-workflow)
-    * [Volunteer Opportunity Sign-Up Sheet](#volunteer-opportunity-signup-sheet)
+    * [Volunteer Opportunity Signup Sheet](#volunteer-opportunity-signup-sheet)
 
 ---
 
@@ -63,7 +63,7 @@ There are no plans to extend this application at this time, but it is wise to de
 
 ### 1.2 Project Background
 
-All Makersmiths Members are expected to volunteer 2 hours per month to help maintain, operate, and improve the makerspace.
+All Makersmiths Members are required to volunteer 2 hours per month to help maintain, operate, and improve the makerspace.
 Today, this requirement is tracked entirely on paper: handwritten sign-up sheets are posted around the shop,
 Members write their name and date when they complete a task, and the sheets are periodically replaced.
 
@@ -85,11 +85,6 @@ while keeping the physical sign-up sheet as the primary touchpoint for members o
 | **Area** | A major subdivision of a shop — typically a floor, wing, or building section. | Main Floor, Exterior |
 | **Location** | A specific craft or functional space within an area. Locations are the unit at which tasks and sign-up sheets are organized. | Metalshop, Laser Cutter, Wood Shop, Bathrooms |
 
-
-> **Diagram:** [`Leesburg_Map.jpg`](/home/jeff/src/projects/makersmiths/shop-sergeant/logos_images/Leesburg_Map.jpg) — Makersmiths Leesburg (MSL) Shop Floor Plan
-
-![Pipeline Overview](/home/jeff/src/projects/makersmiths/shop-sergeant/logos_images/Leesburg_Map.jpg)
-
 ### 2.2 Human Actors
 
 These are the human participants in the Shop Sergeant system.
@@ -97,7 +92,7 @@ These are the human participants in the Shop Sergeant system.
 | Actor | Who They Are | Key Responsibilities | System Access |
 |---|---|---|---|
 | **Member** | Any active Makersmiths member | Complete volunteer tasks; log completions | Log own tasks; query own history; view open tasks and public reports |
-| **Steward** | A member responsible for a specific location | Define tasks for their location; monitor task completion; train members | All member actions + task add/update/delete (own location); generate sign-up sheets (own location) |
+| **Steward** | A member responsible for a specific location | Define tasks for their location; monitor task completion; train members | All member actions + task add/update/delete (own location); generate sign-up sheets (own location); upload OCR photos |
 | **Shop Steward** | A member who oversees the entire shop | Monitor all areas; coordinate stewards; escalate issues | All steward actions + shop-wide access; trigger reminder blasts |
 | **Shop Sergeant** | A member who manages the task volunteering process itself | Ensure the process runs smoothly; monitor KPIs; maintain the system | All shop steward actions + bot error log; audit trail; full system configuration |
 
@@ -107,15 +102,15 @@ These are the non-human participants in the Shop Sergeant system.
 
 | Term | What It Is | Role in the System | Interfaces With |
 |---|---|---|---|
-| **Physical Sign-Up Sheet** | Printed 8.5×11" landscape paper sheet, one per location | Primary shop-floor touchpoint for Members; hosts the task list, sign-off fields, and QR code | Member (reads/writes on it), QR Code (embedded in it) |
+| **Physical Sign-Up Sheet** | Printed 8.5×11" landscape paper sheet, one per location | Primary shop-floor touchpoint for Members; hosts the task list, sign-off fields, and QR code; serves as the OCR input artifact when photographed | Member (reads/writes on it), QR Code (embedded in it), Claude AI Model (photographed for OCR) |
 | **QR Code** | Machine-readable image printed on the sign-up sheet | Encodes the URL of the location's Mobile Web Form; scanning it initiates digital task logging without login or app installation | Mobile Phone (scanned by), Mobile Web Form (target URL encoded), Physical Sign-Up Sheet (embedded in) |
-| **Mobile Phone** | Member's personal smartphone — no app installation required | Uses the native camera to scan a QR code; the phone's browser opens automatically to the Mobile Web Form (or Slack). No app, no account, no login required for the QR method. | QR Code (scans), Mobile Web Form (browser opens to), Slack (optional NL queries) |
-| **Mobile Web Form** | Lightweight mobile-optimized web app, served when a QR code is scanned | Presents the task list for a location; collects member name and selected task; POSTs the completion record to the Agentic Workers; designed for ≤ 3 taps from scan to confirmation | Mobile Phone (rendered on), Agentic Workers (POST target for completion records) |
+| **Mobile Phone** | Member's personal smartphone — no app installation required | Uses the native camera to scan a QR code; the phone's browser opens automatically to the Mobile Web Form (or Slack). No app, no account, no login required. May also photograph a completed sign-up sheet for OCR upload | QR Code (scans), Mobile Web Form (browser opens to), Slack (optional NL queries) |
+| **Mobile Web Form** | Lightweight mobile-optimized web app, served when a QR code is scanned | Presents the task list for a location; collects member name and selected task; POSTs the completion record to the Agentic Workers; designed for ≤ 2 taps from scan to confirmation | Mobile Phone (rendered on), Agentic Workers (POST target for completion records) |
 | **Slack** | Cloud-based team communication platform | Primary UI for all human and automated interaction; channels segment audiences and control access; Agentic Workers subscribe to events and post notifications | All human actors, Agentic Workers, Mobile Web Form (indirectly via bot) |
 | **Google Sheets** | Cloud spreadsheet service accessed via Google Sheets API v4 | Single source of truth for all task definitions, completion records, and member data; all pipelines read from and write to it | Agentic Workers (read/write via API), Steward / Shop Sergeant (may view directly) |
-| **Claude AI Model** | Anthropic LLM (`claude-sonnet-4-6`), invoked via API by Agentic Workers | Natural language query processing — interprets plain-English questions and task completion updates from Members | Agentic Workers (invoked by) |
+| **Claude AI Model** | Anthropic LLM (`claude-sonnet-4-6`), invoked via API by Agentic Workers | Provides two capabilities: vision-based OCR (extract completion data from sign-up sheet photos) and natural language query processing (interpret plain-English questions from Members) | Agentic Workers (invoked by), Physical Sign-Up Sheet (processes photos of) |
 | **APScheduler** | Python job scheduler embedded in the bot process | Drives all time-based automation — overdue task alerts, weekly error/availability reports, monthly compliance summaries, top-contributor posts — without any human trigger | Agentic Workers (triggers actions in), Slack (posts via bot), Google Sheets (reads via bot) |
-| **Agentic Workers** | Python Slack bot built with the Slack Bolt framework | Listen to Slack events; dispatch commands to the correct pipeline; invoke the Claude AI Model for NL tasks; read from and write to Google Sheets; route notifications to the correct channels | All human actors (via Slack), all Slack channels, Google Sheets, Claude AI Model, Mobile Web Form, APScheduler |
+| **Agentic Workers** | Python Slack bot built with the Slack Bolt framework | Listen to Slack events; dispatch commands to the correct pipeline; invoke the Claude AI Model for OCR and NL tasks; read from and write to Google Sheets; route notifications to the correct channels | All human actors (via Slack), all Slack channels, Google Sheets, Claude AI Model, Mobile Web Form, APScheduler |
 
 ### 2.4 System Terms
 
@@ -127,7 +122,8 @@ These are the non-human participants in the Shop Sergeant system.
 | **QR Code** | A scannable code printed on the sign-up sheet. Scanning it opens a mobile form where the member records a task completion. |
 | **Pipeline** | One of four end-to-end workflows in the system: Task Database, Task Sheet, Task Capture, and Task Reporting. |
 | **Source of Truth** | **Google Sheets** — all task definitions, completion records, and history live here. All other system components read from and write to Google Sheets. |
-| **Capture Method** | The mechanism by which a member records a completed task. Two methods are supported: Single-Sheet QR (mobile web form) and Slack Update. |
+| **Capture Method** | The mechanism by which a member records a completed task. Three methods are under consideration; one will be selected for implementation. |
+| **OCR** | Optical Character Recognition — the process of extracting text from a photo of a completed sign-up sheet using the Claude vision API. |
 
 ---
 
@@ -141,7 +137,7 @@ The current paper-only task volunteering process has five significant weaknesses
 
 **Impact:** There is little to no reliable record of who did what or when. The data needed for compliance, recognition, and process improvement simply does not exist.
 
-**Requirement:** The system must make recording a completion so fast and easy (target: ≤ 3 taps on a mobile device) that members do it consistently.
+**Requirement:** The system must make recording a completion so fast and easy (target: ≤ 2 taps on a mobile device) that members do it consistently.
 
 ### 3.2 No Cumulative Record-Keeping
 
@@ -187,7 +183,7 @@ Shop Sergeant is built around four pipelines, each handling a distinct part of t
 |---|---|
 | **Task Database** | Maintains the master list of all tasks in Google Sheets; supports add, update, and delete |
 | **Task Sheet** | Generates printable sign-up sheets from the task database and posts them around the shop |
-| **Task Capture** | Records task completions from Members via Single-Sheet QR → mobile web form (Method 1) or Slack Update in `#shop-queries` (Method 2) |
+| **Task Capture** | Records task completions from Members via QR code scan or OCR photo scan |
 | **Task Reporting** | Generates reports on task completion, Member participation, and location health |
 
 **Google Sheets** is the system's single source of truth. All pipelines read from and write to it. **Slack** is the primary user interface for both members and administrators. Physical sign-up sheets serve as the member-facing touchpoint on the shop floor.
@@ -203,7 +199,7 @@ Human actors (Member, Steward, Shop Steward, Shop Sergeant) are defined in §2.2
 | Component | Technology | Role |
 |---|---|---|
 | Bot framework | Python 3.11+ with Slack Bolt | Listens to Slack events; dispatches commands to the appropriate pipeline |
-| AI agent | Claude API (`claude-sonnet-4-6`) | Natural language query handling; Slack Update task completion processing |
+| AI agent | Claude API (`claude-sonnet-4-6`) | Natural language query handling; OCR photo processing via vision API |
 | Data store | Google Sheets API v4 | Authoritative storage for all tasks and completion records |
 | Sheet generation | Jinja2 + wkhtmltopdf | Renders HTML sign-up sheet templates to PDF for printing |
 | QR codes | `qrcode[pil]` Python library | Generates QR codes embedded in sign-up sheets |
@@ -228,9 +224,12 @@ The objective is to assess the easy of use of different sign-up sheet formats wi
 Will the user know how to use their mobile device and how error prone will that use be?
 
 #### Phase 0: Task Capture Prototype
-The next prototyping step will cover both capture methods: the mobile phone QR code scan opening a mobile web form (Method 1) and the Slack Update flow in `#shop-queries` (Method 2). Some small parts of the Slack bot or Google Sheets integration may be simulated.
+The next prototyping step will be the creation of the mobile phone experience of reading QR code
+and photographing the sign-up sheet via mobile phone.
+Some small parts of the mobile phone, Slack bot, or Google Sheets integration may be simulated.
 
-The objective is to assess the ease of use of each capture method and determine which members prefer.
+The objective is to assess the easy of use of a mobile phone interaction.
+Will the user know how to use their mobile device and how error prone will that use be?
 
 ---
 
@@ -291,30 +290,28 @@ The objective is to assess the ease of use of each capture method and determine 
 
 ![Task Capture Pipeline](/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-capture-pipeline.png)
 
-**Inputs:** QR code scan from member's mobile device; Slack message in `#shop-queries`
+**Inputs:** QR code scan from member's mobile device:; OCR photo posted by admin to `#shop-admin`
 
 **Outputs:** Completion record written to Google Sheets; confirmation message in `#shop-log`; notification in `#shop-alerts`
 
-Two capture methods are supported.
+Three capture methods are under consideration. One will be selected for implementation based on a trial with Stewards and Members.
 
-| Method | Description |
-|---|---|
-| **Method 1 — Single-Sheet QR** | A single QR code appears on each sign-up sheet. Scanning opens a mobile web form where the Member selects their name and the task completed, then confirms. The form posts to the bot, which logs to Sheets with `source=QR-form`. |
-| **Method 2 — Slack Update** | Member posts a task completion in `#shop-queries` using free-form text (e.g. "I just finished cleaning the metalshop floor") or the `task-done <task_id>` command. Task ID is accepted when provided but not required. The bot identifies the task, confirms with the member, and logs the completion to Sheets with `source=Slack`. |
+| Method | Description | Status |
+|---|---|---|
+| **Method 1 — OCR** | Admin photographs a completed sign-up sheet and posts it to `#shop-admin`. Claude vision extracts Member names, task IDs, and dates. Bot writes records to Google Sheets with `source=OCR`. | Alternative |
+| **Method 2 — Per-Task QR** | Each task row has its own QR code. Scanning it pre-fills a Slack message `task-done <task_id>`. Sending the message logs the completion. | Alternative |
+| **Method 3 — Single-Sheet QR** | A single QR code appears on each sign-up sheet. Scanning opens a mobile web form where the Member selects their name, the task completed, and confirms. The form posts to the bot, which logs to Sheets. | **Likely selection** |
 
-**Requirements:**
+**Requirements (all methods):**
 
 | # | Requirement |
 |----|---|
-| TC-1 | Every completion record must include: Member name, Task ID, completion date, and capture method (`QR-form` or `Slack`) |
+| TC-1   | Every completion record must include: Member name, Task ID, completion date, and capture method (`QR`, `OCR`, or `form`) |
 | TC-2 | Completion records must be written to Google Sheets immediately upon submission |
 | TC-3 | A confirmation message must appear in `#shop-log` for every logged completion |
 | TC-4 | `#shop-alerts` must be notified whenever a capture event is processed |
-| TC-5 | The Method 1 (QR) capture flow must require ≤ 3 taps on a mobile device from QR scan to confirmation |
-| TC-6 | Method 1 (QR) must not require Members to create an account or install an app; Method 2 (Slack) assumes the member has an existing Slack account |
-| TC-7 | The bot must accept task completions in `#shop-queries` via free-form natural language text or the `task-done <task_id>` command |
-| TC-8 | When no Task ID is provided in a Slack Update, the bot must identify the task via natural language processing or present a task list for member selection |
-| TC-9 | The bot must confirm the identified task with the member before writing the completion record to Google Sheets |
+| TC-5 | The capture flow must require ≤ 2 taps on a mobile device from QR scan to confirmation (Method 3) |
+| TC-6 | The system must not require Members to create an account or log in to record a completion |
 
 ### 5.4 Task Reporting Pipeline
 
@@ -388,8 +385,9 @@ Each task row on the sign-up sheet must include:
 
 The QR code placement depends on the capture method selected:
 
-* **Method 1 (Single-Sheet QR):** One QR code in the sheet header or footer, covering the entire location
-* **Method 2 (Slack Update):** No QR code required — member interacts with the bot via `#shop-queries`
+* **Method 2 (per-task QR):** One QR code per task row, in the rightmost column
+* **Method 3 (single-sheet QR, likely):** One QR code in the sheet header or footer, covering the entire location
+:
 ---
 
 ## 7. Agentic AI and Slack Bot Requirements
@@ -397,13 +395,15 @@ Shop Sergeant uses a **custom Slack bot** built with the Slack Bolt framework (P
 This is distinct from Anthropic's "Claude in Slack" product — the custom bot can read from
 and write to Google Sheets, execute task management commands, and send structured notifications.
 
-The Claude AI model powers **natural language query handling** — members and stewards ask questions in plain English, and the bot interprets free-form Slack Update messages to identify the intended task.
+The Claude AI model powers two capabilities: **natural language query handling**
+(members and stewards ask questions in plain English) and **OCR processing**
+(extracting completion data from photos of sign-up sheets via the Claude vision API).
 
 ### 7.1 Action Definitions
-* **Log task completion (QR or Slack):** Submit a record that a specific task has been completed.
-  Triggered by scanning a QR code and submitting the mobile web form (Method 1)
-  or by posting a completion message in `#shop-queries` via free-form text or `task-done <task_id>` command (Method 2).
-  The bot writes a completion record to Google Sheets with member name, Task ID, date, and capture method (`QR-form` or `Slack`).
+* **Log task completion (QR/form):** Submit a record that a specific task has been completed.
+  Triggered by scanning a QR code and submitting the mobile web form (Method 3)
+  or by sending a Slack message prefilled by a per-task QR scan (Method 2).
+  The bot writes a completion record to Google Sheets with member name, Task ID, date, and capture method.
 * **Query own task history:** Ask the bot to retrieve the requesting member's own completion records
   — how many tasks completed, which ones, and whether the 2hr/month requirement has been met.
 * **Query any Member's task history:** Ask the bot to retrieve completion records for a specific other member by name or Slack handle.
@@ -415,6 +415,9 @@ The Claude AI model powers **natural language query handling** — members and s
   Changes are written to Google Sheets and trigger a `#shop-alerts` notification.
 * **Generate / print sign-up sheet:** Instruct the bot to render a new printable sign-up sheet PDF for a
   given location (or all locations) from the current task catalog. The bot posts the sheet and notifies `#shop-bulletin`.
+* **Upload OCR photo for processing:** Post a photograph of a completed paper sign-up sheet to `#shop-admin`.
+  The bot passes the image to the Claude vision API, extracts Member names, Task IDs, and completion dates,
+  and writes the resulting records to Google Sheets with `source=OCR`.
 * **Request location or shop report:** Ask the bot to generate a summary report — either for a specific location
   (task completion status, overdue tasks) or shop-wide (aggregate compliance, top contributors).
   Public-data reports are available to all Members; the compliance report
@@ -424,7 +427,7 @@ The Claude AI model powers **natural language query handling** — members and s
 * **View bot errors / audit log:** Read the `#shop-alerts` channel, which contains every significant system event
   — task CRUD operations, capture events, report generation, and bot errors. Provides the full audit trail for the system.
 * **Suspend / restore actions — area or location scope:** Disable or re-enable any bot action
-  (e.g., task logging, sign-up sheet generation) for a specific area or location within the shop.
+  (e.g., task logging, sign-up sheet generation, OCR processing) for a specific area or location within the shop.
   While suspended, the bot rejects affected actions for that scope and posts a notice to `#shop-alerts`.
   Used by Shop Stewards to lock down a location during an incident, equipment removal, or process review.
   Shop Stewards may only suspend/restore actions within their own area; Shop Sergeants may act on any area or location.
@@ -439,7 +442,7 @@ The Claude AI model powers **natural language query handling** — members and s
 | `#shop-log` | All Members (read), Bot (write) | Bot only | Task completion confirmations; one message per logged completion |
 | `#shop-bulletin` | All Members (read), Bot (write) | Bot only | Announcements: new sign-up sheets available, overdue reminders, monthly summaries, top contributors |
 | `#shop-queries` | All Members | Members + Bot | Natural language queries about tasks, Member history, location status, and public reports |
-| `#shop-admin` 🔒 | Stewards, Shop Steward, Shop Sergeant | Admins + Bot | Task add/update/delete, sign-up sheet generation, restricted report requests, compliance queries |
+| `#shop-admin` 🔒 | Stewards, Shop Steward, Shop Sergeant | Admins + Bot | Task add/update/delete, sign-up sheet generation, OCR photo uploads, restricted report requests, compliance queries |
 | `#shop-alerts` 🔒 | Shop Sergeant | Bot only | Bot errors, audit trail, system event log — every significant system action generates an entry here |
 
 ### 7.3 Permission Model
@@ -448,12 +451,13 @@ The following table defines what each actor may ask the bot to do, and where:
 
 | Action | Member | Steward | Shop Steward | Shop Sergeant | Channel |
 |---|:---:|:---:|:---:|:---:|---|
-| Log task completion (QR or Slack) | ✅ | ✅ | ✅ | ✅ | web form / `#shop-queries` |
+| Log task completion (QR/form) | ✅ | ✅ | ✅ | ✅ | `#shop-log` |
 | Query own task history | ✅ | ✅ | ✅ | ✅ | `#shop-queries` |
 | Query any Member's task history |❌|  ❌   | ✅ | ✅ | `#shop-admin` |
 | Query open tasks / location status | ✅ | ✅ | ✅ | ✅ | `#shop-queries` |
 | Add / update / delete a task |  ❌   | ✅ (own location) | ✅ | ✅ | `#shop-admin` |
 | Generate / print sign-up sheet |   ❌  | ✅ (own location) | ✅ | ✅ | `#shop-admin` |
+| Upload OCR photo for processing | ❌ | ✅ | ✅ | ✅ | `#shop-admin` |
 | Request location or shop report | ✅ (public data) | ✅ | ✅ | ✅ | `#shop-queries` / `#shop-admin` |
 | Trigger overdue reminder blast |   ❌  | ❌ | ✅ | ✅ | `#shop-admin` |
 | View bot errors / audit log |   ❌  | ❌ | ✅ | ✅ | `#shop-alerts` |
@@ -470,7 +474,8 @@ The Claude-powered bot agent must be able to:
 | Capability | Description |
 |---|---|
 | **Natural language query** | Parse plain-English questions from `#shop-queries` and respond with data from Google Sheets. Example: "What tasks are still open in the metalshop?" |
-| **Task completion logging** | Accept completion events from QR/form submissions (Method 1) or Slack Update messages in `#shop-queries` (Method 2); confirm task identity with member; write structured records to Google Sheets |
+| **Task completion logging** | Accept completion events from QR/form submissions and write structured records to Google Sheets |
+| **OCR processing** | Accept a photo of a completed sign-up sheet posted to `#shop-admin`, extract member names, task IDs, and dates using the Claude vision API, and write records to Google Sheets with `source=OCR` |
 | **Task management** | Execute add, update, and delete operations on Google Sheets in response to Slack commands from authorized users |
 | **Report generation** | Query Google Sheets and return formatted reports inline in Slack — member, location, shop, and compliance report types |
 | **Scheduled reminders** | Use APScheduler to send periodic reminders to `#shop-bulletin`: overdue task alerts, monthly compliance summaries, top-contributor recognition |
@@ -482,7 +487,7 @@ The following examples illustrate how actors will interact with the Slack bot.
 
 ---
 
-**Example 1: Member logs a completed task (Method 1 — Single-Sheet QR)**
+**Example 1: Member logs a completed task (Method 3 — single-sheet QR)**
 
 > Member scans QR code on the Metalshop sign-up sheet. A mobile web form opens showing the Metalshop task list. Member taps "Clean and sweep metalshop floor" and taps "Submit."
 
@@ -498,49 +503,7 @@ Method:  QR form
 
 ---
 
-**Example 2: Member logs a completed task (Method 2 — Slack Update, free-form)**
-
-In `#shop-queries`:
-> **@alex_johnson:** I just finished cleaning the metalshop floor
-
-> **@shop-sergeant-bot:** Got it — did you mean **MSL-METAL-003 — Clean and sweep metalshop floor**? Reply `yes` to confirm or tell me more.
-
-> **@alex_johnson:** yes
-
-Bot posts to `#shop-log`:
-
-```
-✅ Task logged
-Member:  @alex_johnson
-Task:    MSL-METAL-003 — Clean and sweep metalshop floor
-Date:    2026-04-13
-Method:  Slack
-```
-
----
-
-**Example 3: Member logs a completed task (Method 2 — Slack Update, task-done command)**
-
-In `#shop-queries`:
-> **@alex_johnson:** task-done MSL-METAL-003
-
-> **@shop-sergeant-bot:** Confirm: **MSL-METAL-003 — Clean and sweep metalshop floor** completed today? Reply `yes` to log it.
-
-> **@alex_johnson:** yes
-
-Bot posts to `#shop-log`:
-
-```
-✅ Task logged
-Member:  @alex_johnson
-Task:    MSL-METAL-003 — Clean and sweep metalshop floor
-Date:    2026-04-13
-Method:  Slack
-```
-
----
-
-**Example 4: Member queries own task history**
+**Example 2: Member queries own task history**
 
 In `#shop-queries`:
 > **@alex_johnson:** How many tasks have I done this month?
@@ -554,7 +517,7 @@ In `#shop-queries`:
 
 ---
 
-**Example 5: Shop steward queries another member's task history**
+**Example 3: Shop steward queries another member's task history**
 
 In `#shop-admin`:
 > **@mike_shopsteward:** How many tasks has @dave_m completed this month?
@@ -567,7 +530,7 @@ In `#shop-admin`:
 
 ---
 
-**Example 6: Member queries open tasks for a location**
+**Example 4: Member queries open tasks for a location**
 
 In `#shop-queries`:
 > **@alex_johnson:** What tasks are still open in the metalshop?
@@ -583,7 +546,7 @@ In `#shop-queries`:
 
 ---
 
-**Example 7: Steward adds a task**
+**Example 5: Steward adds a task**
 
 In `#shop-admin`:
 > **@sarah_steward:** Add a new task to the metalshop — "Inspect welding equipment for damage", weekly, supervision required
@@ -599,7 +562,7 @@ In `#shop-admin`:
 
 ---
 
-**Example 8: Steward updates a task**
+**Example 6: Steward updates a task**
 
 In `#shop-admin`:
 > **@sarah_steward:** Change MSL-METAL-006 frequency from monthly to quarterly
@@ -612,7 +575,7 @@ In `#shop-admin`:
 
 ---
 
-**Example 9: Steward deletes a task**
+**Example 7: Steward deletes a task**
 
 In `#shop-admin`:
 > **@sarah_steward:** Delete MSL-METAL-002 — the plasma cutter has been removed from the shop
@@ -625,7 +588,7 @@ In `#shop-admin`:
 
 ---
 
-**Example 10: Steward generates a sign-up sheet**
+**Example 8: Steward generates a sign-up sheet**
 
 In `#shop-admin`:
 > **@sarah_steward:** sheet metalshop
@@ -640,7 +603,25 @@ In `#shop-admin`:
 
 ---
 
-**Example 11: Member requests a public location report**
+**Example 9: Admin uploads OCR photo for processing**
+
+In `#shop-admin`:
+> **@sarah_steward:** _(uploads photo of completed Metalshop sign-up sheet)_
+
+> **@shop-sergeant-bot:** OCR processing complete — 4 completions extracted:
+>
+> | Member | Task ID | Date |
+> |---|---|---|
+> | Alex Johnson | MSL-METAL-003 | 2026-04-10 |
+> | Maria W | MSL-METAL-001 | 2026-04-11 |
+> | Dave M | MSL-METAL-005 | 2026-04-12 |
+> | Chris R | MSL-METAL-003 | 2026-04-13 |
+>
+> All 4 records written to Google Sheets with `source=OCR`.
+
+---
+
+**Example 10: Member requests a public location report**
 
 In `#shop-queries`:
 > **@alex_johnson:** Give me a status report on the laser cutter area
@@ -658,7 +639,7 @@ In `#shop-queries`:
 
 ---
 
-**Example 12: Shop Steward triggers overdue reminder blast**
+**Example 11: Shop Steward triggers overdue reminder blast**
 
 In `#shop-admin`:
 > **@mike_shopsteward:** Send an overdue reminder now — don't wait for the scheduled one
@@ -667,21 +648,21 @@ In `#shop-admin`:
 
 ---
 
-**Example 13: Shop sergeant views bot errors / audit log**
+**Example 12: Shop sergeant views bot errors / audit log**
 
 In `#shop-alerts` (Shop Sergeant reads recent entries):
 
 ```
 [2026-04-13 14:02] TASK_CREATED  MSL-METAL-008 by @sarah_steward
 [2026-04-13 14:05] SHEET_GENERATED  Metalshop by @sarah_steward (7 tasks)
-[2026-04-13 15:30] TASK_LOGGED  MSL-METAL-003 by @alex_johnson, source=Slack
+[2026-04-13 15:30] OCR_PROCESSED  4 records written, source=OCR, uploaded by @sarah_steward
 [2026-04-13 16:00] REMINDER_BLAST  triggered by @mike_shopsteward — 4 overdue tasks across 3 locations
 [2026-04-13 16:01] BOT_ERROR  Google Sheets write timeout — retry succeeded after 2s
 ```
 
 ---
 
-**Example 14: Shop sergeant requests monthly compliance report** _(restricted report)_
+**Example 13: Shop sergeant requests monthly compliance report** _(restricted report)_
 
 In `#shop-admin`:
 > **@jeff_sergeant:** Give me the April compliance report
@@ -701,7 +682,7 @@ In `#shop-admin`:
 
 ---
 
-**Example 15: Bot-initiated overdue task reminder** _(scheduled, not user-triggered)_
+**Example 14: Bot-initiated overdue task reminder** _(scheduled, not user-triggered)_
 
 Bot posts to `#shop-bulletin` (automated, weekly):
 
@@ -719,7 +700,7 @@ Sign up to help: [Metalshop Sign-Up Sheet QR →]
 
 ---
 
-**Example 16: Shop Steward suspends actions for a location**
+**Example 15: Shop Steward suspends actions for a location**
 
 In `#shop-admin`:
 > **@mike_shopsteward:** Suspend all actions for the metalshop — we're doing a full equipment audit and don't want any task logging until further notice
@@ -747,7 +728,7 @@ In `#shop-admin`:
 
 ---
 
-**Example 17: Shop Sergeant suspends actions shop-wide**
+**Example 16: Shop Sergeant suspends actions shop-wide**
 
 In `#shop-admin`:
 > **@jeff_sergeant:** Suspend all bot actions shop-wide — we have a Google Sheets API outage and I don't want failed writes going unnoticed
@@ -782,10 +763,10 @@ In `#shop-admin`:
 The system's core design principle is **minimum friction for Members**. Members must be able to record a task completion as easily and quickly as possible — the goal is to remove every possible barrier between (**START**) selecting a task to perform
 and (**FINISH**) logging the fact that the task has been performed.
 
-* Task logging via the QR method must require **≤ 3 taps** from QR scan to confirmation
-* The QR method must not require Members to create an account, log in, or install an app — the entire digital interaction is accessible through the phone's native camera and browser
-* The Slack Update method assumes Members have an existing Slack account; no additional account creation is required
-* The fallback (writing on the paper sheet) must always remain available alongside the digital methods
+* Task logging via mobile must require **≤ 2 taps** from QR scan to confirmation
+* Members must not be required to create an account, log in, or remember a password
+* No app may be installed on a Member's mobile device — the entire digital interaction must be accessible through the phone's native camera and browser
+* The fallback (writing on the paper sheet) must always remain available alongside the digital method
 
 ### 8.2 Record Retention and Compliance
 
@@ -798,7 +779,7 @@ and (**FINISH**) logging the fact that the task has been performed.
 
 * The Slack bot is the primary interface, but **Google Sheets is the durable store** — if the bot is temporarily unavailable, no data is lost
 * The physical sign-up sheet provides a manual fallback for task logging at all times
-* Two independent capture paths (QR and Slack) reduce single-point-of-failure risk; if one path is temporarily degraded, members can still log completions via the other
+* OCR processing allows admin to recover data from paper sheets even if real-time digital capture fails
 
 ### 8.4 Access Control
 
@@ -859,8 +840,8 @@ The Shop Sergeant is responsible for monitoring the following KPIs to assess sys
 
 **Data available:**
 * ✅ All three required fields (`member_name`, `task_id`, `completion_date`) are required by TC-1 and written to the `completions` sheet on every capture event.
-* ✅ For Method 1 (QR-form), all fields are enforced by the form before submission — completeness should be 100%.
-* ✅ For Method 2 (Slack Update), the bot confirms task identity with the member before writing (TC-9) — all fields are populated before the record is committed.
+* ✅ For QR/form capture (Method 3), all fields are enforced by the form before submission — completeness should be 100% for this method.
+* ⚠️ For OCR capture (Method 1), the Claude vision model may fail to extract a field if handwriting is illegible. The bot should write a partial record with a `NULL` or `"UNKNOWN"` placeholder rather than dropping the record, so it can be counted in the denominator.
 
 **Note:** This metric only covers records that _entered_ the system. It cannot measure tasks that were completed on the shop floor but never recorded at all — that unmeasured gap is exactly the problem M1 and M2 are designed to surface indirectly.
 
@@ -934,7 +915,7 @@ The following are explicitly **not** part of this initial release:
 | **Makersmiths Purcellville (MSP)** | Future release. The system architecture must accommodate MSP without structural changes, but no MSP deployment is planned at this time. |
 | **Capture methods not selected** | Once a capture method is chosen from the three options in §5.3, the remaining methods are documented for reference only and will not be implemented. |
 | **Non-Slack notification channels** | Email and SMS notifications are not in scope. Slack is the sole notification channel. |
-| **Mobile app** | To reduce friction, it is a requirement that there is no need for a native iOS or Android app. The mobile experience is delivered through Slack and a mobile-optimized web form (Method 1 — Single-Sheet QR). |
+| **Mobile app** | To reduce friction, it is a requirement that there is no need for a native iOS or Android app. The mobile experience is delivered through Slack and a mobile-optimized web form (Method 3). |
 | **Real-time dashboards** | Reports are delivered on-demand via Slack or on a scheduled basis. No live dashboard is planned. It is expected that real-time status information will be provided via natural language queries. |
 
 ---
@@ -947,6 +928,17 @@ The items below are not requirements — they are ideas that surfaced during des
 and are worth a deliberate discussion before the relevant phase is implemented.
 Each may add value, but each also carries cost or complexity that needs to be weighed.
 
+* **Should Method 1 (OCR) and Method 2 (per-task QR) be dropped from the Task Capture Pipeline?**
+Section 5.3 lists three capture methods as "under consideration," with Method 3 (single-sheet QR → mobile web form)
+already flagged as the likely selection.
+Keeping Methods 1 and 2 in the requirements creates ambiguity — developers may feel obligated to design for all three,
+and stewards trialing the system may not understand which path is real.
+Method 2 is particularly suspect: per-task QR codes are small (they must fit in a table row on an 8.5×11" sheet),
+and scanning a tiny QR code reliably with a phone camera in a noisy shop environment is not guaranteed.
+Method 1 (OCR) relies on handwriting legibility and Claude vision accuracy, both of which are variable.
+If the Phase 0 trial confirms that Method 3 works well,
+the other two should be formally retired from the requirements to reduce scope and avoid design debt.
+
 * **Is the §7.3 permission model too open or too tight?**
 The current permission table grants Stewards the ability to suspend/restore actions at the location scope
 — a power normally associated with oversight roles — while denying them the ability to query another member's task history.
@@ -957,12 +949,23 @@ On the other side, the table shows Stewards cannot trigger an overdue reminder b
 — which may frustrate a steward who notices a task is overdue and wants to nudge members immediately.
 Both edges are worth a deliberate conversation with actual stewards before the bot permission model is implemented.
 
+* **Should additional functional prototyping be added to Phase 0?**
+Section 4.3 describes two Phase 0 prototyping steps: sign-up sheet generation (complete)
+and a QR-to-mobile-form interaction trial (planned).
+A third prototype worth considering is a minimal OCR proof-of-concept — photograph a completed paper sheet,
+pass it to the Claude vision API, and see how accurately it extracts member names and task completions under real shop conditions
+(variable lighting, handwriting quality, sheet wear).
+This would validate or invalidate Method 1 before the implementation plan is finalized,
+and would also stress-test the assumption that Method 3 completely eliminates the need for OCR as a fallback.
+The cost is low — it requires only a test image and a short Python script — but the signal it produces could meaningfully shape Phase 1 scope.
+
 * **Should the §8.1 requirement that the paper fallback "must always remain available" be dropped?**
 Section 8.1 lists as a hard requirement that members must always be able to write on the physical sheet as a fallback alongside the digital method. The intent is resilience — if the QR form is unavailable, no completion goes unrecorded.
 In practice, however, keeping the paper fallback alive indefinitely has a cost:
-the sign-up sheet must always include hand-entry columns and the system can never fully deprecate the manual process.
-If the two digital methods prove reliable during the Phase 0 trial and shop Wi-Fi is consistently available,
-the paper fallback may be more of a crutch than a safety net — one that dilutes the incentive to use the digital flow.
+the sign-up sheet must always include hand-entry columns, OCR must remain a viable recovery path,
+and the system can never fully deprecate the manual process. If Method 3 proves reliable during the
+Phase 0 trial and shop Wi-Fi is consistently available, the paper fallback may be more of a crutch than a safety net
+— one that dilutes the incentive to use the digital flow and keeps OCR complexity in scope longer than necessary.
 The question is whether the fallback is a permanent design principle or a launch-period hedge that should have a planned sunset.
 
 * **Should the mobile experience be a Progressive Web App (PWA)?**
@@ -1131,4 +1134,4 @@ If a future feature required a steward to approve a new task before it entered t
 
 ---
 
-### Volunteer Opportunity Sign-Up Sheet
+### Volunteer Opportunity Signup Sheet

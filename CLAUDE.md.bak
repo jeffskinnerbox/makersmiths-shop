@@ -59,6 +59,9 @@ wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet.html output/me
 # Convenience scripts (template + HTML + PDF, then open PDF): bash scripts/print-metalshop.sh  or  bash scripts/print-MSL.sh
 # Post scripts (template + HTML only, then open HTML in Chrome): bash scripts/post-metalshop.sh  or  bash scripts/post-MSL.sh
 
+# Generate presentation slides as Excalidraw files → output/slides/slide-NN.excalidraw
+python3 scripts/generate_slides.py
+
 # Convert requirements.md → requirements.pdf
 bash scripts/requirements-to-pdf.sh
 
@@ -77,7 +80,8 @@ python3 -m pytest tests/test_signup_sheet_template.py::test_build_template_conta
 python3 -m pytest tests/test_yaml_to_sheets.py::test_extract_rows_returns_correct_count -v
 python3 -m pytest tests/test_parse_tasks.py::test_escape_pipe_character -v
 python3 -m pytest tests/test_parse_opp_tasks.py -v
-python3 -m pytest tests/test_yaml_to_json.py -v
+python3 -m pytest tests/test_yaml_to_json.py::test_convert_outputs_valid_json_to_stdout -v
+python3 -m pytest tests/test_yaml_to_sheets.py::test_extract_rows_returns_correct_count -v
 ```
 
 ### Debugging / utility scripts (not production, no further development planned)
@@ -94,6 +98,40 @@ pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-oppo
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
 # Note: scripts/pdf-margins.css is used by requirements-to-pdf.sh only; not a standalone tool
 ```
+
+## Presentations (Slidev + Excalidraw)
+
+Slide decks live under `presentations/` — each subdirectory is a self-contained Slidev project with its own `package.json`. Currently:
+
+- `presentations/members-meeting/` — members meeting overview
+- `presentations/requirements-review/` — requirements walkthrough
+
+All three `pnpm` commands must be run from inside the presentation subdirectory:
+
+```bash
+cd presentations/members-meeting   # or requirements-review
+pnpm dev        # live-reload dev server (opens browser)
+pnpm build      # build static site → dist/
+pnpm export     # export to PDF (requires playwright-chromium)
+```
+
+Diagrams are authored as `.excalidraw` files in the `diagrams/` subdirectory of each deck and referenced directly by `slidev-addon-excalidraw`. Assets (PNG/SVG exports) live in `assets/`. Slides source is `slides.md` in each subdirectory.
+
+### Presentation utilities (`presentations/scripts/`)
+
+```bash
+# One-time machine setup (Node >= 18, pnpm, Slidev CLI, Playwright/Chromium)
+bash presentations/scripts/setup.sh
+
+# Bootstrap a new deck (creates subdirectory, package.json, slides.md scaffold, runs pnpm install)
+bash presentations/scripts/new-deck.sh <deck-name>
+
+# Export all .excalidraw files in a deck's diagrams/ → assets/ as SVG (default) or PNG
+python3 presentations/scripts/export-diagrams.py --input presentations/<deck>/diagrams/ --output presentations/<deck>/assets/
+# Requires: pip install playwright && python3 -m playwright install chromium (first run)
+```
+
+New decks created with `new-deck.sh` are ready to use (`pnpm install` is run automatically). Existing decks cloned without `node_modules` need `pnpm install` before `pnpm dev`.
 
 ## Tech Stack (Planned)
 
@@ -142,7 +180,7 @@ All formats use `work_tasks` for task lists (falling back to `task` key). Locati
 
 Logo and image assets live in `input/`. The default logo path is `input/makersmiths-logo.png`. A copy also lives in `logos_images/makersmiths-logo.png`; see `logos_images/README.md` for logo asset notes.
 
-`input/my-prompts.md` is a log of the original design prompts used to bootstrap this project — not input data for any script.
+`docs/my-prompts.md` is a log of the original design prompts used to bootstrap this project — not input data for any script.
 
 Generated files in `output/` are tracked in git (`.gitignore` entries for `output/*` are commented out). Run `bash scripts/clean-up.sh` to remove them before regenerating.
 
@@ -159,7 +197,20 @@ When encountering an error, consider writing a test case that reproduces it befo
 
 ## Key Docs
 
+The documentation development follows this dependency chain:
+
+```
+                           use-cases.md ---------------------------------> test-cases.py
+                                ^
+                                |         +-----------> prototyping.md
+                                |         |
+my-understanding.md ---> requirements.md -+-> specifications.md ---> architecture.md ---> implementation-plan.md
+```
+
+`docs/my-engineering-method.md` explains the engineering method behind this chain and is the canonical reference for how these docs relate.
+
 - `docs/my-understanding.md` — original vision doc (current process, actors, shortcomings, future goals)
+- `docs/my-engineering-method.md` — engineering method overview; describes the doc lineage above
 - `docs/requirements.md` — system requirements (pipelines, permissions, KPIs; all stakeholders)
 - `docs/specifications.md` — system spec (data flows, Sheets schema, sign-up sheet design) **[not yet created]**
 - `docs/implementation-plan.md` — detailed 5-phase implementation plan with file map and code examples **[not yet created]**
@@ -170,3 +221,7 @@ When encountering an error, consider writing a test case that reproduces it befo
 - `docs/task-reporting-pipeline.excalidraw` — Task Reporting pipeline diagram (+ `.png`)
 - `templates/feature-list.yaml` — feature tracker template (placeholder, not yet populated)
 - `templates/use-case-list.yaml` — use case tracker template
+- `ai_project_roadmap.md` / `ai_project_roadmap_V2.md` — AI-assisted roadmap docs (+ `.excalidraw` diagrams)
+- `input/Leesburg Site-wide Cleaning and Maintenance Tasks.xlsx` — original source data from stewards
+- `presentations/members-meeting/` — Slidev deck for members meeting (Excalidraw-integrated)
+- `presentations/requirements-review/` — Slidev deck for requirements walkthrough

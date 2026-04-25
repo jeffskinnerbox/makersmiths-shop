@@ -56,6 +56,12 @@ Here are meanings of the YAML elements:
   A list containing multiple items. Each `-` marks the start of a new entry in that list.
 * **Triple dash `---`** in YAML is called a document separator (or document start marker).
   After this marker, you can start defining an entirely new data structure.
+* **Greater Than `>`**  character is called the Folded Block Scalar indicator.
+  Its primary job is to let you write long strings of text across multiple lines
+  in your file while treating them as a single,
+  continuous paragraph when the computer reads it.
+  It converts single line breaks within the block into a space.
+  It will only keep a "real" newline if you leave a completely blank line between blocks of text.
 
 ## The Data Model
 The over arching objective is make it easy for Makersmiths members to record their volunteer hours.

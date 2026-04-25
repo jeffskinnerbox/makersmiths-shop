@@ -62,6 +62,12 @@
 #*.jpg 
 #*.jpeg 
 
+# photos and images used in presentations
+presentations/*/assets/*
+
+# node modules used for slidev
+presentations/*/node_modules/*
+
 # this directory is just a "scrach pad" form my brainstorming with claude
 #brain_storming/
 
