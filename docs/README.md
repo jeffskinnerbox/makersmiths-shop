@@ -32,6 +32,12 @@ my-understanding.md ----> requirements.md ----> specifications.md ----> architec
 * **`use-cases.md`** -
 * **`test-cases.md`** -
 
+### Convert `requirements.md` to PDF File
+1. Using `nvim` to format `requirements.md` as a HTML file in your browser via `:MarkdownPreview`.
+1. Inspect the rendered HTML and assure all linked images and files are present and properly formatted.
+1. Convert the file to a PDF via the command `./scripts/requirements-to-pdf.sh`.  The output is in `./output`
+1. View the PDF file via the command `xdg-open ./output/requirements.pdf`
+
 ### How It Works
 
 ----

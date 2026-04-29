@@ -8,6 +8,9 @@ python3 scripts/signup-sheet2.py --template output/signup-sheet2-template.html.j
 
 # Step 3 - PDF (same)
 wkhtmltopdf --orientation Landscape output/metalshop-signup-sheet2.html output/metalshop-signup-sheet2.pdf
+
+# Step 4 - PNG
+wkhtmltoimage metalshop-signup-sheet2.html metalshop-signup-sheet2.png
 ```
 
 

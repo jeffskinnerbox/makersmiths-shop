@@ -6,6 +6,45 @@ slide artwork. The two tools compose well, but there are three distinct ways to 
 with real trade-offs. See [Choosing an Option](#choosing-an-option) to pick the right one before
 you start.
 
+
+
+To create PNG files exactly as displayed via Excalidraw, use the following:
+
+```bash
+# create PNG files exactly as displayed via Excalidraw
+for file in ./diagrams/*.excalidraw; do
+  excalidraw-cli convert "$file" --output "./assets/$(basename "${file%.*}.png")" --format png
+done
+```
+
+To create PNG files with a transparent background, use the following:
+
+```bash
+#!/bin/bash
+
+# Ensure the output directory exists
+mkdir -p ./assets
+
+# Loop through all .excalidraw files in the diagrams folder
+for file in ./diagrams/*.excalidraw; do
+  # Skip if no files are found
+  [ -e "$file" ] || continue
+
+  filename=$(basename "${file%.*}")
+
+  echo "Converting $filename to transparent PNG..."
+
+  # Using the 'convert' command with '--backgroundColor transparent'
+  excalidraw-cli convert "$file" \
+    --output "./assets/${filename}.png" \
+    --format png \
+    --background-color transparent
+done
+
+echo "Done! Transparent PNGs are in ./assets"
+```
+
+
 ---
 
 ## Table of Contents

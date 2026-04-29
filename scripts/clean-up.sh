@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #   What happens in the script:
-#  trash ./*.bak* {output,input,docs,requirments,scripts,tests}/*.bak*. Bash brace-expands this to 7 separate glob patterns. Any directory that has no .bak* files (e.g. docs/, tests/, requirments/) passes the literal string docs/*.bak* as a filename argument to trash. Trash gets a non-existent path, returns a non-zero exit code, and set -e immediately aborts the script — before it even reaches the directories that  do have .bak* files.
+#  trash ./*.bak* {output,input,docs,scripts,tests}/*.bak*. Bash brace-expands this to 7 separate glob patterns. Any directory that has no .bak* files (e.g. docs/, tests/,  passes the literal string docs/*.bak* as a filename argument to trash. Trash gets a non-existent path, returns a non-zero exit code, and set -e immediately aborts the script — before it even reaches the directories that  do have .bak* files.
 #
 #  The fix — use shopt -s nullglob so unmatched globs expand to nothing instead of a literal string, and guard against
 #  the case where nothing matches at all:
@@ -21,5 +21,5 @@ files=(output/*.{html,j2,pdf,md,docx,xlsx})
 [[ ${#files[@]} -gt 0 ]] && trash "${files[@]}"
 
 # Trash all .bak* files in project directories
-files=(./*.bak* {output,input,docs,requirments,scripts,tests}/*.bak*)
+files=(./*.bak* {output,input,docs,scripts,tests}/*.bak*)
 [[ ${#files[@]} -gt 0 ]] && trash "${files[@]}"

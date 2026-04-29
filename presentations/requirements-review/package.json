@@ -2,12 +2,13 @@
   "name": "my-talk",
   "private": true,
   "scripts": {
-    "dev":    "slidev slides.md --open",
-    "build":  "slidev build slides.md",
+    "dev": "slidev slides.md --open",
+    "build": "slidev build slides.md",
     "export": "slidev export slides.md"
   },
   "dependencies": {
     "@slidev/cli": "latest",
+    "@slidev/theme-apple-basic": "^0.25.1",
     "@slidev/theme-default": "latest",
     "slidev-addon-excalidraw": "latest"
   },

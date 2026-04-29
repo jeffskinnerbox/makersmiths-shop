@@ -1,0 +1,42 @@
+/* Global slide background */
+.slidev-layout {
+  background-color: #000000;
+}
+
+/* Dark gray background for PNG pipeline diagram slides */
+.slidev-layout.dark-gray {
+  background-color: #808080;
+}
+
+/* Global density reduction for all content slides */
+.slidev-layout table {
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.slidev-layout table th,
+.slidev-layout table td {
+  padding: 0.22rem 0.55rem;
+}
+
+.slidev-layout li {
+  line-height: 1.45;
+  margin-bottom: 0.15em;
+}
+
+.slidev-layout p {
+  line-height: 1.5;
+  margin-bottom: 0.4em;
+}
+
+/* Two-col layouts: tighten heading spacing */
+.slidev-layout.two-cols h1,
+.slidev-layout.two-cols-header h1 {
+  margin-bottom: 0.4em;
+}
+
+/* Blockquote: reduce padding */
+.slidev-layout blockquote {
+  padding: 0.3em 0.75em;
+  margin: 0.4em 0;
+}

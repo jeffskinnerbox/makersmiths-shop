@@ -240,7 +240,7 @@ The objective is to assess the ease of use of each capture method and determine 
 
 **Purpose:** Maintain the authoritative catalog of all volunteer tasks in Google Sheets.
 
-> **Diagram:** [`task-database-pipeline.excalidraw`](/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-database-pipeline.excalidraw)
+> **Diagram:** [`task-database-pipeline.excalidraw`](/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/diagrams/task-database-pipeline.excalidraw)
 
 ![Task Database Pipeline](/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-database-pipeline.png)
 
@@ -939,98 +939,84 @@ The following are explicitly **not** part of this initial release:
 
 ---
 
-## Appendix
+## Appendices
 
-### Things Worth Considering
+### Appendix A: Things Worth Considering
 
 The items below are not requirements — they are ideas that surfaced during design
 and are worth a deliberate discussion before the relevant phase is implemented.
 Each may add value, but each also carries cost or complexity that needs to be weighed.
 
 * **Is the §7.3 permission model too open or too tight?**
-The current permission table grants Stewards the ability to suspend/restore actions at the location scope
-— a power normally associated with oversight roles — while denying them the ability to query another member's task history.
-The suspension capability was included so stewards can act quickly in an emergency
-(equipment removal, safety incident), which is reasonable.
-However, it also means any steward can unilaterally disable task logging for their location without Shop Steward approval.
-On the other side, the table shows Stewards cannot trigger an overdue reminder blast, even for their own location
-— which may frustrate a steward who notices a task is overdue and wants to nudge members immediately.
-Both edges are worth a deliberate conversation with actual stewards before the bot permission model is implemented.
+  The current permission table grants Stewards the ability to suspend/restore actions at the location scope
+  — a power normally associated with oversight roles — while denying them the ability to query another member's task history.
+  The suspension capability was included so stewards can act quickly in an emergency
+  (equipment removal, safety incident), which is reasonable.
+  However, it also means any steward can unilaterally disable task logging for their location without Shop Steward approval.
+  On the other side, the table shows Stewards cannot trigger an overdue reminder blast, even for their own location
+  — which may frustrate a steward who notices a task is overdue and wants to nudge members immediately.
+  Both edges are worth a deliberate conversation with actual stewards before the bot permission model is implemented.
 
 * **Should the §8.1 requirement that the paper fallback "must always remain available" be dropped?**
-Section 8.1 lists as a hard requirement that members must always be able to write on the physical sheet as a fallback alongside the digital method. The intent is resilience — if the QR form is unavailable, no completion goes unrecorded.
-In practice, however, keeping the paper fallback alive indefinitely has a cost:
-the sign-up sheet must always include hand-entry columns and the system can never fully deprecate the manual process.
-If the two digital methods prove reliable during the Phase 0 trial and shop Wi-Fi is consistently available,
-the paper fallback may be more of a crutch than a safety net — one that dilutes the incentive to use the digital flow.
-The question is whether the fallback is a permanent design principle or a launch-period hedge that should have a planned sunset.
+  Section 8.1 lists as a hard requirement that members must always be able to write on the physical sheet
+  as a fallback alongside the digital method. The intent is resilience — if the QR form is unavailable, no completion goes unrecorded.
+  In practice, however, keeping the paper fallback alive indefinitely has a cost:
+  the sign-up sheet must always include hand-entry columns and the system can never fully deprecate the manual process.
+  If the two digital methods prove reliable during the Phase 0 trial and shop Wi-Fi is consistently available,
+  the paper fallback may be more of a crutch than a safety net — one that dilutes the incentive to use the digital flow.
+  The question is whether the fallback is a permanent design principle or a launch-period hedge that should have a planned sunset.
 
 * **Should the mobile experience be a Progressive Web App (PWA)?**
-The current design calls for a lightweight mobile web form opened by scanning a QR code — no app installation required.
-A PWA would preserve that zero-install property while adding capabilities not available to a plain web page:
-an "Add to Home Screen" prompt so frequent users get a native-looking icon,
-offline support via a service worker so the form still loads even with spotty shop Wi-Fi,
-and optional push notifications so members can receive reminders without Slack.
-The tradeoff is complexity: PWAs require a service worker, a web app manifest, and HTTPS
-— all achievable but meaningfully more infrastructure than a single-page form.
-If member re-engagement (repeat task logging, reminders) proves important after the Phase 0 trial,
-a PWA upgrade is a natural next step. If most members log tasks infrequently and connectivity is reliable,
-the added complexity is likely not justified.
+  The current design calls for a lightweight mobile web form opened by scanning a QR code — no app installation required.
+  A PWA would preserve that zero-install property while adding capabilities not available to a plain web page:
+  an "Add to Home Screen" prompt so frequent users get a native-looking icon,
+  offline support via a service worker so the form still loads even with spotty shop Wi-Fi,
+  and optional push notifications so members can receive reminders without Slack.
+  The tradeoff is complexity: PWAs require a service worker, a web app manifest, and HTTPS
+  — all achievable but meaningfully more infrastructure than a single-page form.
+  If member re-engagement (repeat task logging, reminders) proves important after the Phase 0 trial,
+  a PWA upgrade is a natural next step. If most members log tasks infrequently and connectivity is reliable,
+  the added complexity is likely not justified.
 
 * **The goal for Members is 2 hr/month of volunteer work but the process doesn't measure hours.**
-The system currently tracks task completions as binary events — a member either completed a task or did not.
-There is no notion of how long a task takes, which makes it impossible to tell whether a
-member who logged two tasks in a month actually contributed 2 hours or 20 minutes.
-A practical fix is to attach an estimated duration to each task in the data model
-— a Steward-supplied guess, defaulting to a minimum of 15 minutes for any task that isn't explicitly rated.
-With per-task estimates in place, the reporting pipeline can sum estimated hours per member per month
-and flag members who are technically compliant on task count but well short of the 2-hour intent.
-This also gives Stewards a lever for balancing workload:
-if a location's tasks are all 15-minute jobs, a compliant member may only be contributing half an hour.
-Estimated hours are inherently imprecise — the same task might take a new member 45 minutes and an experienced one 10
-— but even a rough estimate is more useful than no estimate at all.
-The question is whether to add a `time` field to the task schema now,
-while the data model is still being designed, or defer it until compliance reporting becomes a real need.
+  The system currently tracks task completions as binary events — a member either completed a task or did not.
+  There is no notion of how long a task takes, which makes it impossible to tell whether a
+  member who logged two tasks in a month actually contributed 2 hours or 20 minutes.
+  A practical fix is to attach an estimated duration to each task in the data model
+  — a Steward-supplied guess, defaulting to a minimum of 15 minutes for any task that isn't explicitly rated.
+  With per-task estimates in place, the reporting pipeline can sum estimated hours per member per month
+  and flag members who are technically compliant on task count but well short of the 2-hour intent.
+  This also gives Stewards a lever for balancing workload:
+  if a location's tasks are all 15-minute jobs, a compliant member may only be contributing half an hour.
+  Estimated hours are inherently imprecise — the same task might take a new member 45 minutes and an experienced one 10
+  — but even a rough estimate is more useful than no estimate at all.
+  The question is whether to add a `time` field to the task schema now,
+  while the data model is still being designed, or defer it until compliance reporting becomes a real need.
 
 * **Should we consider Claude Routines as an alternative to APScheduler?**
-The current design (§4.2) embeds APScheduler inside the bot process to drive all time-based automation:
-overdue task alerts posted to `#shop-bulletin`, weekly error and availability summaries, monthly compliance summaries,
-and top-contributor recognition posts.
-APScheduler is a well-understood Python library — it runs in-process, fires reliably, and adds no per-execution API cost —
-but it has one structural dependency that is easy to overlook:
-the bot process must be running continuously for the schedule to execute.
-If the bot restarts, crashes, or is redeployed, any scheduled job that was due during the outage is silently skipped
-unless the job store is persisted to a durable backend.
+  The current design (§4.2) embeds APScheduler inside the bot process to drive all time-based automation:
+  overdue task alerts posted to `#shop-bulletin`, weekly error and availability summaries, monthly compliance summaries,
+  and top-contributor recognition posts.
+  APScheduler is a well-understood Python library — it runs in-process, fires reliably, and adds no per-execution API cost —
+  but it has one structural dependency that is easy to overlook:
+  the bot process must be running continuously for the schedule to execute.
+  If the bot restarts, crashes, or is redeployed, any scheduled job that was due during the outage is silently skipped
+  unless the job store is persisted to a durable backend.
 
-Claude Routines offer a different model.
-A Routine is a managed, cloud-scheduled agent: Anthropic's infrastructure fires the agent on a cron schedule,
-the agent invokes the Claude model with a task prompt, executes any needed tool calls
-(querying Google Sheets, posting to Slack), and terminates.
-No persistent bot process is required — each scheduled job is stateless and self-contained.
-This eliminates the "missed job on restart" failure mode entirely and removes the operational burden of keeping
-a long-running process alive around the clock.
-The agent also has access to Claude's full reasoning capability at execution time,
-which means a monthly compliance summary could be drafted in natural language rather than templated text —
-potentially more readable for members, though less predictable for testing.
+  Claude Routines offer a different model.
+  A Routine is a managed, cloud-scheduled agent: Anthropic's infrastructure fires the agent on a cron schedule,
+  the agent invokes the Claude model with a task prompt, executes any needed tool calls
+  (querying Google Sheets, posting to Slack), and terminates.
+  No persistent bot process is required — each scheduled job is stateless and self-contained.
+  This eliminates the "missed job on restart" failure mode entirely and removes the operational burden of keeping
+  a long-running process alive around the clock.
+  The agent also has access to Claude's full reasoning capability at execution time,
+  which means a monthly compliance summary could be drafted in natural language rather than templated text —
+  potentially more readable for members, though less predictable for testing.
 
-The tradeoff is cost and latency.
-Each Routine execution invokes the Claude API, adding per-run token costs that APScheduler does not have.
-For a small shop running a handful of scheduled jobs per week, the cost is likely negligible,
-but it should be weighed against the hosting cost of keeping a bot process running 24/7.
-Latency is also less deterministic: a Routine fires on a schedule but the agent's execution time varies with model load,
-whereas APScheduler fires synchronously in-process with sub-second overhead.
-For notifications where a few seconds of jitter is acceptable — weekly reminders, monthly reports — this is not a concern.
-For any near-real-time response (e.g., confirming a task completion immediately after a form submission),
-an always-running bot with APScheduler remains the right tool.
+---
 
-The question is whether the scheduled-report workload is better served by a managed, AI-native Routine
-— accepting variable latency and per-run cost in exchange for operational simplicity and richer natural language output —
-or whether APScheduler embedded in the bot is the right call
-because it is simpler to test, deterministic, and keeps all scheduling logic in one place.
-A hybrid is also reasonable: use APScheduler for low-latency, templated notifications
-and Claude Routines for the monthly narrative reports that genuinely benefit from AI-generated prose.
-
-### Work Tasks Data Model
+### Appendix B: Work Tasks Data Model
 
 ```yaml
 opportunities:
@@ -1108,7 +1094,9 @@ opportunities:
                 last_date: NA
 ```
 
-### Is it a Pipeline or Workflow?
+---
+
+### Appendix C: Is it a Pipeline or Workflow?
 
 This project uses the term **pipeline** deliberately — here is why, and when you would reach for _workflow_ instead.
 
@@ -1131,4 +1119,7 @@ If a future feature required a steward to approve a new task before it entered t
 
 ---
 
-### Volunteer Opportunity Sign-Up Sheet
+### Appendix D: Volunteer Opportunity Sign-Up Sheet
+Here is an example of the Volunteer Opportunity Sign-Up Sheet
+
+![Volunteer Opportunity Sign-Up Sheet](/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/metalshop-signup-sheet2.png)

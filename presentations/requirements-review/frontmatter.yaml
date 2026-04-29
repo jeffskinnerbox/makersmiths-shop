@@ -1,0 +1,128 @@
+---
+# Here's the full default frontmatter (aka headmatter) from the official Slidev docs:
+
+# ─── THEME & ADDONS ───────────────────────────────────────────────
+# Theme id, npm package name, or local path
+theme: default
+# Extra addons (npm packages or local paths)
+addons: []
+
+# ─── METADATA ─────────────────────────────────────────────────────
+# Slide deck title; auto-inferred from first h1 if omitted
+title: Slidev
+# Browser tab title template; %s = deck title
+titleTemplate: '%s - Slidev'
+# Info string (Markdown); shown in the info panel
+info: false
+# Author embedded in exported PDF/PPTX metadata
+author: Your Name Here
+# Keywords embedded in exported PDF metadata (comma-delimited)
+keywords: keyword1,keyword2
+
+# ─── PRESENTER / EXPORT ───────────────────────────────────────────
+# Enable presenter mode: true | false | 'dev' | 'build'
+presenter: true
+# Enable in-browser exporter: true | false | 'dev' | 'build'
+browserExporter: dev
+# Enable PDF download button in SPA build (or provide a custom URL)
+download: false
+# Base filename for exported files
+exportFilename: slidev-exported
+# Fine-grained export options (mirrors CLI flags, camelCase)
+export:
+  format: pdf           # Output format: pdf | png | md
+  timeout: 30000        # Puppeteer render timeout (ms)
+  dark: false           # Export using dark color scheme
+  withClicks: false     # Expand click animations into separate pages
+  withToc: false        # Include table of contents page
+
+# ─── CODE BLOCKS ──────────────────────────────────────────────────
+# TypeScript TwoSlash annotations: true | false | 'dev' | 'build'
+twoslash: true
+# Show line numbers in code blocks
+lineNumbers: false
+# Monaco in-slide editor: true | false | 'dev' | 'build'
+monaco: true
+# Where Monaco loads TypeScript types from: 'cdn' | 'local' | 'none'
+monacoTypesSource: local
+# Extra local packages whose types Monaco should import
+monacoTypesAdditionalPackages: []
+# Extra local modules treated as dependencies for runnable Monaco cells
+monacoRunAdditionalDeps: []
+
+# ─── ASSETS & INTERACTION ─────────────────────────────────────────
+# Cache remote assets locally via vite-plugin-remote-assets
+remoteAssets: false
+# Allow text selection on slides
+selectable: true
+# Enable slide recording: true | false | 'dev' | 'build'
+record: dev
+# Enable right-click context menu: true | false | 'dev' | 'build'
+contextMenu: true
+# Prevent screen sleep during presentation: true | false | 'dev' | 'build'
+wakeLock: true
+# Render slide thumbnails in the overview panel
+overviewSnapshots: false
+# Vue Router mode: 'history' | 'hash'
+routerMode: history
+
+# ─── APPEARANCE ───────────────────────────────────────────────────
+# Force light/dark mode: 'auto' | 'light' | 'dark'
+colorSchema: auto
+# Slide aspect ratio
+aspectRatio: 16/9
+# Canvas width in px (think of this as the "design resolution")
+canvasWidth: 980
+# Default transition between slides (null = none)
+transition: null
+# Default click animation preset (null = none)
+clickAnimation: null
+
+# ─── THEME CUSTOMIZATION ──────────────────────────────────────────
+# Injected as CSS vars: --slidev-theme-<key>
+# Most relevant for styling — check your theme's docs for supported keys
+themeConfig:
+  primary: '#5d8392'
+
+# ─── FONTS ────────────────────────────────────────────────────────
+# Auto-imported from Google Fonts
+fonts:
+  sans: Roboto        # Body / general text
+  serif: Roboto Slab  # Serif elements
+  mono: Fira Code     # Code blocks
+
+# ─── PER-SLIDE DEFAULTS ───────────────────────────────────────────
+# Frontmatter values applied to every slide unless overridden
+defaults:
+  layout: default
+  # transition: fade  # e.g. apply a transition to all slides
+
+# ─── DRAWINGS ─────────────────────────────────────────────────────
+drawings:
+  enabled: true         # Allow drawing on slides
+  persist: false        # Save drawings between sessions
+  presenterOnly: false  # Restrict drawing to presenter view
+  syncAll: true         # Sync drawings to all viewers
+
+# ─── MISC ─────────────────────────────────────────────────────────
+# Favicon (local path or URL)
+favicon: 'https://cdn.jsdelivr.net/gh/slidevjs/slidev/assets/favicon.png'
+# PlantUML render server
+plantUmlServer: https://www.plantuml.com/plantuml
+
+# ─── HTML & SEO ───────────────────────────────────────────────────
+htmlAttrs:
+  dir: ltr
+  lang: en
+seoMeta:
+  ogTitle: Slidev Starter Template
+  ogDescription: Presentation slides for developers
+  ogImage: https://cover.sli.dev
+  ogUrl: https://example.com
+  twitterCard: summary_large_image
+  twitterTitle: Slidev Starter Template
+  twitterDescription: Presentation slides for developers
+  twitterImage: https://cover.sli.dev
+  twitterSite: username
+  twitterUrl: https://example.com
+---

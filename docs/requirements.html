@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+  <style>
+    .markdown-body {
+      box-sizing: border-box;
+      min-width: 200px;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 45px;
+    }
+    @media (max-width: 767px) {
+      .markdown-body { padding: 15px; }
+    }
+  </style>
+</head>
+<body class="markdown-body">
+<h1 id="shop-sergeant--system-requirements">Shop Sergeant — System
+Requirements</h1>
+<ul>
+<li><strong>Project:</strong> Shop Sergeant</li>
+<li><strong>Organization:</strong> Makersmiths Makerspace</li>
+<li><strong>Scope:</strong> Makersmiths Leesburg (MSL) — initial
+release</li>
+<li><strong>Status:</strong> Phase 0 underway (Task Sheet Pipeline
+tooling)</li>
+<li><strong>Audience:</strong> All stakeholders — Members, Stewards,
+Shop Stewards, Shop Sergeant</li>
+</ul>
+<p><em>This document is maintained by the Jeff Irland. If you have
+questions/input, contact me directly via Slack (jeff.irland).</em></p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-introduction">Introduction</a></li>
+<li><a href="#2-glossary">Glossary</a></li>
+<li><a href="#3-problem-statement">Problem Statement</a></li>
+<li><a href="#4-system-overview">System Overview</a></li>
+<li><a href="#5-functional-requirements">Functional
+Requirements</a></li>
+<li><a href="#6-physical-sign-up-sheet-requirements">Physical Sign-Up
+Sheet Requirements</a></li>
+<li><a href="#7-agentic-ai-and-slack-bot-requirements">Agentic AI and
+Slack Bot Requirements</a></li>
+<li><a href="#8-non-functional-requirements">Non-Functional
+Requirements</a></li>
+<li><a href="#9-success-criteria-kpis">Success Criteria (KPIs)</a></li>
+<li><a href="#10-out-of-scope">Out of Scope</a></li>
+<li><a href="#appendix">Appendix</a>
+<ul>
+<li><a href="#things-worth-considering">Things Worth
+Considering</a></li>
+<li><a href="#work-tasks-data-model">Work Tasks Data Model</a></li>
+<li><a href="#is-it-a-pipeline-or-workflow">Is it a Pipeline or
+Workflow?</a></li>
+<li><a href="#volunteer-opportunity-signup-sheet">Volunteer Opportunity
+Sign-Up Sheet</a></li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="1-introduction">1. Introduction</h2>
+<p>Makersmiths' current paper-only work task volunteering process has
+several weaknesses. A new automated process, called Shop Sergeant, is
+proposed to remove much of the friction in the current process, make
+work task activity more visible, and gather the data for our non-profit
+status. The process uses Slack as its primary communication/control
+medium, but can also be trigger via a few clicks on a mobile phone web
+form. Proposed requirements have been written here and early prototyping
+of the solution is underway.</p>
+<h3 id="11-purpose-and-scope">1.1 Purpose and Scope</h3>
+<p>This document defines the requirements for <strong>Shop
+Sergeant</strong>, an automated task tracking system for the Makersmiths
+makerspace. It is written for all stakeholders — Members and Stewards
+who will use the system, and developers who will build it. The official
+version is maintained on <a
+href="https://github.com/jeffskinnerbox/makersmiths-shop">GitHub</a>.</p>
+<p>This document is the starting point for the design process. It is
+followed by:</p>
+<ul>
+<li><code>docs/specifications.md</code> — detailed system design, data
+flows, API contracts, and database schema</li>
+<li><code>docs/implementation-plan.md</code> — phased development plan
+with file maps and code structure</li>
+</ul>
+<p>This initial release targets <strong>Makersmiths Leesburg
+(MSL)</strong> only. Extension to Makersmiths Purcellville (MSP) is
+potentially a future milestone, but is explicitly out of scope here. The
+system architecture must, however, support multi-shop expansion without
+structural changes.</p>
+<p>Also, it desirable for these requirements to be extensible so future
+Shop Sergeant features can be supported, and in addition, this solution
+could extended beyond it initial purpose. Such things as: reporting on
+location/equipment usage, shop entry/exit events, etc. There are no
+plans to extend this application at this time, but it is wise to design
+in extensibility.</p>
+<h3 id="12-project-background">1.2 Project Background</h3>
+<p>All Makersmiths Members are expected to volunteer 2 hours per month
+to help maintain, operate, and improve the makerspace. Today, this
+requirement is tracked entirely on paper: handwritten sign-up sheets are
+posted around the shop, Members write their name and date when they
+complete a task, and the sheets are periodically replaced.</p>
+<p>This paper-only process has significant gaps — completion records are
+often missing or illegible, there is no cumulative history, Stewards
+have no visibility into whether their area's tasks are getting done, and
+members who regularly contribute go unrecognized.</p>
+<p><strong>Shop Sergeant</strong> replaces the manual bookkeeping with
+an automated system centered on <strong>Slack</strong> and
+<strong>Google Sheets</strong>, while keeping the physical sign-up sheet
+as the primary touchpoint for members on the shop floor.</p>
+<hr />
+<h2 id="2-glossary">2. Glossary</h2>
+<h3 id="21-physical-spaces">2.1 Physical Spaces</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Definition</th>
+<th>MSL Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Shop</strong></td>
+<td>A physical location where Makersmiths operates. Each shop is
+independently managed.</td>
+<td>Makersmiths Leesburg (MSL)</td>
+</tr>
+<tr class="even">
+<td><strong>Area</strong></td>
+<td>A major subdivision of a shop — typically a floor, wing, or building
+section.</td>
+<td>Main Floor, Exterior</td>
+</tr>
+<tr class="odd">
+<td><strong>Location</strong></td>
+<td>A specific craft or functional space within an area. Locations are
+the unit at which tasks and sign-up sheets are organized.</td>
+<td>Metalshop, Laser Cutter, Wood Shop, Bathrooms</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Diagram:</strong> <a
+href="/home/jeff/src/projects/makersmiths/shop-sergeant/logos_images/Leesburg_Map.jpg"><code>Leesburg_Map.jpg</code></a>
+— Makersmiths Leesburg (MSL) Shop Floor Plan</p>
+</blockquote>
+<p><img
+src="/home/jeff/src/projects/makersmiths/shop-sergeant/logos_images/Leesburg_Map.jpg"
+alt="Pipeline Overview" /></p>
+<h3 id="22-human-actors">2.2 Human Actors</h3>
+<p>These are the human participants in the Shop Sergeant system.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Actor</th>
+<th>Who They Are</th>
+<th>Key Responsibilities</th>
+<th>System Access</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Member</strong></td>
+<td>Any active Makersmiths member</td>
+<td>Complete volunteer tasks; log completions</td>
+<td>Log own tasks; query own history; view open tasks and public
+reports</td>
+</tr>
+<tr class="even">
+<td><strong>Steward</strong></td>
+<td>A member responsible for a specific location</td>
+<td>Define tasks for their location; monitor task completion; train
+members</td>
+<td>All member actions + task add/update/delete (own location); generate
+sign-up sheets (own location)</td>
+</tr>
+<tr class="odd">
+<td><strong>Shop Steward</strong></td>
+<td>A member who oversees the entire shop</td>
+<td>Monitor all areas; coordinate stewards; escalate issues</td>
+<td>All steward actions + shop-wide access; trigger reminder blasts</td>
+</tr>
+<tr class="even">
+<td><strong>Shop Sergeant</strong></td>
+<td>A member who manages the task volunteering process itself</td>
+<td>Ensure the process runs smoothly; monitor KPIs; maintain the
+system</td>
+<td>All shop steward actions + bot error log; audit trail; full system
+configuration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-system-actors">2.3 System Actors</h3>
+<p>These are the non-human participants in the Shop Sergeant system.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>What It Is</th>
+<th>Role in the System</th>
+<th>Interfaces With</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Physical Sign-Up Sheet</strong></td>
+<td>Printed 8.5×11" landscape paper sheet, one per location</td>
+<td>Primary shop-floor touchpoint for Members; hosts the task list,
+sign-off fields, and QR code</td>
+<td>Member (reads/writes on it), QR Code (embedded in it)</td>
+</tr>
+<tr class="even">
+<td><strong>QR Code</strong></td>
+<td>Machine-readable image printed on the sign-up sheet</td>
+<td>Encodes the URL of the location's Mobile Web Form; scanning it
+initiates digital task logging without login or app installation</td>
+<td>Mobile Phone (scanned by), Mobile Web Form (target URL encoded),
+Physical Sign-Up Sheet (embedded in)</td>
+</tr>
+<tr class="odd">
+<td><strong>Mobile Phone</strong></td>
+<td>Member's personal smartphone — no app installation required</td>
+<td>Uses the native camera to scan a QR code; the phone's browser opens
+automatically to the Mobile Web Form (or Slack). No app, no account, no
+login required for the QR method.</td>
+<td>QR Code (scans), Mobile Web Form (browser opens to), Slack (optional
+NL queries)</td>
+</tr>
+<tr class="even">
+<td><strong>Mobile Web Form</strong></td>
+<td>Lightweight mobile-optimized web app, served when a QR code is
+scanned</td>
+<td>Presents the task list for a location; collects member name and
+selected task; POSTs the completion record to the Agentic Workers;
+designed for ≤ 3 taps from scan to confirmation</td>
+<td>Mobile Phone (rendered on), Agentic Workers (POST target for
+completion records)</td>
+</tr>
+<tr class="odd">
+<td><strong>Slack</strong></td>
+<td>Cloud-based team communication platform</td>
+<td>Primary UI for all human and automated interaction; channels segment
+audiences and control access; Agentic Workers subscribe to events and
+post notifications</td>
+<td>All human actors, Agentic Workers, Mobile Web Form (indirectly via
+bot)</td>
+</tr>
+<tr class="even">
+<td><strong>Google Sheets</strong></td>
+<td>Cloud spreadsheet service accessed via Google Sheets API v4</td>
+<td>Single source of truth for all task definitions, completion records,
+and member data; all pipelines read from and write to it</td>
+<td>Agentic Workers (read/write via API), Steward / Shop Sergeant (may
+view directly)</td>
+</tr>
+<tr class="odd">
+<td><strong>Claude AI Model</strong></td>
+<td>Anthropic LLM (<code>claude-sonnet-4-6</code>), invoked via API by
+Agentic Workers</td>
+<td>Natural language query processing — interprets plain-English
+questions and task completion updates from Members</td>
+<td>Agentic Workers (invoked by)</td>
+</tr>
+<tr class="even">
+<td><strong>APScheduler</strong></td>
+<td>Python job scheduler embedded in the bot process</td>
+<td>Drives all time-based automation — overdue task alerts, weekly
+error/availability reports, monthly compliance summaries,
+top-contributor posts — without any human trigger</td>
+<td>Agentic Workers (triggers actions in), Slack (posts via bot), Google
+Sheets (reads via bot)</td>
+</tr>
+<tr class="odd">
+<td><strong>Agentic Workers</strong></td>
+<td>Python Slack bot built with the Slack Bolt framework</td>
+<td>Listen to Slack events; dispatch commands to the correct pipeline;
+invoke the Claude AI Model for NL tasks; read from and write to Google
+Sheets; route notifications to the correct channels</td>
+<td>All human actors (via Slack), all Slack channels, Google Sheets,
+Claude AI Model, Mobile Web Form, APScheduler</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-system-terms">2.4 System Terms</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Task</strong></td>
+<td>A discrete unit of volunteer work. Each task has a name, frequency,
+purpose, and instructions.</td>
+</tr>
+<tr class="even">
+<td><strong>Task ID</strong></td>
+<td>A unique identifier for a task, formatted as
+<code>SHOP-LOCATION-NNN</code> (e.g., <code>MSL-METAL-003</code>). Used
+in all system references.</td>
+</tr>
+<tr class="odd">
+<td><strong>Sign-Up Sheet</strong></td>
+<td>A printed 8.5×11" landscape sheet listing tasks for a single
+location. Members write their name and date, or scan a QR code, to
+record completions.</td>
+</tr>
+<tr class="even">
+<td><strong>QR Code</strong></td>
+<td>A scannable code printed on the sign-up sheet. Scanning it opens a
+mobile form where the member records a task completion.</td>
+</tr>
+<tr class="odd">
+<td><strong>Pipeline</strong></td>
+<td>One of four end-to-end workflows in the system: Task Database, Task
+Sheet, Task Capture, and Task Reporting.</td>
+</tr>
+<tr class="even">
+<td><strong>Source of Truth</strong></td>
+<td><strong>Google Sheets</strong> — all task definitions, completion
+records, and history live here. All other system components read from
+and write to Google Sheets.</td>
+</tr>
+<tr class="odd">
+<td><strong>Capture Method</strong></td>
+<td>The mechanism by which a member records a completed task. Two
+methods are supported: Single-Sheet QR (mobile web form) and Slack
+Update.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-problem-statement">3. Problem Statement</h2>
+<p>The current paper-only task volunteering process has five significant
+weaknesses:</p>
+<h3 id="31-incomplete-completion-records">3.1 Incomplete Completion
+Records</h3>
+<p><strong>Problem:</strong> After completing a task, members frequently
+do not write their name, the date, or even confirm the task as done on
+the sign-up sheet.</p>
+<p><strong>Impact:</strong> There is little to no reliable record of who
+did what or when. The data needed for compliance, recognition, and
+process improvement simply does not exist.</p>
+<p><strong>Requirement:</strong> The system must make recording a
+completion so fast and easy (target: ≤ 3 taps on a mobile device) that
+members do it consistently.</p>
+<h3 id="32-no-cumulative-record-keeping">3.2 No Cumulative
+Record-Keeping</h3>
+<p><strong>Problem:</strong> When sign-up sheets are replaced, all prior
+completion data is discarded. No historical record is maintained.</p>
+<p><strong>Impact:</strong> Makersmiths holds 501(c)(3) tax-exempt
+status, which may require documentation of volunteer labor. Without
+cumulative records, the organization cannot demonstrate member
+contributions over time.</p>
+<p><strong>Requirement:</strong> All completion records must be stored
+permanently in Google Sheets. Records must include member name, task ID,
+date, and capture method used.</p>
+<h3 id="33-stewards-have-no-monitoring-tools">3.3 Stewards Have No
+Monitoring Tools</h3>
+<p><strong>Problem:</strong> Stewards are responsible for their
+location's tasks but have no way to see which tasks are overdue, which
+are being completed regularly, or which are being ignored.</p>
+<p><strong>Impact:</strong> Problems in a location are only discovered
+when something breaks or a safety issue arises — not proactively.</p>
+<p><strong>Requirement:</strong> Stewards must be able to query task
+status for their location at any time via Slack. The system must
+automatically alert Stewards when tasks are overdue.</p>
+<h3 id="34-periodic-tasks-have-no-scheduling">3.4 Periodic Tasks Have No
+Scheduling</h3>
+<p><strong>Problem:</strong> Some tasks must be performed on a regular
+schedule (weekly, monthly, quarterly) but there is no mechanism to track
+whether they have been done on time.</p>
+<p><strong>Impact:</strong> Periodic maintenance gets forgotten.
+Equipment degrades. Safety risks accumulate.</p>
+<p><strong>Requirement:</strong> Tasks must have an associated
+frequency. The system must track last-completion dates and generate
+alerts when periodic tasks are overdue.</p>
+<h3 id="35-top-contributors-go-unrecognized">3.5 Top Contributors Go
+Unrecognized</h3>
+<p><strong>Problem:</strong> Members who consistently go above and
+beyond their 2-hour requirement are not identified or thanked, because
+no records exist.</p>
+<p><strong>Impact:</strong> Highly engaged Members receive no
+recognition. This reduces motivation and community goodwill.</p>
+<p><strong>Requirement:</strong> The system must generate periodic
+reports identifying top contributors so the Shop Sergeant and Stewards
+can recognize them.</p>
+<hr />
+<h2 id="4-system-overview">4. System Overview</h2>
+<h3 id="41-architecture-summary">4.1 Architecture Summary</h3>
+<p>Shop Sergeant is built around four pipelines, each handling a
+distinct part of the volunteer task workflow:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Pipeline</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Task Database</strong></td>
+<td>Maintains the master list of all tasks in Google Sheets; supports
+add, update, and delete</td>
+</tr>
+<tr class="even">
+<td><strong>Task Sheet</strong></td>
+<td>Generates printable sign-up sheets from the task database and posts
+them around the shop</td>
+</tr>
+<tr class="odd">
+<td><strong>Task Capture</strong></td>
+<td>Records task completions from Members via Single-Sheet QR → mobile
+web form (Method 1) or Slack Update in <code>#shop-queries</code>
+(Method 2)</td>
+</tr>
+<tr class="even">
+<td><strong>Task Reporting</strong></td>
+<td>Generates reports on task completion, Member participation, and
+location health</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Google Sheets</strong> is the system's single source of
+truth. All pipelines read from and write to it. <strong>Slack</strong>
+is the primary user interface for both members and administrators.
+Physical sign-up sheets serve as the member-facing touchpoint on the
+shop floor.</p>
+<p>Human actors (Member, Steward, Shop Steward, Shop Sergeant) are
+defined in §2.2. System actors (Physical Sign-Up Sheet, QR Code, Mobile
+Phone, Mobile Web Form, Slack, Google Sheets, Claude AI Model,
+APScheduler, Agentic Workers) are defined in §2.3.</p>
+<blockquote>
+<p><strong>Diagram:</strong> <a
+href="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/pipeline-overview.excalidraw"><code>pipeline-overview.excalidraw</code></a>
+— end-to-end pipeline overview</p>
+</blockquote>
+<p><img
+src="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/pipeline-overview.png"
+alt="Pipeline Overview" /></p>
+<h3 id="42-technology-stack">4.2 Technology Stack</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Technology</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bot framework</td>
+<td>Python 3.11+ with Slack Bolt</td>
+<td>Listens to Slack events; dispatches commands to the appropriate
+pipeline</td>
+</tr>
+<tr class="even">
+<td>AI agent</td>
+<td>Claude API (<code>claude-sonnet-4-6</code>)</td>
+<td>Natural language query handling; Slack Update task completion
+processing</td>
+</tr>
+<tr class="odd">
+<td>Data store</td>
+<td>Google Sheets API v4</td>
+<td>Authoritative storage for all tasks and completion records</td>
+</tr>
+<tr class="even">
+<td>Sheet generation</td>
+<td>Jinja2 + wkhtmltopdf</td>
+<td>Renders HTML sign-up sheet templates to PDF for printing</td>
+</tr>
+<tr class="odd">
+<td>QR codes</td>
+<td><code>qrcode[pil]</code> Python library</td>
+<td>Generates QR codes embedded in sign-up sheets</td>
+</tr>
+<tr class="even">
+<td>Scheduling</td>
+<td>APScheduler</td>
+<td>Sends recurring reminders; monitors overdue periodic tasks</td>
+</tr>
+<tr class="odd">
+<td>Testing</td>
+<td>pytest</td>
+<td>Unit and integration tests for all pipeline components</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-current-state">4.3 Current State</h3>
+<p>The current state of the project, a prototyping step that will be
+called Phase 0, has implemented the tooling for the <strong>Task Sheet
+Pipeline</strong> process and passing automated tests.</p>
+<ul>
+<li><code>scripts/signup-sheet.py</code> — CLI tool that renders a
+sign-up sheet HTML from a YAML task file</li>
+<li><code>scripts/generate-signup-sheet-template.py</code> — generates
+the reusable Jinja2 HTML template</li>
+<li><code>scripts/yaml-to-sheets.py</code> — converts YAML task
+definitions to Excel for Google Sheets import</li>
+<li><code>scripts/parse-tasks.py</code> and
+<code>parse-opp-tasks.py</code> — YAML to Markdown converters for
+review</li>
+</ul>
+<h4 id="phase-0-sign-up-sheet-prototype">Phase 0: Sign-Up Sheet
+Prototype</h4>
+<p>Using the above scripts, the project is ready for prototyping of the
+Volunteer Opportunities sign-up sheet with a limited number of stewards
+and members. No mobile phone, Slack bot, or Google Sheets integration
+exists yet.</p>
+<p>The objective is to assess the easy of use of different sign-up sheet
+formats with a mobile phone. Will the user know how to use their mobile
+device and how error prone will that use be?</p>
+<h4 id="phase-0-task-capture-prototype">Phase 0: Task Capture
+Prototype</h4>
+<p>The next prototyping step will cover both capture methods: the mobile
+phone QR code scan opening a mobile web form (Method 1) and the Slack
+Update flow in <code>#shop-queries</code> (Method 2). Some small parts
+of the Slack bot or Google Sheets integration may be simulated.</p>
+<p>The objective is to assess the ease of use of each capture method and
+determine which members prefer.</p>
+<hr />
+<h2 id="5-functional-requirements">5. Functional Requirements</h2>
+<h3 id="51-task-database-pipeline">5.1 Task Database Pipeline</h3>
+<p><strong>Purpose:</strong> Maintain the authoritative catalog of all
+volunteer tasks in Google Sheets.</p>
+<blockquote>
+<p><strong>Diagram:</strong> <a
+href="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/diagrams/task-database-pipeline.excalidraw"><code>task-database-pipeline.excalidraw</code></a></p>
+</blockquote>
+<p><img
+src="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-database-pipeline.png"
+alt="Task Database Pipeline" /></p>
+<p><strong>Inputs:</strong> YAML task definition files; Slack commands
+in <code>#shop-admin</code></p>
+<p><strong>Outputs:</strong> Updated Google Sheets task catalog; Slack
+notifications in <code>#shop-alerts</code></p>
+<p><strong>Requirements:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DB-1</td>
+<td>Google Sheets is the single source of truth for all task definitions
+and completion records</td>
+</tr>
+<tr class="even">
+<td>DB-2</td>
+<td>Task definitions may be bulk-loaded from YAML files using provided
+scripts</td>
+</tr>
+<tr class="odd">
+<td>DB-3</td>
+<td>Individual tasks may be added, updated, or deleted via Slack
+commands in <code>#shop-admin</code></td>
+</tr>
+<tr class="even">
+<td>DB-4</td>
+<td>Only stewards (for their own location), shop stewards, and the shop
+sergeant may modify tasks</td>
+</tr>
+<tr class="odd">
+<td>DB-5</td>
+<td>Every task must have a unique Task ID
+(<code>SHOP-LOCATION-NNN</code>), a name, a frequency, and a
+location</td>
+</tr>
+<tr class="even">
+<td>DB-6</td>
+<td>The system must reject duplicate Task IDs and duplicate task names
+within the same location</td>
+</tr>
+<tr class="odd">
+<td>DB-7</td>
+<td>Every modification to the task catalog must trigger a notification
+in <code>#shop-alerts</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-task-sheet-pipeline">5.2 Task Sheet Pipeline</h3>
+<p><strong>Purpose:</strong> Generate printable sign-up sheets from the
+task database and notify stewards when new sheets are needed.</p>
+<blockquote>
+<p><strong>Diagram:</strong> <a
+href="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-sheet-pipeline.excalidraw"><code>task-sheet-pipeline.excalidraw</code></a></p>
+</blockquote>
+<p><img
+src="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-sheet-pipeline.png"
+alt="Task Sheet Pipeline" /></p>
+<p><strong>Inputs:</strong> Task YAML files (exported from Sheets);
+Slack commands in <code>#shop-admin</code>; optional logo and custom
+reference doc</p>
+<p><strong>Outputs:</strong> PDF sign-up sheets ready for printing;
+Slack notifications in <code>#shop-bulletin</code> and
+<code>#shop-alerts</code></p>
+<p><strong>Requirements:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TS-1</td>
+<td>The system must generate a sign-up sheet for any single location or
+all locations in a shop</td>
+</tr>
+<tr class="even">
+<td>TS-2</td>
+<td>Only stewards (own location), shop stewards, and the shop sergeant
+may generate sign-up sheets</td>
+</tr>
+<tr class="odd">
+<td>TS-3</td>
+<td>Sheets must be generated via Slack command in
+<code>#shop-admin</code> or via CLI script</td>
+</tr>
+<tr class="even">
+<td>TS-4</td>
+<td><code>#shop-bulletin</code> must be notified when new sheets are
+ready for printing</td>
+</tr>
+<tr class="odd">
+<td>TS-5</td>
+<td><code>#shop-alerts</code> must be notified each time a sheet is
+generated</td>
+</tr>
+<tr class="even">
+<td>TS-6</td>
+<td>The Slack bot must periodically remind stewards and the shop steward
+when task changes make a sheet refresh advisable</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-task-capture-pipeline">5.3 Task Capture Pipeline</h3>
+<p><strong>Purpose:</strong> Record task completions from members via
+mobile device, with minimum friction.</p>
+<blockquote>
+<p><strong>Diagram:</strong> <a
+href="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-capture-pipeline.excalidraw"><code>task-capture-pipeline.excalidraw</code></a></p>
+</blockquote>
+<p><img
+src="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-capture-pipeline.png"
+alt="Task Capture Pipeline" /></p>
+<p><strong>Inputs:</strong> QR code scan from member's mobile device;
+Slack message in <code>#shop-queries</code></p>
+<p><strong>Outputs:</strong> Completion record written to Google Sheets;
+confirmation message in <code>#shop-log</code>; notification in
+<code>#shop-alerts</code></p>
+<p>Two capture methods are supported.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Method 1 — Single-Sheet QR</strong></td>
+<td>A single QR code appears on each sign-up sheet. Scanning opens a
+mobile web form where the Member selects their name and the task
+completed, then confirms. The form posts to the bot, which logs to
+Sheets with <code>source=QR-form</code>.</td>
+</tr>
+<tr class="even">
+<td><strong>Method 2 — Slack Update</strong></td>
+<td>Member posts a task completion in <code>#shop-queries</code> using
+free-form text (e.g. "I just finished cleaning the metalshop floor") or
+the <code>task-done &lt;task_id&gt;</code> command. Task ID is accepted
+when provided but not required. The bot identifies the task, confirms
+with the member, and logs the completion to Sheets with
+<code>source=Slack</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Requirements:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TC-1</td>
+<td>Every completion record must include: Member name, Task ID,
+completion date, and capture method (<code>QR-form</code> or
+<code>Slack</code>)</td>
+</tr>
+<tr class="even">
+<td>TC-2</td>
+<td>Completion records must be written to Google Sheets immediately upon
+submission</td>
+</tr>
+<tr class="odd">
+<td>TC-3</td>
+<td>A confirmation message must appear in <code>#shop-log</code> for
+every logged completion</td>
+</tr>
+<tr class="even">
+<td>TC-4</td>
+<td><code>#shop-alerts</code> must be notified whenever a capture event
+is processed</td>
+</tr>
+<tr class="odd">
+<td>TC-5</td>
+<td>The Method 1 (QR) capture flow must require ≤ 3 taps on a mobile
+device from QR scan to confirmation</td>
+</tr>
+<tr class="even">
+<td>TC-6</td>
+<td>Method 1 (QR) must not require Members to create an account or
+install an app; Method 2 (Slack) assumes the member has an existing
+Slack account</td>
+</tr>
+<tr class="odd">
+<td>TC-7</td>
+<td>The bot must accept task completions in <code>#shop-queries</code>
+via free-form natural language text or the
+<code>task-done &lt;task_id&gt;</code> command</td>
+</tr>
+<tr class="even">
+<td>TC-8</td>
+<td>When no Task ID is provided in a Slack Update, the bot must identify
+the task via natural language processing or present a task list for
+member selection</td>
+</tr>
+<tr class="odd">
+<td>TC-9</td>
+<td>The bot must confirm the identified task with the member before
+writing the completion record to Google Sheets</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-task-reporting-pipeline">5.4 Task Reporting Pipeline</h3>
+<p><strong>Purpose:</strong> Generate reports on task completion, Member
+participation, and location health, accessible via Slack.</p>
+<blockquote>
+<p><strong>Diagram:</strong> <a
+href="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-reporting-pipeline.excalidraw"><code>task-reporting-pipeline.excalidraw</code></a></p>
+</blockquote>
+<p><img
+src="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/task-reporting-pipeline.png"
+alt="Task Reporting Pipeline" /></p>
+<p><strong>Inputs:</strong> Natural language queries in
+<code>#shop-queries</code> or <code>#shop-admin</code>; scheduled report
+triggers</p>
+<p><strong>Outputs:</strong> Inline Slack report responses;
+<code>#shop-alerts</code> notification on report generation</p>
+<p><strong>Report types:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Report</th>
+<th>Description</th>
+<th>Access</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Member report</strong></td>
+<td>Tasks completed by a specific Member; compliance status</td>
+<td>Member (own only), Stewards+ (any Member)</td>
+</tr>
+<tr class="even">
+<td><strong>Location report</strong></td>
+<td>Task completion status for a specific location; overdue tasks</td>
+<td>All Members (public data)</td>
+</tr>
+<tr class="odd">
+<td><strong>Shop report</strong></td>
+<td>Aggregate compliance, overdue tasks, top contributors, errors
+logged, availability across all locations</td>
+<td>All Members (public data)</td>
+</tr>
+<tr class="even">
+<td><strong>Compliance report</strong></td>
+<td>Which Members have/have not met the 2hr/month requirement</td>
+<td>Shop Steward and Shop Sergeant only</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Requirements:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TR-1</td>
+<td>Members may request reports via natural language in
+<code>#shop-queries</code> (public data only)</td>
+</tr>
+<tr class="even">
+<td>TR-2</td>
+<td>Stewards, Shop Stewards, and Shop Sergeants may request any report
+type via <code>#shop-admin</code></td>
+</tr>
+<tr class="odd">
+<td>TR-3</td>
+<td>The bot must respond to report requests inline in Slack</td>
+</tr>
+<tr class="even">
+<td>TR-4</td>
+<td><code>#shop-alerts</code> must be notified when any report is
+generated</td>
+</tr>
+<tr class="odd">
+<td>TR-5</td>
+<td>A monthly summary report must be automatically posted to
+<code>#shop-bulletin</code></td>
+</tr>
+<tr class="even">
+<td>TR-6</td>
+<td>A monthly top-contributors report must be automatically posted to
+<code>#shop-bulletin</code></td>
+</tr>
+<tr class="odd">
+<td>TR-7</td>
+<td>A weekly report of errors logged, availability across all locations
+posted to <code>#shop-bulletin</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-physical-sign-up-sheet-requirements">6. Physical Sign-Up Sheet
+Requirements</h2>
+<p>The sign-up sheet is the primary Member-facing touchpoint. Most
+Members will interact with the system only through this physical
+sheet.</p>
+<h3 id="61-format">6.1 Format</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Paper size</td>
+<td>8.5×11 inches, landscape orientation</td>
+</tr>
+<tr class="even">
+<td>One sheet per location</td>
+<td>Each location (e.g., Metalshop, Laser Cutter) gets its own
+sheet</td>
+</tr>
+<tr class="odd">
+<td>Print compatibility</td>
+<td>Must be legible when printed in black and white</td>
+</tr>
+<tr class="even">
+<td>Logo</td>
+<td>Makersmiths logo in the sheet header</td>
+</tr>
+<tr class="odd">
+<td>Header info</td>
+<td>Location name, Steward name, date generated</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62-columns">6.2 Columns</h3>
+<p>Each task row on the sign-up sheet must include:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Task Name</td>
+<td>Human-readable task description</td>
+</tr>
+<tr class="even">
+<td>Frequency</td>
+<td>How often the task should be done (e.g., Weekly, Monthly)</td>
+</tr>
+<tr class="odd">
+<td>Supervisor Required</td>
+<td>Yes/No — whether a Steward must be present</td>
+</tr>
+<tr class="even">
+<td>Completion Date</td>
+<td>Blank — Member writes the date by hand (fallback if QR not
+used)</td>
+</tr>
+<tr class="odd">
+<td>Member Name</td>
+<td>Blank — Member writes their name by hand (fallback if QR not
+used)</td>
+</tr>
+<tr class="even">
+<td>QR Code</td>
+<td>Scannable code for digital task logging</td>
+</tr>
+</tbody>
+</table>
+<h3 id="63-task-display-rules">6.3 Task Display Rules</h3>
+<ul>
+<li>Tasks are grouped by location</li>
+<li>Tasks that are TBD or have no defined work are silently omitted from
+the sheet</li>
+<li>Task rows are ordered by frequency (most frequent first) within a
+location</li>
+</ul>
+<h3 id="64-qr-code-placement">6.4 QR Code Placement</h3>
+<p>The QR code placement depends on the capture method selected:</p>
+<ul>
+<li><strong>Method 1 (Single-Sheet QR):</strong> One QR code in the
+sheet header or footer, covering the entire location</li>
+<li><strong>Method 2 (Slack Update):</strong> No QR code required —
+member interacts with the bot via <code>#shop-queries</code></li>
+</ul>
+<hr />
+<h2 id="7-agentic-ai-and-slack-bot-requirements">7. Agentic AI and Slack
+Bot Requirements</h2>
+<p>Shop Sergeant uses a <strong>custom Slack bot</strong> built with the
+Slack Bolt framework (Python) and the Claude API. This is distinct from
+Anthropic's "Claude in Slack" product — the custom bot can read from and
+write to Google Sheets, execute task management commands, and send
+structured notifications.</p>
+<p>The Claude AI model powers <strong>natural language query
+handling</strong> — members and stewards ask questions in plain English,
+and the bot interprets free-form Slack Update messages to identify the
+intended task.</p>
+<h3 id="71-action-definitions">7.1 Action Definitions</h3>
+<ul>
+<li><strong>Log task completion (QR or Slack):</strong> Submit a record
+that a specific task has been completed. Triggered by scanning a QR code
+and submitting the mobile web form (Method 1) or by posting a completion
+message in <code>#shop-queries</code> via free-form text or
+<code>task-done &lt;task_id&gt;</code> command (Method 2). The bot
+writes a completion record to Google Sheets with member name, Task ID,
+date, and capture method (<code>QR-form</code> or
+<code>Slack</code>).</li>
+<li><strong>Query own task history:</strong> Ask the bot to retrieve the
+requesting member's own completion records — how many tasks completed,
+which ones, and whether the 2hr/month requirement has been met.</li>
+<li><strong>Query any Member's task history:</strong> Ask the bot to
+retrieve completion records for a specific other member by name or Slack
+handle. Restricted to protect member privacy.</li>
+<li><strong>Query open tasks / location status:</strong> Ask the bot
+which tasks are currently open (not yet completed within their scheduled
+period) for a given location or across the shop. Returns public task
+data only.</li>
+<li><strong>Add / update / delete a task:</strong> Instruct the bot to
+create a new task, modify an existing task's fields (name, frequency,
+instructions, supervisor requirement), or remove a task from the
+catalog. Changes are written to Google Sheets and trigger a
+<code>#shop-alerts</code> notification.</li>
+<li><strong>Generate / print sign-up sheet:</strong> Instruct the bot to
+render a new printable sign-up sheet PDF for a given location (or all
+locations) from the current task catalog. The bot posts the sheet and
+notifies <code>#shop-bulletin</code>.</li>
+<li><strong>Request location or shop report:</strong> Ask the bot to
+generate a summary report — either for a specific location (task
+completion status, overdue tasks) or shop-wide (aggregate compliance,
+top contributors). Public-data reports are available to all Members; the
+compliance report (which Members have/have not met the 2hr/month
+requirement) is restricted to Shop Steward and Shop Sergeant.</li>
+<li><strong>Trigger overdue reminder blast:</strong> Instruct the bot to
+immediately send an overdue-task reminder message to
+<code>#shop-bulletin</code> for all locations with tasks past their
+scheduled period, rather than waiting for the next scheduled
+reminder.</li>
+<li><strong>View bot errors / audit log:</strong> Read the
+<code>#shop-alerts</code> channel, which contains every significant
+system event — task CRUD operations, capture events, report generation,
+and bot errors. Provides the full audit trail for the system.</li>
+<li><strong>Suspend / restore actions — area or location scope:</strong>
+Disable or re-enable any bot action (e.g., task logging, sign-up sheet
+generation) for a specific area or location within the shop. While
+suspended, the bot rejects affected actions for that scope and posts a
+notice to <code>#shop-alerts</code>. Used by Shop Stewards to lock down
+a location during an incident, equipment removal, or process review.
+Shop Stewards may only suspend/restore actions within their own area;
+Shop Sergeants may act on any area or location.</li>
+<li><strong>Suspend / restore actions — shop scope:</strong> Disable or
+re-enable any bot action across the entire shop. While suspended, the
+bot rejects the affected actions shop-wide and posts a notice to
+<code>#shop-alerts</code>. Reserved for Shop Sergeant use only —
+intended for system-wide incidents, emergency shutdowns, or major
+process changes.</li>
+</ul>
+<h3 id="72-slack-channel-structure">7.2 Slack Channel Structure</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Channel</th>
+<th>Access</th>
+<th>Who Posts</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>#shop-log</code></td>
+<td>All Members (read), Bot (write)</td>
+<td>Bot only</td>
+<td>Task completion confirmations; one message per logged
+completion</td>
+</tr>
+<tr class="even">
+<td><code>#shop-bulletin</code></td>
+<td>All Members (read), Bot (write)</td>
+<td>Bot only</td>
+<td>Announcements: new sign-up sheets available, overdue reminders,
+monthly summaries, top contributors</td>
+</tr>
+<tr class="odd">
+<td><code>#shop-queries</code></td>
+<td>All Members</td>
+<td>Members + Bot</td>
+<td>Natural language queries about tasks, Member history, location
+status, and public reports</td>
+</tr>
+<tr class="even">
+<td><code>#shop-admin</code> 🔒</td>
+<td>Stewards, Shop Steward, Shop Sergeant</td>
+<td>Admins + Bot</td>
+<td>Task add/update/delete, sign-up sheet generation, restricted report
+requests, compliance queries</td>
+</tr>
+<tr class="odd">
+<td><code>#shop-alerts</code> 🔒</td>
+<td>Shop Sergeant</td>
+<td>Bot only</td>
+<td>Bot errors, audit trail, system event log — every significant system
+action generates an entry here</td>
+</tr>
+</tbody>
+</table>
+<h3 id="73-permission-model">7.3 Permission Model</h3>
+<p>The following table defines what each actor may ask the bot to do,
+and where:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th style="text-align: center;">Member</th>
+<th style="text-align: center;">Steward</th>
+<th style="text-align: center;">Shop Steward</th>
+<th style="text-align: center;">Shop Sergeant</th>
+<th>Channel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Log task completion (QR or Slack)</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td>web form / <code>#shop-queries</code></td>
+</tr>
+<tr class="even">
+<td>Query own task history</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-queries</code></td>
+</tr>
+<tr class="odd">
+<td>Query any Member's task history</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-admin</code></td>
+</tr>
+<tr class="even">
+<td>Query open tasks / location status</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-queries</code></td>
+</tr>
+<tr class="odd">
+<td>Add / update / delete a task</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅ (own location)</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-admin</code></td>
+</tr>
+<tr class="even">
+<td>Generate / print sign-up sheet</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅ (own location)</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-admin</code></td>
+</tr>
+<tr class="odd">
+<td>Request location or shop report</td>
+<td style="text-align: center;">✅ (public data)</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-queries</code> / <code>#shop-admin</code></td>
+</tr>
+<tr class="even">
+<td>Trigger overdue reminder blast</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-admin</code></td>
+</tr>
+<tr class="odd">
+<td>View bot errors / audit log</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-alerts</code></td>
+</tr>
+<tr class="even">
+<td>Suspend / restore actions — area or location scope</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-admin</code></td>
+</tr>
+<tr class="odd">
+<td>Suspend / restore actions — shop scope</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td><code>#shop-admin</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Steward permissions are scoped to their own
+location. A Metalshop steward cannot modify Laser Cutter tasks, but
+Stewards are given permission to do Suspend / restore actions so they
+can take action in the event of a problem.</p>
+</blockquote>
+<h3 id="74-agent-capabilities">7.4 Agent Capabilities</h3>
+<p>The Claude-powered bot agent must be able to:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Capability</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Natural language query</strong></td>
+<td>Parse plain-English questions from <code>#shop-queries</code> and
+respond with data from Google Sheets. Example: "What tasks are still
+open in the metalshop?"</td>
+</tr>
+<tr class="even">
+<td><strong>Task completion logging</strong></td>
+<td>Accept completion events from QR/form submissions (Method 1) or
+Slack Update messages in <code>#shop-queries</code> (Method 2); confirm
+task identity with member; write structured records to Google
+Sheets</td>
+</tr>
+<tr class="odd">
+<td><strong>Task management</strong></td>
+<td>Execute add, update, and delete operations on Google Sheets in
+response to Slack commands from authorized users</td>
+</tr>
+<tr class="even">
+<td><strong>Report generation</strong></td>
+<td>Query Google Sheets and return formatted reports inline in Slack —
+member, location, shop, and compliance report types</td>
+</tr>
+<tr class="odd">
+<td><strong>Scheduled reminders</strong></td>
+<td>Use APScheduler to send periodic reminders to
+<code>#shop-bulletin</code>: overdue task alerts, monthly compliance
+summaries, top-contributor recognition</td>
+</tr>
+<tr class="even">
+<td><strong>Notification routing</strong></td>
+<td>Route system event notifications to the correct channel
+(<code>#shop-log</code>, <code>#shop-bulletin</code>, or
+<code>#shop-alerts</code>) based on event type</td>
+</tr>
+</tbody>
+</table>
+<h3 id="75-example-interactions">7.5 Example Interactions</h3>
+<p>The following examples illustrate how actors will interact with the
+Slack bot.</p>
+<hr />
+<p><strong>Example 1: Member logs a completed task (Method 1 —
+Single-Sheet QR)</strong></p>
+<blockquote>
+<p>Member scans QR code on the Metalshop sign-up sheet. A mobile web
+form opens showing the Metalshop task list. Member taps "Clean and sweep
+metalshop floor" and taps "Submit."</p>
+</blockquote>
+<p>Bot posts to <code>#shop-log</code>:</p>
+<pre><code>✅ Task logged
+Member:  @alex_johnson
+Task:    MSL-METAL-003 — Clean and sweep metalshop floor
+Date:    2026-04-13
+Method:  QR form</code></pre>
+<hr />
+<p><strong>Example 2: Member logs a completed task (Method 2 — Slack
+Update, free-form)</strong></p>
+<p>In <code>#shop-queries</code>:</p>
+<blockquote>
+<p><strong>@alex_johnson:</strong> I just finished cleaning the
+metalshop floor</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> Got it — did you mean
+<strong>MSL-METAL-003 — Clean and sweep metalshop floor</strong>? Reply
+<code>yes</code> to confirm or tell me more.</p>
+</blockquote>
+<blockquote>
+<p><strong>@alex_johnson:</strong> yes</p>
+</blockquote>
+<p>Bot posts to <code>#shop-log</code>:</p>
+<pre><code>✅ Task logged
+Member:  @alex_johnson
+Task:    MSL-METAL-003 — Clean and sweep metalshop floor
+Date:    2026-04-13
+Method:  Slack</code></pre>
+<hr />
+<p><strong>Example 3: Member logs a completed task (Method 2 — Slack
+Update, task-done command)</strong></p>
+<p>In <code>#shop-queries</code>:</p>
+<blockquote>
+<p><strong>@alex_johnson:</strong> task-done MSL-METAL-003</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> Confirm: <strong>MSL-METAL-003 —
+Clean and sweep metalshop floor</strong> completed today? Reply
+<code>yes</code> to log it.</p>
+</blockquote>
+<blockquote>
+<p><strong>@alex_johnson:</strong> yes</p>
+</blockquote>
+<p>Bot posts to <code>#shop-log</code>:</p>
+<pre><code>✅ Task logged
+Member:  @alex_johnson
+Task:    MSL-METAL-003 — Clean and sweep metalshop floor
+Date:    2026-04-13
+Method:  Slack</code></pre>
+<hr />
+<p><strong>Example 4: Member queries own task history</strong></p>
+<p>In <code>#shop-queries</code>:</p>
+<blockquote>
+<p><strong>@alex_johnson:</strong> How many tasks have I done this
+month?</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> You've completed 3 tasks in
+April 2026:</p>
+<ul>
+<li>Apr 2 — MSL-METAL-003 Clean and sweep metalshop floor</li>
+<li>Apr 7 — MSL-LASER-002 Clean laser cutter bed and optics</li>
+<li>Apr 11 — MSL-METAL-005 Check and top off cutting fluids</li>
+</ul>
+<p>You've met your 2-hour volunteer requirement for April.</p>
+</blockquote>
+<hr />
+<p><strong>Example 5: Shop steward queries another member's task
+history</strong></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@mike_shopsteward:</strong> How many tasks has @dave_m
+completed this month?</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> @dave_m has completed 2 tasks in
+April 2026:</p>
+<ul>
+<li>Apr 3 — MSL-WOOD-001 Clean and sweep wood shop floor</li>
+<li>Apr 9 — MSL-LASER-004 Empty laser cutter exhaust filter</li>
+</ul>
+<p>He has not yet met the 2-hour volunteer requirement for April.</p>
+</blockquote>
+<hr />
+<p><strong>Example 6: Member queries open tasks for a
+location</strong></p>
+<p>In <code>#shop-queries</code>:</p>
+<blockquote>
+<p><strong>@alex_johnson:</strong> What tasks are still open in the
+metalshop?</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> <strong>Metalshop — Open Tasks
+(April 2026)</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Frequency</th>
+<th>Last Done</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MSL-METAL-001 — Inspect and clean bandsaw</td>
+<td>Weekly</td>
+<td>18 days ago</td>
+</tr>
+<tr class="even">
+<td>MSL-METAL-006 — Replace worn grinding wheels</td>
+<td>Monthly</td>
+<td>47 days ago</td>
+</tr>
+</tbody>
+</table>
+<p>2 of 7 metalshop tasks are currently overdue.</p>
+</blockquote>
+<hr />
+<p><strong>Example 7: Steward adds a task</strong></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@sarah_steward:</strong> Add a new task to the metalshop —
+"Inspect welding equipment for damage", weekly, supervision required</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> Task created:</p>
+<ul>
+<li>ID: MSL-METAL-008</li>
+<li>Name: Inspect welding equipment for damage</li>
+<li>Location: Metalshop</li>
+<li>Frequency: Weekly</li>
+<li>Supervisor required: Yes</li>
+</ul>
+<p>Google Sheets updated. Generate a new sign-up sheet when ready:
+<code>sheet metalshop</code></p>
+</blockquote>
+<hr />
+<p><strong>Example 8: Steward updates a task</strong></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@sarah_steward:</strong> Change MSL-METAL-006 frequency from
+monthly to quarterly</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> Task updated:</p>
+<ul>
+<li>ID: MSL-METAL-006</li>
+<li>Field changed: Frequency — Monthly → Quarterly</li>
+</ul>
+<p>Google Sheets updated. <code>#shop-alerts</code> notified.</p>
+</blockquote>
+<hr />
+<p><strong>Example 9: Steward deletes a task</strong></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@sarah_steward:</strong> Delete MSL-METAL-002 — the plasma
+cutter has been removed from the shop</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> Task deleted:</p>
+<ul>
+<li>ID: MSL-METAL-002 — Clean plasma cutter work surface</li>
+<li>Reason logged: equipment removed</li>
+</ul>
+<p>Google Sheets updated. Generate a new sign-up sheet when ready:
+<code>sheet metalshop</code></p>
+</blockquote>
+<hr />
+<p><strong>Example 10: Steward generates a sign-up sheet</strong></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@sarah_steward:</strong> sheet metalshop</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> Metalshop sign-up sheet
+generated.</p>
+<ul>
+<li>Tasks included: 7</li>
+<li>Generated: 2026-04-13</li>
+</ul>
+<p>[Download PDF →]</p>
+<p><code>#shop-bulletin</code> notified that a new sheet is ready for
+printing.</p>
+</blockquote>
+<hr />
+<p><strong>Example 11: Member requests a public location
+report</strong></p>
+<p>In <code>#shop-queries</code>:</p>
+<blockquote>
+<p><strong>@alex_johnson:</strong> Give me a status report on the laser
+cutter area</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> <strong>Laser Cutter — April
+2026 Status</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tasks defined</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Completed on time</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>Overdue</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Completion rate</td>
+<td>80%</td>
+</tr>
+</tbody>
+</table>
+<p>Overdue: MSL-LASER-003 — Calibrate laser alignment (Monthly — last
+done 38 days ago)</p>
+</blockquote>
+<hr />
+<p><strong>Example 12: Shop Steward triggers overdue reminder
+blast</strong></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@mike_shopsteward:</strong> Send an overdue reminder now —
+don't wait for the scheduled one</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> Overdue reminder blast sent to
+<code>#shop-bulletin</code>. 3 locations have overdue tasks: Metalshop
+(2), Laser Cutter (1), Wood Shop (1).</p>
+</blockquote>
+<hr />
+<p><strong>Example 13: Shop sergeant views bot errors / audit
+log</strong></p>
+<p>In <code>#shop-alerts</code> (Shop Sergeant reads recent
+entries):</p>
+<pre><code>[2026-04-13 14:02] TASK_CREATED  MSL-METAL-008 by @sarah_steward
+[2026-04-13 14:05] SHEET_GENERATED  Metalshop by @sarah_steward (7 tasks)
+[2026-04-13 15:30] TASK_LOGGED  MSL-METAL-003 by @alex_johnson, source=Slack
+[2026-04-13 16:00] REMINDER_BLAST  triggered by @mike_shopsteward — 4 overdue tasks across 3 locations
+[2026-04-13 16:01] BOT_ERROR  Google Sheets write timeout — retry succeeded after 2s</code></pre>
+<hr />
+<p><strong>Example 14: Shop sergeant requests monthly compliance
+report</strong> <em>(restricted report)</em></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@jeff_sergeant:</strong> Give me the April compliance
+report</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> <strong>April 2026 — Member
+Compliance Report</strong></p>
+<p>38 of 47 active members (81%) met the 2-hour volunteer
+requirement.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Status</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Compliant (≥ 2 hrs)</td>
+<td>38</td>
+</tr>
+<tr class="even">
+<td>Non-compliant (&lt; 2 hrs)</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>No activity recorded</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Top contributors this month: @alex_johnson (5 tasks), @maria_w (4
+tasks), @dave_m (4 tasks) Full report: [View in Google Sheets →]</p>
+</blockquote>
+<hr />
+<p><strong>Example 15: Bot-initiated overdue task reminder</strong>
+<em>(scheduled, not user-triggered)</em></p>
+<p>Bot posts to <code>#shop-bulletin</code> (automated, weekly):</p>
+<pre><code>⚠️  Overdue Task Reminder — Metalshop
+
+The following tasks are past due:
+
+• MSL-METAL-001 — Inspect and clean bandsaw (Weekly — last done 18 days ago)
+• MSL-METAL-006 — Replace worn grinding wheels (Monthly — last done 47 days ago)
+
+Metalshop steward: @sarah_steward
+Sign up to help: [Metalshop Sign-Up Sheet QR →]</code></pre>
+<hr />
+<p><strong>Example 16: Shop Steward suspends actions for a
+location</strong></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@mike_shopsteward:</strong> Suspend all actions for the
+metalshop — we're doing a full equipment audit and don't want any task
+logging until further notice</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> ⚠️ Actions suspended —
+Metalshop</p>
+<ul>
+<li>Scope: location</li>
+<li>Actions suspended: all</li>
+<li>Suspended by: @mike_shopsteward</li>
+<li>Effective: immediately</li>
+</ul>
+<p>Members attempting to log tasks or generate sheets for Metalshop will
+be told the location is temporarily unavailable. Restore with:
+<code>restore metalshop</code></p>
+<p><code>#shop-alerts</code> notified.</p>
+</blockquote>
+<p>Later, after the audit:</p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@mike_shopsteward:</strong> restore metalshop</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> ✅ Actions restored —
+Metalshop</p>
+<ul>
+<li>All actions re-enabled for Metalshop</li>
+<li>Restored by: @mike_shopsteward</li>
+</ul>
+<p><code>#shop-alerts</code> notified.</p>
+</blockquote>
+<hr />
+<p><strong>Example 17: Shop Sergeant suspends actions
+shop-wide</strong></p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@jeff_sergeant:</strong> Suspend all bot actions shop-wide —
+we have a Google Sheets API outage and I don't want failed writes going
+unnoticed</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> ⚠️ Actions suspended — Shop-wide
+(MSL)</p>
+<ul>
+<li>Scope: entire shop</li>
+<li>Actions suspended: all</li>
+<li>Suspended by: @jeff_sergeant</li>
+<li>Effective: immediately</li>
+</ul>
+<p>All bot actions are disabled. Members will receive a maintenance
+notice if they attempt to interact with the bot. Restore with:
+<code>restore shop</code></p>
+<p><code>#shop-alerts</code> notified.</p>
+</blockquote>
+<p>Later, after the outage is resolved:</p>
+<p>In <code>#shop-admin</code>:</p>
+<blockquote>
+<p><strong>@jeff_sergeant:</strong> restore shop</p>
+</blockquote>
+<blockquote>
+<p><strong>@shop-sergeant-bot:</strong> ✅ Actions restored — Shop-wide
+(MSL)</p>
+<ul>
+<li>All actions re-enabled across all locations</li>
+<li>Restored by: @jeff_sergeant</li>
+</ul>
+<p><code>#shop-alerts</code> notified.</p>
+</blockquote>
+<hr />
+<h2 id="8-non-functional-requirements">8. Non-Functional
+Requirements</h2>
+<h3 id="81-frictionless-member-experience">8.1 Frictionless Member
+Experience</h3>
+<p>The system's core design principle is <strong>minimum friction for
+Members</strong>. Members must be able to record a task completion as
+easily and quickly as possible — the goal is to remove every possible
+barrier between (<strong>START</strong>) selecting a task to perform and
+(<strong>FINISH</strong>) logging the fact that the task has been
+performed.</p>
+<ul>
+<li>Task logging via the QR method must require <strong>≤ 3
+taps</strong> from QR scan to confirmation</li>
+<li>The QR method must not require Members to create an account, log in,
+or install an app — the entire digital interaction is accessible through
+the phone's native camera and browser</li>
+<li>The Slack Update method assumes Members have an existing Slack
+account; no additional account creation is required</li>
+<li>The fallback (writing on the paper sheet) must always remain
+available alongside the digital methods</li>
+</ul>
+<h3 id="82-record-retention-and-compliance">8.2 Record Retention and
+Compliance</h3>
+<ul>
+<li>All task completion records must be retained
+<strong>indefinitely</strong> in Google Sheets</li>
+<li>Records must include: Member name, Task ID, completion date, and
+capture method</li>
+<li>Data must be exportable from Google Sheets in standard formats (CSV,
+Excel) for compliance reporting</li>
+<li>These records may be required to support Makersmiths' 501(c)(3)
+tax-exempt status</li>
+</ul>
+<h3 id="83-availability-and-resilience">8.3 Availability and
+Resilience</h3>
+<ul>
+<li>The Slack bot is the primary interface, but <strong>Google Sheets is
+the durable store</strong> — if the bot is temporarily unavailable, no
+data is lost</li>
+<li>The physical sign-up sheet provides a manual fallback for task
+logging at all times</li>
+<li>Two independent capture paths (QR and Slack) reduce
+single-point-of-failure risk; if one path is temporarily degraded,
+members can still log completions via the other</li>
+</ul>
+<h3 id="84-access-control">8.4 Access Control</h3>
+<ul>
+<li>Slack channel membership is the primary access control mechanism —
+<code>#shop-admin</code> and <code>#shop-alerts</code> are restricted
+channels</li>
+<li>No separate authentication system is required</li>
+<li>The bot must verify actor role before executing restricted actions
+(task CRUD, compliance reports, etc.)</li>
+</ul>
+<h3 id="85-multi-shop-extensibility">8.5 Multi-Shop Extensibility</h3>
+<ul>
+<li>The data model must support multiple shops from the start (MSL,
+MSP)</li>
+<li>All task IDs are shop-prefixed (<code>MSL-</code>,
+<code>MSP-</code>) to prevent collisions</li>
+<li>The initial release deploys for MSL only, but adding MSP must not
+require architectural changes</li>
+</ul>
+<hr />
+<h2 id="9-success-criteria-kpis">9. Success Criteria (KPIs)</h2>
+<p>The Shop Sergeant is responsible for monitoring the following KPIs to
+assess system health and process effectiveness.</p>
+<h3 id="member-facing-metrics">Member-Facing Metrics</h3>
+<table>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Metric</th>
+<th>Definition</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>M1</strong></td>
+<td>Member Compliance Rate</td>
+<td>% of active Members who log volunteer some hours in a given
+month</td>
+<td>≥ 50% monthly</td>
+</tr>
+<tr class="even">
+<td><strong>M2</strong></td>
+<td>Task Completion Rate</td>
+<td>% of posted work tasks completed within their scheduled period</td>
+<td>≥ 90%</td>
+</tr>
+<tr class="odd">
+<td><strong>M3</strong></td>
+<td>Data Completeness Rate</td>
+<td>% of completed tasks with a full record in Google Sheets (name +
+date + Task ID)</td>
+<td>≥ 95%</td>
+</tr>
+</tbody>
+</table>
+<h4 id="m1--member-compliance-rate">M1 — Member Compliance Rate</h4>
+<p><strong>Formula:</strong>
+<code>(# unique members with ≥ 1 completion record in month) / (# active members) × 100</code></p>
+<p><strong>Data available:</strong></p>
+<ul>
+<li>✅ <strong>Numerator</strong> — <code>completions</code> sheet in
+Google Sheets; count distinct <code>member_name</code> values where
+<code>completion_date</code> falls in the target month.</li>
+<li>❌ <strong>Denominator</strong> — the system has no member registry.
+The total count of "active members" does not exist anywhere in the
+current design.</li>
+</ul>
+<p><strong>Gap &amp; recommendation:</strong> Add a <code>members</code>
+sheet to Google Sheets listing all active members (name, Slack handle,
+join date, status). This sheet becomes the denominator for M1 and
+enables the compliance report (TR-2, §5.4). Alternatively, pull the
+active member list from the Slack workspace API, but that ties the KPI
+to Slack membership which may not perfectly match makerspace membership.
+The Google Sheets registry is preferred as the authoritative source.</p>
+<hr />
+<h4 id="m2--task-completion-rate">M2 — Task Completion Rate</h4>
+<p><strong>Formula:</strong>
+<code>(# tasks with ≥ 1 completion record within their frequency window) / (# total active tasks) × 100</code></p>
+<p><strong>Frequency windows:</strong> weekly = last 7 days; monthly =
+last 30 days; quarterly = last 90 days.</p>
+<p><strong>Data available:</strong></p>
+<ul>
+<li>✅ <strong>Task catalog</strong> — <code>tasks</code> sheet in
+Google Sheets contains each task's <code>task_id</code>,
+<code>frequency</code>, and <code>location</code>.</li>
+<li>✅ <strong>Completion records</strong> — <code>completions</code>
+sheet contains <code>task_id</code> and <code>completion_date</code> for
+every logged event.</li>
+<li>✅ <strong>Calculation</strong> — for each task, find its most
+recent <code>completion_date</code> and compare
+<code>today - last_done ≤ frequency_window</code>. If yes, the task is
+"completed within schedule."</li>
+</ul>
+<p><strong>No data gaps.</strong> This KPI is fully computable from
+existing system data. The Task Reporting pipeline (§5.4) query agent
+should be able to answer this on demand.</p>
+<hr />
+<h4 id="m3--data-completeness-rate">M3 — Data Completeness Rate</h4>
+<p><strong>Formula:</strong>
+<code>(# completion records with non-null member_name AND task_id AND completion_date) / (# total completion records) × 100</code></p>
+<p><strong>Data available:</strong></p>
+<ul>
+<li>✅ All three required fields (<code>member_name</code>,
+<code>task_id</code>, <code>completion_date</code>) are required by TC-1
+and written to the <code>completions</code> sheet on every capture
+event.</li>
+<li>✅ For Method 1 (QR-form), all fields are enforced by the form
+before submission — completeness should be 100%.</li>
+<li>✅ For Method 2 (Slack Update), the bot confirms task identity with
+the member before writing (TC-9) — all fields are populated before the
+record is committed.</li>
+</ul>
+<p><strong>Note:</strong> This metric only covers records that
+<em>entered</em> the system. It cannot measure tasks that were completed
+on the shop floor but never recorded at all — that unmeasured gap is
+exactly the problem M1 and M2 are designed to surface indirectly.</p>
+<hr />
+<h3 id="operational-metrics">Operational Metrics</h3>
+<table>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Metric</th>
+<th>Definition</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>O1</strong></td>
+<td>Steward Adoption Rate</td>
+<td>% of Stewards actively using the system to manage tasks</td>
+<td>100% within 60 days of launch</td>
+</tr>
+<tr class="even">
+<td><strong>O2</strong></td>
+<td>Sheet Refresh Latency</td>
+<td>Time between a Steward requesting a new sign-up sheet and it being
+physically posted</td>
+<td>≤ 24 hours</td>
+</tr>
+<tr class="odd">
+<td><strong>O3</strong></td>
+<td>Overdue Task Alert Rate</td>
+<td>% of overdue tasks that triggered an automated reminder before going
+unnoticed</td>
+<td>100%</td>
+</tr>
+<tr class="even">
+<td><strong>O4</strong></td>
+<td>Top Contributor Recognition</td>
+<td>Monthly top-contributor report generated and posted to
+<code>#shop-bulletin</code> on time</td>
+<td>100% monthly</td>
+</tr>
+</tbody>
+</table>
+<h4 id="o1--steward-adoption-rate">O1 — Steward Adoption Rate</h4>
+<p><strong>Formula:</strong>
+<code>(# stewards who issued ≥ 1 bot command in the period) / (# total stewards) × 100</code></p>
+<p><strong>Data available:</strong></p>
+<ul>
+<li>✅ <strong>Numerator</strong> — the bot audit log (accessible to
+Shop Sergeant per §7.3) records every Slack command with the issuing
+user. Count distinct steward users who issued any
+<code>#shop-admin</code> command.</li>
+<li>❌ <strong>Denominator</strong> — same gap as M1: the system has no
+steward registry.</li>
+</ul>
+<p><strong>Gap &amp; recommendation:</strong> The <code>members</code>
+sheet recommended for M1 should include a <code>role</code> column
+(<code>member</code>, <code>steward</code>, <code>shop_steward</code>,
+<code>shop_sergeant</code>). Filtering that sheet by
+<code>role = steward</code> gives the denominator for O1 at no
+additional cost.</p>
+<hr />
+<h4 id="o2--sheet-refresh-latency">O2 — Sheet Refresh Latency</h4>
+<p><strong>Formula:</strong>
+<code>sheet_posted_timestamp - sheet_requested_timestamp</code> (per
+sheet generation event)</p>
+<p><strong>Data available:</strong></p>
+<ul>
+<li>✅ <strong>Request timestamp</strong> — the bot logs the
+<code>sheet &lt;location&gt;</code> command to the audit log with a
+timestamp (per TS-5, #shop-alerts is notified on every generation). The
+Slack message timestamp is the request time.</li>
+<li>✅ <strong>Generation timestamp</strong> — the bot writes the PDF
+generation completion event to #shop-alerts; this timestamp is also
+capturable.</li>
+<li>❌ <strong>Posted-to-wall timestamp</strong> — when a steward
+physically takes the sheet off the printer and posts it on the shop wall
+is a manual action with no digital signal. The system cannot observe
+this.</li>
+</ul>
+<p><strong>Gap &amp; recommendation:</strong> Redefine O2 as
+<strong>"time from Slack command to PDF available for download"</strong>
+— this is fully measurable and is the portion the system controls. The
+physical posting step is outside the system boundary. Optionally, add a
+lightweight <code>!sheet-posted MSL-METAL</code> Slack command that
+stewards send after posting the sheet; logging that message would make
+the full latency measurable, but adds friction and may not be worth
+it.</p>
+<hr />
+<h4 id="o3--overdue-task-alert-rate">O3 — Overdue Task Alert Rate</h4>
+<p><strong>Formula:</strong>
+<code>(# overdue tasks for which an APScheduler reminder was sent) / (# overdue tasks detected) × 100</code></p>
+<p><strong>Data available:</strong></p>
+<ul>
+<li>✅ <strong>Overdue tasks</strong> — same computation as M2: compare
+<code>last_completion_date + frequency_window</code> to today. Any task
+past its window is overdue.</li>
+<li>✅ <strong>Alerts sent</strong> — APScheduler (§4.2) runs the
+overdue check and posts to <code>#shop-bulletin</code>. If each alert
+post is logged to the audit log with <code>task_id</code>, the numerator
+is derivable.</li>
+</ul>
+<p><strong>Requirement:</strong> The bot must log each overdue-task
+reminder event to the audit log (or a dedicated <code>alerts</code>
+sheet) with <code>task_id</code> and <code>alert_timestamp</code>.
+Without this log, the numerator is unknowable. This is not currently
+stated as an explicit requirement — it should be added to §5.4 (TR
+requirements) or §7.3 (audit log requirements).</p>
+<hr />
+<h4 id="o4--top-contributor-recognition">O4 — Top Contributor
+Recognition</h4>
+<p><strong>Formula:</strong> Binary — was the monthly top-contributor
+report posted to <code>#shop-bulletin</code> within the first N days of
+the month?</p>
+<p><strong>Data available:</strong></p>
+<ul>
+<li>✅ <strong>Report data</strong> — top contributors are derived from
+the <code>completions</code> sheet: count records per
+<code>member_name</code> for the prior month, rank descending.</li>
+<li>✅ <strong>Execution confirmation</strong> — APScheduler fires the
+report on a fixed schedule. The Slack message timestamp in
+<code>#shop-bulletin</code> confirms it ran and when.</li>
+</ul>
+<p><strong>No data gaps.</strong> Both the report content and the
+on-time check are computable from existing data. The Task Reporting
+pipeline (TR-6, §5.4) already requires this report. Monitoring O4
+requires only checking whether the expected <code>#shop-bulletin</code>
+post appeared within the window.</p>
+<hr />
+<h2 id="10-out-of-scope">10. Out of Scope</h2>
+<p>The following are explicitly <strong>not</strong> part of this
+initial release:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Makersmiths Purcellville (MSP)</strong></td>
+<td>Future release. The system architecture must accommodate MSP without
+structural changes, but no MSP deployment is planned at this time.</td>
+</tr>
+<tr class="even">
+<td><strong>Capture methods not selected</strong></td>
+<td>Once a capture method is chosen from the three options in §5.3, the
+remaining methods are documented for reference only and will not be
+implemented.</td>
+</tr>
+<tr class="odd">
+<td><strong>Non-Slack notification channels</strong></td>
+<td>Email and SMS notifications are not in scope. Slack is the sole
+notification channel.</td>
+</tr>
+<tr class="even">
+<td><strong>Mobile app</strong></td>
+<td>To reduce friction, it is a requirement that there is no need for a
+native iOS or Android app. The mobile experience is delivered through
+Slack and a mobile-optimized web form (Method 1 — Single-Sheet QR).</td>
+</tr>
+<tr class="odd">
+<td><strong>Real-time dashboards</strong></td>
+<td>Reports are delivered on-demand via Slack or on a scheduled basis.
+No live dashboard is planned. It is expected that real-time status
+information will be provided via natural language queries.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendices">Appendices</h2>
+<h3 id="appendix-a-things-worth-considering">Appendix A: Things Worth
+Considering</h3>
+<p>The items below are not requirements — they are ideas that surfaced
+during design and are worth a deliberate discussion before the relevant
+phase is implemented. Each may add value, but each also carries cost or
+complexity that needs to be weighed.</p>
+<ul>
+<li><p><strong>Is the §7.3 permission model too open or too
+tight?</strong> The current permission table grants Stewards the ability
+to suspend/restore actions at the location scope — a power normally
+associated with oversight roles — while denying them the ability to
+query another member's task history. The suspension capability was
+included so stewards can act quickly in an emergency (equipment removal,
+safety incident), which is reasonable. However, it also means any
+steward can unilaterally disable task logging for their location without
+Shop Steward approval. On the other side, the table shows Stewards
+cannot trigger an overdue reminder blast, even for their own location —
+which may frustrate a steward who notices a task is overdue and wants to
+nudge members immediately. Both edges are worth a deliberate
+conversation with actual stewards before the bot permission model is
+implemented.</p></li>
+<li><p><strong>Should the §8.1 requirement that the paper fallback "must
+always remain available" be dropped?</strong> Section 8.1 lists as a
+hard requirement that members must always be able to write on the
+physical sheet as a fallback alongside the digital method. The intent is
+resilience — if the QR form is unavailable, no completion goes
+unrecorded. In practice, however, keeping the paper fallback alive
+indefinitely has a cost: the sign-up sheet must always include
+hand-entry columns and the system can never fully deprecate the manual
+process. If the two digital methods prove reliable during the Phase 0
+trial and shop Wi-Fi is consistently available, the paper fallback may
+be more of a crutch than a safety net — one that dilutes the incentive
+to use the digital flow. The question is whether the fallback is a
+permanent design principle or a launch-period hedge that should have a
+planned sunset.</p></li>
+<li><p><strong>Should the mobile experience be a Progressive Web App
+(PWA)?</strong> The current design calls for a lightweight mobile web
+form opened by scanning a QR code — no app installation required. A PWA
+would preserve that zero-install property while adding capabilities not
+available to a plain web page: an "Add to Home Screen" prompt so
+frequent users get a native-looking icon, offline support via a service
+worker so the form still loads even with spotty shop Wi-Fi, and optional
+push notifications so members can receive reminders without Slack. The
+tradeoff is complexity: PWAs require a service worker, a web app
+manifest, and HTTPS — all achievable but meaningfully more
+infrastructure than a single-page form. If member re-engagement (repeat
+task logging, reminders) proves important after the Phase 0 trial, a PWA
+upgrade is a natural next step. If most members log tasks infrequently
+and connectivity is reliable, the added complexity is likely not
+justified.</p></li>
+<li><p><strong>The goal for Members is 2 hr/month of volunteer work but
+the process doesn't measure hours.</strong> The system currently tracks
+task completions as binary events — a member either completed a task or
+did not. There is no notion of how long a task takes, which makes it
+impossible to tell whether a member who logged two tasks in a month
+actually contributed 2 hours or 20 minutes. A practical fix is to attach
+an estimated duration to each task in the data model — a
+Steward-supplied guess, defaulting to a minimum of 15 minutes for any
+task that isn't explicitly rated. With per-task estimates in place, the
+reporting pipeline can sum estimated hours per member per month and flag
+members who are technically compliant on task count but well short of
+the 2-hour intent. This also gives Stewards a lever for balancing
+workload: if a location's tasks are all 15-minute jobs, a compliant
+member may only be contributing half an hour. Estimated hours are
+inherently imprecise — the same task might take a new member 45 minutes
+and an experienced one 10 — but even a rough estimate is more useful
+than no estimate at all. The question is whether to add a
+<code>time</code> field to the task schema now, while the data model is
+still being designed, or defer it until compliance reporting becomes a
+real need.</p></li>
+<li><p><strong>Should we consider Claude Routines as an alternative to
+APScheduler?</strong> The current design (§4.2) embeds APScheduler
+inside the bot process to drive all time-based automation: overdue task
+alerts posted to <code>#shop-bulletin</code>, weekly error and
+availability summaries, monthly compliance summaries, and
+top-contributor recognition posts. APScheduler is a well-understood
+Python library — it runs in-process, fires reliably, and adds no
+per-execution API cost — but it has one structural dependency that is
+easy to overlook: the bot process must be running continuously for the
+schedule to execute. If the bot restarts, crashes, or is redeployed, any
+scheduled job that was due during the outage is silently skipped unless
+the job store is persisted to a durable backend.</p>
+<p>Claude Routines offer a different model. A Routine is a managed,
+cloud-scheduled agent: Anthropic's infrastructure fires the agent on a
+cron schedule, the agent invokes the Claude model with a task prompt,
+executes any needed tool calls (querying Google Sheets, posting to
+Slack), and terminates. No persistent bot process is required — each
+scheduled job is stateless and self-contained. This eliminates the
+"missed job on restart" failure mode entirely and removes the
+operational burden of keeping a long-running process alive around the
+clock. The agent also has access to Claude's full reasoning capability
+at execution time, which means a monthly compliance summary could be
+drafted in natural language rather than templated text — potentially
+more readable for members, though less predictable for testing.</p></li>
+</ul>
+<hr />
+<h3 id="appendix-b-work-tasks-data-model">Appendix B: Work Tasks Data
+Model</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">opportunities</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shop</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Makersmiths Leesburg (MSL)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">address</span><span class="kw">:</span><span class="at"> 106 Royal St SW, Leesburg, VA 20175</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steward</span><span class="kw">:</span><span class="at"> John Carter</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">area</span><span class="kw">:</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Main Level</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">location</span><span class="kw">:</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Metalshop</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">steward</span><span class="kw">:</span><span class="at"> Brad Hess</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">work_tasks</span><span class="kw">:</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">task</span><span class="kw">:</span><span class="at"> Dust &amp; Wipe Down Machine</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">task_id</span><span class="kw">:</span><span class="at"> MSL-METAL-001</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">time</span><span class="kw">:</span><span class="at"> </span><span class="dv">15</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> Weekly</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">purpose</span><span class="kw">:</span><span class="at"> Keep shop clean, safe, and easy for all to use</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">instructions</span><span class="kw">:</span><span class="at"> Do not use any cleaning solvant. Just a dry or damp cloth should be used.</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">supervision</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">last_date</span><span class="kw">:</span><span class="at"> NA</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">task</span><span class="kw">:</span><span class="at"> Clear Off &amp; Organize Tabletops</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">task_id</span><span class="kw">:</span><span class="at"> MSL-METAL-002</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">time</span><span class="kw">:</span><span class="at"> </span><span class="dv">15</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> Daily</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">purpose</span><span class="kw">:</span><span class="at"> Keep the work area as open &amp; free of object for safety</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">instructions</span><span class="kw">:</span><span class="at"> NA</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">supervision</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">last_date</span><span class="kw">:</span><span class="at"> NA</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">task</span><span class="kw">:</span><span class="at"> Remove Anything That is Not CNC and Put Away</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">task_id</span><span class="kw">:</span><span class="at"> MSL-METAL-003</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">time</span><span class="kw">:</span><span class="at"> </span><span class="dv">15</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> Daily</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">purpose</span><span class="kw">:</span><span class="at"> Keep the work area as open &amp; free of object for safety</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">instructions</span><span class="kw">:</span><span class="at"> Every CNC / Big Red thing has its place, so place it there.</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">supervision</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">last_date</span><span class="kw">:</span><span class="at"> NA</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">task</span><span class="kw">:</span><span class="at"> Vaccum Floor</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">task_id</span><span class="kw">:</span><span class="at"> MSL-METAL-004</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">time</span><span class="kw">:</span><span class="at"> </span><span class="dv">15</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> Daily</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">purpose</span><span class="kw">:</span><span class="at"> Keeping the floor clean is important for safety</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">instructions</span><span class="kw">:</span><span class="at"> NA</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">supervision</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">last_date</span><span class="kw">:</span><span class="at"> NA</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">task</span><span class="kw">:</span><span class="at"> Check Dust Collection and Empty if Needed</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">task_id</span><span class="kw">:</span><span class="at"> MSL-METAL-005</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">time</span><span class="kw">:</span><span class="at"> </span><span class="dv">15</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> Weekly</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">purpose</span><span class="kw">:</span><span class="at"> Keep shop clean, safe, and easy for all to use.</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">instructions</span><span class="kw">:</span><span class="at"> Pull the handle on the left side and remove the basket.  Dump its contents in the dumpster in the back of the building.</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">supervision</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">last_date</span><span class="kw">:</span><span class="at"> NA</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">task</span><span class="kw">:</span><span class="at"> Empty Shop Vac</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">task_id</span><span class="kw">:</span><span class="at"> MSL-METAL-006</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">time</span><span class="kw">:</span><span class="at"> </span><span class="dv">15</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> Bi-Weekly</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">purpose</span><span class="kw">:</span><span class="at"> As the Vac fills up, it losses power and not nearly as effective when clean.</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">instructions</span><span class="kw">:</span><span class="at"> Dump its contents in the dumpster in the back of the building.</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">supervision</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">last_date</span><span class="kw">:</span><span class="at"> NA</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">task</span><span class="kw">:</span><span class="at"> Empty Saw Dust</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">task_id</span><span class="kw">:</span><span class="at"> MSL-METAL-007</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">time</span><span class="kw">:</span><span class="at"> </span><span class="dv">15</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">frequency</span><span class="kw">:</span><span class="at"> Bi-Weekly</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">purpose</span><span class="kw">:</span><span class="at"> This helps keep the machine from clogging up while in use.</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">instructions</span><span class="kw">:</span><span class="at"> On the front of the machine, remove the small basket and put in the dumpster.</span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">supervision</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">last_date</span><span class="kw">:</span><span class="at"> NA</span></span></code></pre></div>
+<hr />
+<h3 id="appendix-c-is-it-a-pipeline-or-workflow">Appendix C: Is it a
+Pipeline or Workflow?</h3>
+<p>This project uses the term <strong>pipeline</strong> deliberately —
+here is why, and when you would reach for <em>workflow</em> instead.</p>
+<p><strong>Pipeline</strong> describes a linear sequence of automated
+stages where data or artifacts flow in one direction. Each stage
+transforms its input and passes the result to the next. The metaphor is
+plumbing: things move through, are processed, and come out the other
+end.</p>
+<p><strong>Workflow</strong> describes a broader process that
+coordinates tasks, people, or systems to accomplish a goal. Workflows
+can branch on conditions, loop, wait for human input, or run steps in
+parallel. The metaphor is a flowchart.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Pipeline</th>
+<th>Workflow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Shape</td>
+<td>Linear, sequential</td>
+<td>Branching, conditional</td>
+</tr>
+<tr class="even">
+<td>Actors</td>
+<td>Systems / code only</td>
+<td>Often includes humans</td>
+</tr>
+<tr class="odd">
+<td>Triggers</td>
+<td>Data arriving</td>
+<td>Events, decisions, schedules</td>
+</tr>
+<tr class="even">
+<td>State</td>
+<td>Stateless stages</td>
+<td>Often stateful across steps</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why this project uses <em>pipeline</em>:</strong> The four
+named processes — Task Database, Task Sheet, Task Capture, and Task
+Reporting — are automated data flows with a clear input → output path
+and no branching logic that requires human decisions mid-stream. That
+fits <em>pipeline</em>.</p>
+<p><strong>When <em>workflow</em> would apply:</strong> If a future
+feature required a steward to approve a new task before it entered the
+catalog, or if a member dispute needed escalation, those multi-actor,
+decision-driven processes would be <em>workflows</em>, not
+pipelines.</p>
+<hr />
+<h3 id="appendix-d-volunteer-opportunity-sign-up-sheet">Appendix D:
+Volunteer Opportunity Sign-Up Sheet</h3>
+<p>Here is an example of the Volunteer Opportunity Sign-Up Sheet</p>
+<p><img
+src="/home/jeff/src/projects/makersmiths/shop-sergeant/presentations/requirements-review/assets/metalshop-signup-sheet2.png"
+alt="Volunteer Opportunity Sign-Up Sheet" /></p>
+</body>
+</html>
