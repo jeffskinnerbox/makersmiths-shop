@@ -696,21 +696,16 @@ src: ./slides/content.md
 
 ### Global Layers
 
-Create `global-top.vue` or `global-bottom.vue` for persistent UI elements (e.g., logo, slide number, watermark):
+Create `global-top.vue` or `global-bottom.vue` for persistent UI elements:
 
 ```vue
-<!-- global-bottom.vue — logo pinned to bottom-right of every slide -->
+<!-- global-top.vue -->
 <template>
-  <img
-    src="/logo.png"
-    style="position:absolute; bottom:1rem; right:1rem; width:20%; z-index:999; pointer-events:none;"
-  />
+  <div class="fixed top-0 left-0 right-0 p-4">
+    Header content on all slides
+  </div>
 </template>
 ```
-
-**Always include `z-index: 999` and `pointer-events: none`** on global layer elements:
-- `z-index: 999` — full-screen layouts (`center`, `image`, `full`) and large inline images render in their own stacking context and will cover global layer elements without it
-- `pointer-events: none` — prevents the persistent element from blocking click/tap interactions on slide content underneath
 
 ### Custom Shortcuts
 
@@ -841,23 +836,6 @@ Specify custom port:
 
 ```bash
 slidev --port 3333
-```
-
-### Global Layer Element Hidden by Slide Content
-
-**Symptom:** A logo, watermark, or other element in `global-bottom.vue` / `global-top.vue` is missing on some slides but visible on others.
-
-**Cause:** Full-screen layouts (`center`, `image`, `full`) and large inline images create their own stacking context, rendering on top of the global layer.
-
-**Fix:** Add `z-index: 999` and `pointer-events: none` to the element:
-
-```vue
-<template>
-  <img
-    src="/logo.png"
-    style="position:absolute; bottom:1rem; right:1rem; width:20%; z-index:999; pointer-events:none;"
-  />
-</template>
 ```
 
 ### Theme Not Loading

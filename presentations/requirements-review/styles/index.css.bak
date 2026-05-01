@@ -1,3 +1,13 @@
+/* Global slide background */
+.slidev-layout {
+  background-color: #000000;
+}
+
+/* Dark gray background for PNG pipeline diagram slides */
+.slidev-layout.dark-gray {
+  background-color: #808080;
+}
+
 /* Global density reduction for all content slides */
 .slidev-layout table {
   font-size: 0.82rem;

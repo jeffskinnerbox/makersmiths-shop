@@ -1,5 +1,6 @@
 ---
-theme: apple-basic
+theme: default
+colorSchema: light
 title: "Shop Sergeant — Requirements Review"
 titleTemplate: "%s — Slidev"
 aspectRatio: 16/9
@@ -13,21 +14,14 @@ drawings:
 
 **System Requirements Review**
 
-Makersmiths Leesburg (MSL) · April 30, 2026 · Jeff Irland
-
-<!--
-Opening: Thank you for coming. This review covers the requirements for Shop Sergeant —
-the automated task-tracking system proposed to replace our paper-only volunteer process.
-We'll walk through the problem, the solution architecture, and what we need to build.
-Your critical review and recommendations are the goal here — not just sign-off.
--->
+Jeff Irland  ·  April 30, 2026  ·  Makersmiths Leesburg (MSL)
 
 ---
 
 # Why We Need This
 
 Makersmiths' current paper-only work task volunteering process has several weaknesses.
-A new automated process, called Shop Sergeant, is proposed to remove much of the friction in the current process,
+A new automated process, called **Shop Sergeant**, is proposed to remove much of the friction in the current process,
 make work task activity more visible, and gather the data for our non-profit status.
 The process uses Slack as its primary communication/control medium,
 but can also be trigger via a few clicks on a mobile phone web form.
@@ -105,38 +99,29 @@ _Rectangle shape in all diagrams_
 </div>
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
 # Agentic AI Capabilities
+The bot uses `claude-sonnet-4-6` for two primary capabilities:
 
+::left::
 <div class="text-sm">
 
-The bot uses `claude-sonnet-4-6` for two capabilities:
-
-**Natural Language Query Processing**
-
-Members and stewards ask questions in plain English:
-
-> "What tasks are still open in the metalshop?"
-
-> "How many tasks has @alex done this month?"
-
-Claude parses the intent, constructs the Google Sheets query, and formats the response inline in Slack.
+**1. Natural Language Query Processing**
+* Members & Stewards ask questions in plain English:
+> "What tasks are still open in the metalshop?"<br/>"How many tasks has @alex done this month?"
+* Claude parses the intent, constructs the Google Sheets query, and formats the response inline in Slack.
 
 </div>
 
 ::right::
-
 <div class="text-sm">
 
-**Slack Update Task Processing**
-
-Member posts in `#shop-queries`:
-
+**2. Slack Update Task Processing**
+* Member posts in `#shop-queries`:
 > "I just finished cleaning the metalshop floor"
-
-Claude identifies the most likely task, presents it for member confirmation, then writes the structured record.
+* Claude identifies the most likely task, presents it for member confirmation, then writes to Google Sheets.
 
 **What Claude does NOT do:**
 * Modify data without member confirmation
@@ -147,18 +132,19 @@ Claude identifies the most likely task, presents it for member confirmation, the
 
 ---
 layout: center
-class: dark-gray
 ---
 
 <img src="./assets/pipeline-overview.png" class="max-h-full max-w-full object-contain" />
 
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
-# Task Database Pipeline Details
+# Task Database Pipeline
+Maintains the master list of all tasks in Google Sheets; supports add, update, and delete
 
+::left::
 <div class="text-sm">
 
 **Who can modify the task catalog?**
@@ -198,25 +184,18 @@ unique Task ID · name · frequency · location
 
 ---
 layout: center
-class: dark-gray
 ---
 
 <img src="./assets/task-database-pipeline.png" class="max-h-full max-w-full object-contain" />
 
 ---
-layout: center
-class: dark-gray
+layout: two-cols-header
 ---
 
-<img src="./assets/task-sheet-pipeline.png" class="max-h-full max-w-full object-contain" />
+# Task Sheet Pipeline
+Generates printable sign-up sheets from the task database and posts them around the shop
 
-
----
-layout: two-cols
----
-
-# Physical Sign-Up Sheet Format
-
+::left::
 <div class="text-sm">
 
 **Specification:**
@@ -247,7 +226,13 @@ layout: two-cols
 * TBD / empty tasks silently omitted
 * Ordered by frequency (most frequent first)
 
-**Key Requirements**
+</div>
+
+---
+
+# Task Sheet Pipeline — Key Requirements
+
+<div class="text-sm">
 
 | # | Requirement |
 |---|---|
@@ -262,18 +247,21 @@ layout: two-cols
 
 ---
 layout: center
-class: dark-gray
 ---
 
-<img src="./assets/task-capture-pipeline.png" class="max-h-full max-w-full object-contain" />
+<img src="./assets/task-sheet-pipeline.png" class="max-h-full max-w-full object-contain" />
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
-# Task Capture Pipeline Details
+# Task Capture Pipeline
+Records task completions from Members via <br/>
+Method 1 - Single-Sheet QR → mobile web form <br/>
+Method 2 - Slack Update in `#shop-queries`
 
-# Method 1: QR
+::left::
+Method 1: QR
 
 <div class="text-sm">
 
@@ -291,8 +279,7 @@ layout: two-cols
 </div>
 
 ::right::
-
-# Method 2: Slack
+**Method 2: Slack**
 
 <div class="text-sm">
 
@@ -305,15 +292,12 @@ layout: two-cols
 5. Confirmation posted to `#shop-log`
 
 **Record written includes:**
-* Member name · Task ID · Completion date · Source: `Slack`
-
-> Method 2 assumes the member has an existing Slack account.
-
+* Member name · Task ID · Completion date · Time Spent · Source: `Slack`
 </div>
 
 ---
 
-# Task Capture — Requirements
+# Task Capture Pipeline — Key Requirements
 
 <div class="text-sm">
 
@@ -331,30 +315,46 @@ layout: two-cols
 
 </div>
 
+<style>
+h1 { white-space: nowrap; font-size: 1.8rem; }
+</style>
+
+---
+
+# Task Capture Sign-Up Sheet — Example Output
+
+<img src="./assets/metalshop-signup-sheet2.png" class="max-h-96 object-contain mx-auto" />
+
+<div class="text-sm text-center mt-2">
+
+_Metalshop sign-up sheet (v2) — single QR code in header <br/>· 8.5×11" landscape · black-and-white printable_
+
+</div>
+
 ---
 layout: center
-class: dark-gray
 ---
 
-<img src="./assets/task-reporting-pipeline.png" class="max-h-full max-w-full object-contain" />
-
+<img src="./assets/task-capture-pipeline.png" class="max-h-full max-w-full object-contain" />
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
-# Task Reporting Pipeline Detail
+# Task Reporting Pipeline
 
+::left::
 <div class="text-sm">
 
 **On-Demand Reports (NL query in Slack)**
 
-| Report | Description | Access |
+| **Report** | **Description** | **Access** |
 |---|---|---|
 | **Member** | Tasks completed; compliance status | Own: any member · Other: Steward+ |
 | **Location** | Task status; overdue tasks | All Members (public) |
 | **Shop** | Aggregate; top contributors | All Members (public) |
 | **Compliance** | Who met 2hr/month requirement | Shop Steward + Sergeant only |
+
 
 **Scheduled Reports (APScheduler)**
 * **Weekly** → `#shop-bulletin`: errors logged, location availability
@@ -365,11 +365,11 @@ layout: two-cols
 
 ::right::
 
-# Slack Channel Structure
-
 <div class="text-sm">
 
-| Channel | Access | Purpose |
+**Slack Channel Structure**
+
+| **Channel** | **Access** | **Purpose** |
 |---|---|---|
 | `#shop-log` | All (read) | Task completion confirmations |
 | `#shop-bulletin` | All (read) | Announcements + scheduled reports |
@@ -378,6 +378,30 @@ layout: two-cols
 | `#shop-alerts` 🔒 | Sgt only | Full audit trail + bot errors |
 
 </div>
+
+---
+
+# Task Reporting Pipeline — Key Requirements
+
+<div class="text-sm">
+
+| # | Requirement |
+|---|---|
+| TR-1 | Members may request reports via natural language in `#shop-queries` (public data only) |
+| TR-2 | Stewards, Shop Stewards, and Shop Sergeants may request any report type via `#shop-admin` |
+| TR-3 | The bot must respond to report requests inline in Slack |
+| TR-4 | `#shop-alerts` must be notified when any report is generated |
+| TR-5 | A monthly summary report must be automatically posted to `#shop-bulletin` |
+| TR-6 | A monthly top-contributors report must be automatically posted to `#shop-bulletin` |
+| TR-7 | A weekly report of errors logged, availability across all locations posted to `#shop-bulletin` |
+
+</div>
+
+---
+layout: center
+---
+
+<img src="./assets/task-reporting-pipeline.png" class="max-h-full max-w-full object-contain" />
 
 ---
 
@@ -408,11 +432,12 @@ layout: two-cols
 </div>
 
 ---
-layout: two-cols
+layout: two-cols-header
 ---
 
-# Non-Functional Requirements
+# Non-Functional Key Requirements
 
+::left::
 <div class="text-sm">
 
 **Member Experience (Core Principle)**
@@ -433,7 +458,6 @@ layout: two-cols
 </div>
 
 ::right::
-
 <div class="text-sm">
 
 **Access Control**
@@ -504,53 +528,11 @@ layout: two-cols
 | **Makersmiths Purcellville (MSP)** | Future release. Architecture must accommodate MSP without structural changes, but no MSP deployment is planned. |
 | **Capture methods not selected** | Once Phase 0 trial picks a method, the other is documented for reference only. |
 | **Email / SMS notifications** | Slack is the sole notification channel. No alternatives planned. |
-| **Native mobile app** | Mobile experience delivered via mobile-optimized web form (Method 1) or Slack (Method 2). No app install required. |
+| **Native mobile app** | No native iOS/Android app, mobile experience delivered via mobile-optimized web form. |
 | **Real-time dashboards** | Reports delivered on-demand via Slack or on a scheduled basis. NL queries cover real-time needs. |
 
 </div>
 
----
-layout: two-cols
----
-
-# Current State — Phase 0
-
-<div class="text-sm">
-
-**Complete and passing tests:**
-
-* `scripts/signup-sheet.py` — renders HTML sign-up sheet from YAML task file
-* `scripts/signup-sheet2.py` — v2 with single header QR code (likely selection)
-* `scripts/generate-signup-sheet-template.py` / `...-template2.py` — Jinja2 template generators
-* `scripts/yaml-to-sheets.py` — YAML → Excel for Google Sheets import
-* All tests passing with `pytest`
-
-**Phase 0 Prototype trials pending:**
-
-1. **Sign-up sheet format trial** — test v1 vs v2 with real stewards/members on the shop floor
-2. **QR → mobile web form usability** — will members know how to scan?
-3. **Slack Update usability** — can members describe tasks clearly enough for Claude to identify them?
-
-</div>
-
-::right::
-
-# Next Steps
-
-<div class="text-sm">
-
-**After Phase 0 trial:**
-
-1. **Select capture method(s)** — commit to Method 1 (QR), Method 2 (Slack), or both
-2. **Add member registry** (`members` sheet) — unblocks M1 and O1 KPIs
-3. **Write specs** (`docs/specifications.md`) — data flows, API contracts, Sheets schema
-4. **Phase 1** — Google Sheets integration + YAML bulk-load
-5. **Phase 2** — Slack bot framework + task CRUD commands
-6. **Phase 3** — Task capture (QR web form + Slack Update)
-7. **Phase 4** — Reporting pipeline + APScheduler
-8. **Soft launch** — Limited steward pilot at MSL
-
-</div>
 
 ---
 
@@ -576,27 +558,12 @@ Before implementation begins, these deserve deliberate discussion:
 layout: center
 ---
 
-# Sign-Up Sheet — Example Output
-
-<img src="./assets/metalshop-signup-sheet2.png" class="max-h-96 object-contain mx-auto" />
-
-<div class="text-sm text-center mt-2">
-
-_Metalshop sign-up sheet (v2) — single QR code in header · 8.5×11" landscape · black-and-white printable_
-
-</div>
-
----
-layout: center
----
-
 # Questions & Discussion
 
-**Jeff Irland**
 
-📧 <jeff.irland@gmail.com> · 💬 Slack: jeff.irland
-
-_Source: github.com/jeffskinnerbox/makersmiths-shop_
-
-_Full requirements: `docs/requirements.md` · Next doc: `docs/specifications.md`
+* **eMail:** <jeff.irland@verison.net>
+* **Slack:** jeff.irland
+* **Source:** `github.com/jeffskinnerbox/makersmiths-shop`
+  * **Full requirements:** `docs/requirements.md`
+  * **Next document:** `docs/specifications.md`
 

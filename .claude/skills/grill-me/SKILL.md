@@ -8,7 +8,7 @@ metadata:
 ---
 
 
-Think Hard about what must be done,
+Think hard about what must be done,
 and interview me relentlessly about every aspect of this plan until we reach a shared understanding.
 Walk down each branch of the plan / design tree, resolving dependencies between decisions one-by-one.
 

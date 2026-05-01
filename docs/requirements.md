@@ -934,7 +934,7 @@ The following are explicitly **not** part of this initial release:
 | **Makersmiths Purcellville (MSP)** | Future release. The system architecture must accommodate MSP without structural changes, but no MSP deployment is planned at this time. |
 | **Capture methods not selected** | Once a capture method is chosen from the three options in §5.3, the remaining methods are documented for reference only and will not be implemented. |
 | **Non-Slack notification channels** | Email and SMS notifications are not in scope. Slack is the sole notification channel. |
-| **Mobile app** | To reduce friction, it is a requirement that there is no need for a native iOS or Android app. The mobile experience is delivered through Slack and a mobile-optimized web form (Method 1 — Single-Sheet QR). |
+| **Mobile app** | To reduce friction, it is a requirement that there is no desire for a native iOS or Android app. The mobile experience is delivered through Slack and a mobile-optimized web form (Method 1 — Single-Sheet QR). |
 | **Real-time dashboards** | Reports are delivered on-demand via Slack or on a scheduled basis. No live dashboard is planned. It is expected that real-time status information will be provided via natural language queries. |
 
 ---

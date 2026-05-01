@@ -1,4 +1,3 @@
 <template>
-  <img src="/logo.png" style="position:absolute; bottom:1rem; right:1rem; width:20%;" />
-  <!-- 20% of 980px ≈ 49px -->
+  <img src="/logo.png" style="position:absolute; bottom:1rem; right:1rem; width:20%; z-index:999; pointer-events:none;" />
 </template>
