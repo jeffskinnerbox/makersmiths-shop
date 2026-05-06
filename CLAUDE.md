@@ -97,6 +97,8 @@ pandoc -f gfm output/MSL-volunteer-opportunities.md -o output/MSL-volunteer-oppo
 # Convert YAML → JSON
 python3 scripts/yaml-to-json.py input/MSL-volunteer-opportunities.yaml | jq -C '.'
 # Note: scripts/pdf-margins.css is used by requirements-to-pdf.sh only; not a standalone tool
+# Convert any Markdown file → HTML (uses scripts/template.html as pandoc wrapper)
+bash scripts/md2html.sh <filename.md>
 ```
 
 ## Presentations (Slidev + Excalidraw)
@@ -216,7 +218,7 @@ my-understanding.md ---> requirements.md -+-> specifications.md ---> architectur
 - `docs/implementation-plan.md` — detailed 5-phase implementation plan with file map and code examples **[not yet created]**
 - `templates/feature-list.yaml` — feature tracker template (placeholder, not yet populated)
 - `templates/use-case-list.yaml` — use case tracker template
-- `ai_project_roadmap.md` / `ai_project_roadmap_V2.md` — AI-assisted roadmap docs (+ `.excalidraw` diagrams)
+- `docs/ai_project_roadmap_V2.md` — AI-assisted roadmap doc
 - `input/Leesburg Site-wide Cleaning and Maintenance Tasks.xlsx` — original source data from stewards
 - `presentations/members-meeting/` — Slidev deck for members meeting (Excalidraw-integrated)
 - `presentations/requirements-review/` — Slidev deck for requirements walkthrough

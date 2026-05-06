@@ -993,6 +993,31 @@ Each may add value, but each also carries cost or complexity that needs to be we
   The question is whether to add a `time` field to the task schema now,
   while the data model is still being designed, or defer it until compliance reporting becomes a real need.
 
+* **Should Google Sheets be replaced with PostgreSQL or SQLite?**
+  Google Sheets was chosen as the system's single source of truth because it is familiar to stewards,
+  requires no infrastructure to stand up, and gives non-technical stakeholders direct read access to the data
+  without any additional tooling.
+  Those are real advantages at the start of a volunteer-run project, but they come with structural costs
+  that grow more painful as the system matures.
+
+  Google Sheets has no referential integrity — nothing prevents a completion record from referencing a `task_id`
+  that no longer exists in the task catalog, and there is no foreign-key constraint to catch it.
+  It has no transaction support — a bot crash mid-write can leave a row partially populated with no rollback.
+  Its API rate limits (100 requests per 100 seconds per user) are generous for light use
+  but become a genuine constraint if multiple pipelines are querying and writing concurrently.
+  And querying it for anything beyond simple cell reads requires awkward workarounds:
+  filtering, joining, and aggregating data across sheets means pulling large ranges into Python and doing the work in memory,
+  rather than expressing the query in SQL where it belongs.
+
+  SQLite eliminates all of these problems with essentially zero operational overhead —
+  it is a single file, requires no server, and is already installed on most Python hosts.
+  It gives the system real SQL (joins, aggregates, transactions, foreign keys) and removes the API rate-limit ceiling entirely.
+  The tradeoff is that stewards lose direct spreadsheet access; any data views they currently get by opening a browser tab
+  would need to be served through the bot or a lightweight read-only web page.
+  PostgreSQL offers the same query power with multi-process concurrency and better tooling for backups and migrations,
+  but adds genuine infrastructure burden — a hosted instance, connection management, credentials rotation —
+  that may be hard to sustain for a volunteer-maintained project.
+
 * **Should we consider Claude Routines as an alternative to APScheduler?**
   The current design (§4.2) embeds APScheduler inside the bot process to drive all time-based automation:
   overdue task alerts posted to `#shop-bulletin`, weekly error and availability summaries, monthly compliance summaries,
