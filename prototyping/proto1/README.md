@@ -1,0 +1,53 @@
+
+# Proto1
+This prototype, Proto1, will create a SQLite database populated with a single table contain all the MSL Volunteer Work (aka task).
+Python tools will be created that can perform basic database operations on the table.
+The intent is to provide these tools to a single AI agentic for managing the status of Volunteer Work tasks.
+
+The database operation defined here are intended to be elementary operation,
+and the AI agent will use them, in combination and with additional logic, for more elaborate database queries an operations.
+
+The database created should be in this root directory but
+all the tools created should be put in the @scripts directory.
+All test script should be put in the @tests directory.
+
+## Database Operations Supported
+* Atomic Operations on Records
+  1. create - Creating a unique record id as it key, this operation inserts a single new row into a table,
+     pre-populated with all required elements.
+  1. read - Using a record id as it key, this operation retrieves a single record
+  1. update - Using a record id as it key, this operation modifies one or more elements of a single records.
+  1. delete - Using a record id as it key, this operation deletes a single record from the database.
+* Multiple Record Operations
+  1. list - Matching one or more record elements with regular expression, retrieve all records that match
+  1. purge - Matching one or more record elements with regular expression, delete all records that match
+  1. replicate - For a specified database table, make a new table with the same content.
+* Supporting Information
+  1. The output format of the Python CLI tools should be a YAML representation of the output.
+  1. The records must have a unique ID over all time.  Uses a UUID as you main key to assure uniqueness.
+     The user will provide a `task_id` as there unique id, but cannot be trusted to be unique.
+  1. All tools created need to operate as CLI tools,
+     but they must also be structure so there core purpose can be loaded as a module by other Python tools.
+  1. All tools should should use Pythonic design principles, be well documented internally, and use type hints / static type checking.
+
+## Load Source Data for Database Table
+`MSL-volunteer-opportunities.yaml` is an example list of Makersmiths volunteer work tasks.
+
+1. Create a Python CLI tool (called `db_create`) to create a SQLite database.
+1. Create a Python CLI tool (called `db_table_create`) to create a single SQLite table using a YAML schema.
+   The tool should be able to use `MSL-volunteer-opportunities.yaml` as its example schema
+   but the tool needs to support any single table schema that might be supplied.
+   `db_table_create` should be loaded via a YAML file, and it should able to receive the
+   `MSL-volunteer-opportunities.yaml` file as input and load it into the database.
+
+## Create Tools for Database Operations
+1. Create Python tools to perform the following on the SQLite database record (CRUD):
+   create (called `db_create`),
+   read (called `db_read`),
+   update (called `db_update`),
+   and delete (called `db_delete`) on single SQLite database records.
+1. Create Python tools to perform the following on multiple SQLite database records:
+   list (called `db_list`), purge (called `db_purge`), replicate (called `db_replicate`).
+1. Create Python tool (called `db_validate_task_table`) to check `task_id` element for uniqueness over the whole table.
+   Tool should return `true` or `false` and with a listing of those records that are not unique if `false`.
+
