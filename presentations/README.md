@@ -110,9 +110,10 @@ slidev --version
 ### Do Presentation
 
 ```bash
-cd ~/src/projects/makersmiths/shop-sergeant/presentations/requirements-review
+cd ~/src/projects/makersmiths/shop-sergeant/presentations
 
-slidev slides.md
+slidev member-meeting-may-6-2026.md
+
 ```
 
 ### Create a Portable Version of this Presentation
@@ -125,20 +126,28 @@ No browser or server needed — any laptop can open it.
 
 ```bash
 # move to the directory where you slidev markdown file is located
-cd presentations/requirements-review
+cd ~/src/projects/makersmiths/shop-sergeant/presentations
 
-# create the PDF version of you presentation
-npx slidev export member-meeting.md --output member-meeting.pdf
+# create the PDF version of you presentation - requires playwright-chromium installed
+npx slidev export member-meeting-may-6-2026.md --output member-meeting-may-6-2026.pdf
 ```
 
 Copy the PDF to the thumb drive.
-Requires `playwright-chromium` installed.
 
 2. Static site (keeps animations/interactivity)
 
 ```bash
-  cd presentations/requirements-review
-  pnpm build    # outputs to dist/
+# move to your working directory
+cd ~/src/projects/makersmiths/shop-sergeant/presentations
+
+# copy you presentation to slides.md - tool only works with slides.md files
+cp member-meeting-may-6-2026.md slides.md
+
+# build your potable presentation tool
+pnpm build slides.md
+
+# remove slides.md
+rm slides.md
 ```
 
 Copy the `dist/` folder to the thumb drive.
@@ -153,7 +162,7 @@ Use the static site only if you need click animations or the interactive present
 If you haven't installed playwright yet:
 
 ```bash
-cd presentations/requirements-review
+cd ~/src/projects/makersmiths/shop-sergeant/presentations
 pnpm add -D playwright-chromium
 pnpm exec playwright install chromium
 ```

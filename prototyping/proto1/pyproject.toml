@@ -1,0 +1,19 @@
+[project]
+name = "proto1"
+version = "0.0.1"
+description = "SQLite volunteer task DB tools for Makersmiths Shop Sergeant"
+requires-python = ">=3.11"
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "mypy>=1.0",
+    "types-PyYAML",
+]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
