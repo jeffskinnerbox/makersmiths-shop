@@ -73,8 +73,8 @@
 
 # prototyping work 
 /prototyping/*                           # ignore everything inside the prototyping directory
-/prototyping/README.md
-!/prototyping/proto1/                    # whitelist the specific subdirectory you want to keep
+#/prototyping/README.md
+#!/prototyping/proto1/                    # whitelist the specific subdirectory you want to keep
 
 # this directory is just a "scrach pad" form my brainstorming with claude
 #brain_storming/
