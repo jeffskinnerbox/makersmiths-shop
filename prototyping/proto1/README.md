@@ -8,8 +8,8 @@ The database operation defined here are intended to be elementary operation,
 and the AI agent will use them, in combination and with additional logic, for more elaborate database queries an operations.
 
 The database created should be in this root directory but
-all the tools created should be put in the `@scripts` directory.
-All test scripts should be put in the `@tests` directory.
+all the tools created should be put in the `scripts` directory.
+All test scripts should be put in the `tests` directory.
 
 ## Setup
 
@@ -21,30 +21,30 @@ uv sync --extra dev  # include pytest, mypy
 Run tests:
 
 ```bash
-uv run pytest ./@tests/ -v
+uv run pytest ./tests/ -v
 ```
 
 ## Quick Start
 
 ```bash
 # Create the database and load MSL tasks
-uv run python @scripts/db_create.py msl.db
-uv run python @scripts/db_table_create.py msl.db MSL-volunteer-opportunities.yaml
+uv run python scripts/db_create.py msl.db
+uv run python scripts/db_table_create.py msl.db MSL-volunteer-opportunities.yaml
 
 # Find a record's UUID
-uv run python @scripts/task_id_to_uuid.py msl.db MSL_volunteer_opportunities MSL-METAL-002
+uv run python scripts/task_id_to_uuid.py msl.db MSL_volunteer_opportunities MSL-METAL-002
 
 # Read / update / delete by UUID
-uv run python @scripts/db_read.py msl.db MSL_volunteer_opportunities <uuid>
-uv run python @scripts/db_update.py msl.db MSL_volunteer_opportunities <uuid> last_date=2026-05-06
-uv run python @scripts/db_delete.py msl.db MSL_volunteer_opportunities <uuid>
+uv run python scripts/db_read.py msl.db MSL_volunteer_opportunities <uuid>
+uv run python scripts/db_update.py msl.db MSL_volunteer_opportunities <uuid> last_date=2026-05-06
+uv run python scripts/db_delete.py msl.db MSL_volunteer_opportunities <uuid>
 
 # List tasks matching regex filters (AND-combined, case-insensitive)
-uv run python @scripts/db_list.py msl.db MSL_volunteer_opportunities frequency=Weekly
-uv run python @scripts/db_list.py msl.db MSL_volunteer_opportunities location=Metalshop supervision=0
+uv run python scripts/db_list.py msl.db MSL_volunteer_opportunities frequency=Weekly
+uv run python scripts/db_list.py msl.db MSL_volunteer_opportunities location=Metalshop supervision=0
 
 # Validate task_id uniqueness
-uv run python @scripts/db_validate_task_table.py msl.db MSL_volunteer_opportunities
+uv run python scripts/db_validate_task_table.py msl.db MSL_volunteer_opportunities
 ```
 
 **Note:** `supervision` is stored as `0` (false) or `1` (true) in SQLite.

@@ -319,13 +319,16 @@ opportunities:
           - name: Classroom
             steward: Oliver Arend
             work_tasks:
-              - task: TBD
+              - task: Small woodworking project for classroom
                 task_id: MSL-CLASSROOM-001
-                time: 15
-                frequency: NA
-                purpose: NA
-                instructions: NA
-                supervision: false
+                time: 180
+                frequency: once
+                purpose: Create a 6ft x 3ft whiteboard for the downstairs classroom
+                instructions: I'm looking for somebody who can build something that holds up the whiteboard in the classroom at about 5 1/2 to 6 ft (top edge),
+                              so that it can be moved around the room and can be stored in the gap between the computer desk
+                              and the wire rack so that it's out of the way when not needed.
+                              Please coordinate with Oliver Arend about what materials you'd want to buy and get reimbursed for.
+                supervision: true
                 last_date: NA
 
           - name: CO2 Lasercutter
@@ -505,12 +508,19 @@ opportunities:
           - name: Woodturning
             steward: Ken Fuentecilla, Bryan Boston
             work_tasks:
-              - task: TBD
+              - task: Clean the woodturning hallway
                 task_id: MSL-WOODTURN-001
                 time: 15
-                frequency: NA
-                purpose: NA
-                instructions: NA
+                frequency: Weekly
+                purpose: The is to keep wood shaving from being spread into other room
+                instructions: 1. Sweep well with a broom.  This is part of the Woodturning Area and needs to be cleaned just like the rest of the room after use!
+                              2. If the blue sheets are no longer tacky, it's time to peel them.  This should be done after cleaning up everything else.
+                              3. Close the door and begin with the top sheet closest to the door.
+                              4. Each sheet has a number visible on the corner.  This is the number of the current top sheet.
+                              5. With your fingernail or something thin, slowly reveal JUST the next number.
+                              6. With a finger or thumb, firmly hold THAT next number down.
+                              7. With your other hand, peel the old top sheet in a zig zag motion away from the new sheet.  (Resist the urge to tear it off like bandage!)
+                              8. Repeat the above steps until only clean, tacky top sheets remain.
                 supervision: false
                 last_date: NA
 
@@ -659,4 +669,16 @@ opportunities:
                 purpose: NA
                 instructions: NA
                 supervision: false
+                last_date: NA
+
+          - name: Administrative
+            steward: Mary V Waldron
+            work_tasks:
+              - task: Makersmiths financial tracking, policies, procedures
+                task_id: MSL-ADMIN-001
+                time: 120
+                frequency: Monthly
+                purpose: tracking and calculating payments and writing financial policies and procedures
+                instructions: Mary will provide coaching on what needs to be done
+                supervision: true
                 last_date: NA
