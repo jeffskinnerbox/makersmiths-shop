@@ -75,3 +75,27 @@ def test_bad_leaf():
     result = _schema(leaf="nonexistent_leaf")
     assert result["status"] == "error"
     assert "nonexistent_leaf" in result["message"]
+
+
+def test_unions_intermediate_fields(tmp_path):
+    import yaml
+
+    # Two sections: Alpha has only 'name'; Beta adds 'owner'.
+    # Without the fix, 'owner' is missed because only arr[0] (Alpha) is sampled.
+    data = {
+        "root": {
+            "sections": [
+                {"name": "Alpha", "tasks": [{"task": "clean"}]},
+                {"name": "Beta", "owner": "Bob", "tasks": [{"task": "fix"}]},
+            ]
+        }
+    }
+    yaml_path = tmp_path / "data.yaml"
+    yaml_path.write_text(yaml.dump(data))
+
+    from create_db_schema import create_db_schema
+    result = create_db_schema(str(yaml_path), "root", "tasks")
+    assert result.get("status") != "error", result.get("message")
+    levels = {lv["key"]: lv for lv in result["hierarchy"]["levels"]}
+    assert "name" in levels["sections"]["promote"]
+    assert "owner" in levels["sections"]["promote"]

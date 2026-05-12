@@ -116,11 +116,13 @@ def create_db_schema(yaml_file: str, root: str, leaf: str) -> dict[str, Any]:
         entry: dict[str, Any] = {"key": key}
         if not is_leaf:
             arr = cursor.get(key, [])
-            first = arr[0] if arr and isinstance(arr[0], dict) else {}
-            promote = _scalar_fields(first)
+            all_items = [item for item in arr if isinstance(item, dict)]
+            promote: dict[str, str] = {}
+            for item in all_items:
+                promote.update(_scalar_fields(item))
             if promote:
                 entry["promote"] = promote
-            cursor = first
+            cursor = all_items[0] if all_items else {}
         else:
             entry["leaf"] = True
         levels.append(entry)
