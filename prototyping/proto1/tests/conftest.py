@@ -5,10 +5,10 @@ from pathlib import Path
 
 import pytest
 
-# Make scripts importable.
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 YAML_FILE = str(Path(__file__).parent.parent / "MSL-volunteer-opportunities.yaml")
+SCHEMA_FILE = str(Path(__file__).parent.parent / "msl-schema.yaml")
 
 
 @pytest.fixture
@@ -19,7 +19,7 @@ def fresh_db(tmp_path):
 
     db_path = str(tmp_path / "test.db")
     db_create(db_path)
-    db_table_create(db_path, YAML_FILE)
+    db_table_create(db_path, YAML_FILE, SCHEMA_FILE)
     return db_path
 
 
