@@ -40,13 +40,17 @@ uv run python scripts/db_table_create.py \
 
 ## Architecture
 
-**`scripts/db_utils.py`** — shared foundation imported by all other scripts. Defines `TASK_FIELDS`, `get_connection()` (registers Python `REGEXP` function into SQLite), `new_uuid()`, `row_to_dict()`, `print_yaml()`, and `coerce_value()`.
+**`scripts/db_utils.py`** — shared foundation imported by all other scripts. Defines `TASK_FIELDS`, `get_connection()` (registers Python `REGEXP` function into SQLite), `new_uuid()`, `row_to_dict()`, `print_yaml()`, `coerce_value()`, `get_table_columns()`, and `coerce_for_type()`.
+
+- `get_table_columns(conn, table) -> dict[str, str]` — reads `PRAGMA table_info(table)`, returns `{column_name: sql_type}`. Used by `db_list`, `db_purge`, and `db_update` to validate field names against the live DB schema instead of the hardcoded `TASK_FIELDS` list.
+- `coerce_for_type(field, raw, sql_type) -> Any` — schema-agnostic CLI coercion: `NA`/`None` → `NULL`; `INTEGER` accepts bool-like (`true/yes/1` → 1, `false/no/0` → 0) or numeric strings; `REAL` → float; `TEXT` passthrough. Used by `db_update`'s `main()`.
+- `TASK_FIELDS` and `coerce_value()` remain for backward compatibility but are no longer imported by `db_list`, `db_purge`, or `db_update`.
 
 **Script pattern** — every script exports a pure function (e.g. `db_read(db_path, table, uuid)`) plus a `main()` CLI wrapper. Tests import the pure functions directly; `conftest.py` does `sys.path.insert` to `scripts/` so no install is needed.
 
 **`tests/conftest.py`** — provides the `fresh_db` fixture (temp SQLite DB pre-loaded from `MSL-volunteer-opportunities.yaml` + `msl-schema.yaml`), `YAML_FILE`, `SCHEMA_FILE`, and `TABLE` constants used by all test modules.
 
-**Data flow**: schema YAML defines columns, types, coerce rules, and hierarchy traversal config. `create_db_schema.py` generates the schema from any hierarchical data YAML via DFS. `db_table_create.py` reads both the schema and data YAMLs: it seeds a context dict from `root_promote` scalars, recurses through `levels[].promote` fields at each intermediate level, then merges context + leaf record at the leaf level. Each row gets a generated UUID primary key. The `task_id` field (user-supplied) is not trusted for uniqueness; UUID is the canonical key.
+**Data flow**: schema YAML defines columns, types, coerce rules, and hierarchy traversal config. `create_db_schema.py` generates the schema from any hierarchical data YAML via DFS — it unions scalar fields across **all items** at each intermediate level (not just the first), so promote candidates are never missed. `db_table_create.py` reads both the schema and data YAMLs: it seeds a context dict from `root_promote` scalars, recurses through `levels[].promote` fields at each intermediate level, then merges context + leaf record at the leaf level. Each row gets a generated UUID primary key. The `task_id` field (user-supplied) is not trusted for uniqueness; UUID is the canonical key.
 
 **`msl-schema.yaml`** — hand-edited schema for `MSL-volunteer-opportunities.yaml`. The raw output of `create_db_schema.py` has duplicate column names (shop/area/location all have a `name` field); this file renames them to `shop`, `area`, `location`, `location_steward`, `shop_address`, `shop_steward`. Used by `conftest.py` as `SCHEMA_FILE`.
 
@@ -74,8 +78,9 @@ uv run python scripts/db_table_create.py \
 - `create_db_schema.py` promotes **all scalar fields** at each hierarchy level using field name as column name by default. The generated schema must be hand-edited to rename conflicting column names before use (e.g. three levels all have a field named `name`).
 - Table name defaults to YAML filename stem with non-alphanumeric characters replaced by `_` (e.g. `MSL-volunteer-opportunities.yaml` → `MSL_volunteer_opportunities`).
 - `supervision` is stored as `0`/`1` in SQLite. CLI accepts `true/false/yes/no/0/1`; use `supervision=0` or `supervision=1` in list/purge filters.
-- `time` field is stored as `INTEGER` (minutes). Coercion happens in `coerce_value()`.
+- `time` field is stored as `INTEGER` (minutes). Coercion for CLI inputs happens in `coerce_for_type()`; `coerce_value()` is retained for other callers.
 - `NA` sentinel (string `"NA"`) maps to SQL `NULL`.
+- `db_list`, `db_purge`, and `db_update` validate field names against the live SQLite schema via `PRAGMA table_info` — they work with any schema-generated table, not just the MSL-specific `TASK_FIELDS` list.
 - `db_list` and `db_purge` require at least one filter (prevents accidental full-table operations); filters use `re.search` semantics via the registered `REGEXP` function.
 - `tests/` must NOT have an `__init__.py` — its presence prevents pytest from adding `tests/` to `sys.path`, breaking `from conftest import TABLE`.
 - mypy runs in `strict` mode (`pyproject.toml`).
