@@ -66,13 +66,12 @@ def _flatten_rows(data: dict[str, Any], hierarchy: dict[str, Any]) -> list[dict[
 
 
 def _apply_coerce(name: str, val: Any, rule: str) -> Any:
-    """Apply int or bool coerce rule; exit 1 on failure."""
+    """Apply int or bool coerce rule; raises ValueError on failure."""
     if rule == "int":
         try:
             return int(val)
         except (ValueError, TypeError):
-            print(f"error: field '{name}' must be int, got {val!r}", file=sys.stderr)
-            sys.exit(1)
+            raise ValueError(f"field '{name}' must be int, got {val!r}")
     if rule == "bool":
         if isinstance(val, bool):
             return int(val)
@@ -81,8 +80,7 @@ def _apply_coerce(name: str, val: Any, rule: str) -> Any:
             return 1
         if s in ("false", "0", "no"):
             return 0
-        print(f"error: field '{name}' must be bool, got {val!r}", file=sys.stderr)
-        sys.exit(1)
+        raise ValueError(f"field '{name}' must be bool, got {val!r}")
     return val
 
 
@@ -160,7 +158,10 @@ def db_table_create(
     }
 
     merged_rows = _flatten_rows(data, hierarchy)
-    built_rows = [_build_row(r, columns, coerce_map, auto_map) for r in merged_rows]
+    try:
+        built_rows = [_build_row(r, columns, coerce_map, auto_map) for r in merged_rows]
+    except ValueError as exc:
+        return {"status": "error", "message": str(exc)}
 
     conn = sqlite3.connect(str(db))
     try:
