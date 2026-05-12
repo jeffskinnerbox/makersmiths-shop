@@ -1,0 +1,51 @@
+hierarchy:
+  root: opportunities.shop
+  root_promote:
+    shop: name
+    shop_address: address
+    shop_steward: steward
+  levels:
+  - key: area
+    promote:
+      area: name
+  - key: location
+    promote:
+      location: name
+      location_steward: steward
+  - key: work_tasks
+    leaf: true
+columns:
+- name: uuid
+  type: TEXT
+  primary_key: true
+  auto: uuid4
+- name: task_id
+  type: TEXT
+- name: task
+  type: TEXT
+- name: time
+  type: INTEGER
+  coerce: int
+- name: frequency
+  type: TEXT
+- name: purpose
+  type: TEXT
+- name: instructions
+  type: TEXT
+- name: supervision
+  type: INTEGER
+  coerce: bool
+- name: last_date
+  type: TEXT
+- name: location
+  type: TEXT
+- name: location_steward
+  type: TEXT
+- name: area
+  type: TEXT
+- name: shop
+  type: TEXT
+- name: shop_address
+  type: TEXT
+- name: shop_steward
+  type: TEXT
