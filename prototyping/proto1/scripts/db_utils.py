@@ -85,3 +85,33 @@ def coerce_value(field: str, raw: str) -> Any:
         print(f"error: 'supervision' must be true/false, got '{raw}'", file=sys.stderr)
         sys.exit(1)
     return raw
+
+
+def get_table_columns(conn: sqlite3.Connection, table: str) -> dict[str, str]:
+    """Return {column_name: sql_type} for every column in table."""
+    rows = conn.execute(f"PRAGMA table_info({table})").fetchall()
+    return {row["name"]: row["type"] for row in rows}
+
+
+def coerce_for_type(field: str, raw: str, sql_type: str) -> Any:
+    """Coerce a CLI string value to the appropriate Python type given its SQLite column type."""
+    if raw == NA or raw is None:
+        return None
+    upper = sql_type.upper()
+    if upper == "INTEGER":
+        if raw.lower() in ("true", "yes", "1"):
+            return 1
+        if raw.lower() in ("false", "no", "0"):
+            return 0
+        try:
+            return int(raw)
+        except ValueError:
+            print(f"error: field '{field}' expects INTEGER, got '{raw}'", file=sys.stderr)
+            sys.exit(1)
+    if upper == "REAL":
+        try:
+            return float(raw)
+        except ValueError:
+            print(f"error: field '{field}' expects REAL, got '{raw}'", file=sys.stderr)
+            sys.exit(1)
+    return raw
