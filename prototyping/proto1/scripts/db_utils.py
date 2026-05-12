@@ -93,7 +93,7 @@ def get_table_columns(conn: sqlite3.Connection, table: str) -> dict[str, str]:
     return {row["name"]: row["type"] for row in rows}
 
 
-def coerce_for_type(field: str, raw: str, sql_type: str) -> Any:
+def coerce_for_type(field: str, raw: str | None, sql_type: str) -> Any:
     """Coerce a CLI string value to the appropriate Python type given its SQLite column type."""
     if raw == NA or raw is None:
         return None
