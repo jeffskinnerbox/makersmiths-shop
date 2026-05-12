@@ -138,18 +138,27 @@ def db_table_create(
     if _navigate(data, hierarchy["root"]) is None:
         return {"status": "error", "message": f"root not found in data: {hierarchy['root']}"}
 
+    # Validate hierarchy levels
+    levels_cfg: list[dict[str, Any]] = hierarchy.get("levels", [])
+    if not levels_cfg:
+        return {"status": "error", "message": "schema hierarchy has no levels"}
+    if not levels_cfg[-1].get("leaf"):
+        return {"status": "error", "message": "last hierarchy level must have leaf: true"}
+
     columns: list[dict[str, Any]] = schema["columns"]
     table_name = table or re.sub(r"[^a-zA-Z0-9_]", "_", yaml_path.stem)
 
     col_defs = [
-        f"{c['name']} {c['type']}" + (" PRIMARY KEY" if c.get("primary_key") else "")
+        f'"{c["name"]}" {c["type"]}' + (" PRIMARY KEY" if c.get("primary_key") else "")
         for c in columns
     ]
-    create_sql = f"CREATE TABLE IF NOT EXISTS {table_name} ({', '.join(col_defs)})"
+    create_sql = f'CREATE TABLE IF NOT EXISTS "{table_name}" ({", ".join(col_defs)})'
+    col_names = ", ".join(f'"{c["name"]}"' for c in columns)
+    col_params = ", ".join(":" + c["name"] for c in columns)
     insert_sql = (
-        f"INSERT INTO {table_name} "
-        f"({', '.join(c['name'] for c in columns)}) "
-        f"VALUES ({', '.join(':' + c['name'] for c in columns)})"
+        f'INSERT INTO "{table_name}" '
+        f'({col_names}) '
+        f'VALUES ({col_params})'
     )
 
     coerce_map = {c["name"]: c["coerce"] for c in columns if "coerce" in c}
