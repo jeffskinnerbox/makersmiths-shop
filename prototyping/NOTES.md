@@ -12,16 +12,16 @@ CLI tools in `scripts/` that an AI agent calls to read, update, delete, list, an
 
 ### What Was Built
 
-- **Schema-driven table loading** (`create_db_schema.py` + `db_table_create.py`): any hierarchical YAML → schema YAML → SQLite table. `create_db_schema.py` does DFS to discover the array-key chain from `--root` to `--leaf`, infers SQLite types, and unions fields across ALL records at every level (both leaf and intermediate). `db_table_create.py` traverses the hierarchy using `root_promote` + `levels[].promote` to seed a context dict, then merges context + leaf record for each row.
-- **Schema-agnostic field validation** (`db_list`, `db_purge`, `db_update`): field names are validated against the live SQLite schema via `PRAGMA table_info` instead of a hardcoded `TASK_FIELDS` list. Works with any schema-generated table.
-- **`db_utils.py` helpers**: `get_table_columns(conn, table) -> dict[str, str]` (PRAGMA introspection) and `coerce_for_type(field, raw, sql_type) -> Any` (schema-agnostic CLI coercion: INTEGER accepts bool-like or numeric strings, REAL→float, TEXT passthrough).
+* **Schema-driven table loading** (`create_db_schema.py` + `db_table_create.py`): any hierarchical YAML → schema YAML → SQLite table. `create_db_schema.py` does DFS to discover the array-key chain from `--root` to `--leaf`, infers SQLite types, and unions fields across ALL records at every level (both leaf and intermediate). `db_table_create.py` traverses the hierarchy using `root_promote` + `levels[].promote` to seed a context dict, then merges context + leaf record for each row.
+* **Schema-agnostic field validation** (`db_list`, `db_purge`, `db_update`): field names are validated against the live SQLite schema via `PRAGMA table_info` instead of a hardcoded `TASK_FIELDS` list. Works with any schema-generated table.
+* **`db_utils.py` helpers**: `get_table_columns(conn, table) -> dict[str, str]` (PRAGMA introspection) and `coerce_for_type(field, raw, sql_type) -> Any` (schema-agnostic CLI coercion: INTEGER accepts bool-like or numeric strings, REAL→float, TEXT passthrough).
 
 ### Key Conventions
 
-- All scripts use named CLI args (`--db_path`, `--yaml_data`, `--yaml_schema`, `--table`, etc.) — no positional args.
-- `msl-schema.yaml` (proto1 root) is the hand-edited schema for `MSL-volunteer-opportunities.yaml`; raw `create_db_schema.py` output has conflicting `name` columns that must be renamed.
-- `NA` string → SQL `NULL`. `supervision` stored as `0`/`1`. `uuid` is the canonical primary key; `task_id` is not enforced unique.
-- 57 tests across 8 test files; run with `uv run pytest ./tests/ -v` from `proto1/`.
+* All scripts use named CLI args (`--db_path`, `--yaml_data`, `--yaml_schema`, `--table`, etc.) — no positional args.
+* `msl-schema.yaml` (proto1 root) is the hand-edited schema for `MSL-volunteer-opportunities.yaml`; raw `create_db_schema.py` output has conflicting `name` columns that must be renamed.
+* `NA` string → SQL `NULL`. `supervision` stored as `0`/`1`. `uuid` is the canonical primary key; `task_id` is not enforced unique.
+* 57 tests across 8 test files; run with `uv run pytest ./tests/ -v` from `proto1/`.
 
 ----
 

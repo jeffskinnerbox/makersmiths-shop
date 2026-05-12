@@ -804,6 +804,7 @@ uv run python scripts/db_table_create.py \
 ```
 
 Expected output (YAML) — `rows_loaded` is the actual task count from the YAML (≥ 60 for the current MSL file):
+
 ```yaml
 status: ok
 table: MSL_volunteer_opportunities

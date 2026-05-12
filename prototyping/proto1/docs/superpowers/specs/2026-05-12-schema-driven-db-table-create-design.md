@@ -97,7 +97,8 @@ Coerce semantics (match existing `coerce_value()` behaviour):
 ### CLI
 
 ```bash
-uv run python scripts/create_db_schema.py <yaml_file> \
+uv run python scripts/create_db_schema.py \
+    --yaml_data <yaml_file> \
     --root <dot.path> \
     --leaf <key> \
     [--output <schema.yaml>]
@@ -140,10 +141,14 @@ Returns the schema dict (same structure as the YAML above). `main()` serialises 
 
 ## Updated `db_table_create.py`
 
-### CLI (breaking change — new third positional arg)
+### CLI (breaking change — positional args replaced with named args)
 
 ```bash
-uv run python scripts/db_table_create.py <db_path> <yaml_file> <schema_yaml> [--table <name>]
+uv run python scripts/db_table_create.py \
+    --db_path <db_path> \
+    --yaml_data <yaml_file> \
+    --yaml_schema <schema_yaml> \
+    [--table <name>]
 ```
 
 `--table` still overrides the default table name (YAML filename stem, sanitised).
@@ -196,9 +201,11 @@ No changes. `TASK_FIELDS` and `coerce_value()` remain for `db_update`, `db_list`
 
 ### `tests/conftest.py`
 `fresh_db` fixture calls `db_table_create(db_path, YAML_FILE)` today. Must be updated to:
+
 ```python
 db_table_create(db_path, YAML_FILE, SCHEMA_FILE)
 ```
+
 `SCHEMA_FILE` points to a pre-generated `msl-schema.yaml` checked into the repo root of proto1.
 
 ### `tests/test_db_table_create.py`
@@ -207,6 +214,7 @@ All direct calls to `db_table_create(...)` gain the `schema_file` argument. Exis
 - `test_bad_hierarchy` — schema root not found in data → `status: error`
 
 ### New `tests/test_create_db_schema.py`
+
 | Test | What it checks |
 |---|---|
 | `test_generates_hierarchy` | levels list matches expected keys |
@@ -223,14 +231,20 @@ All direct calls to `db_table_create(...)` gain the `schema_file` argument. Exis
 
 ```bash
 # 1. Generate schema from existing data file (one-time or after data structure changes)
-uv run python scripts/create_db_schema.py MSL-volunteer-opportunities.yaml \
-    --root opportunities.shop --leaf work_tasks --output msl-schema.yaml
+uv run python scripts/create_db_schema.py \
+    --yaml_data MSL-volunteer-opportunities.yaml \
+    --root opportunities.shop \
+    --leaf work_tasks \
+    --output msl-schema.yaml
 
 # 2. Review / edit msl-schema.yaml (remove unwanted promoted columns, adjust types)
 
 # 3. Create DB and load data
 uv run python scripts/db_create.py msl.db
-uv run python scripts/db_table_create.py msl.db MSL-volunteer-opportunities.yaml msl-schema.yaml
+uv run python scripts/db_table_create.py \
+    --db_path msl.db \
+    --yaml_data MSL-volunteer-opportunities.yaml \
+    --yaml_schema msl-schema.yaml
 
 # 4. Run tests
 uv run pytest ./tests/ -v
