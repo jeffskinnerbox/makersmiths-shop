@@ -109,12 +109,14 @@ All output is YAML to `stdout`; errors go to `stderr` with exit code 1.
 
 Not a standalone script. Imported by every other script. Provides:
 
-* `TASK_FIELDS` — canonical list of all task column names
+* `TASK_FIELDS` — legacy column list; no longer used by `db_list`, `db_purge`, or `db_update` (retained for backward compat)
 * `get_connection(db_path)` — opens a SQLite connection with `row_factory` and a Python-backed `REGEXP` function registered
 * `new_uuid()` — generates a UUID4 string
 * `row_to_dict(row)` — converts a `sqlite3.Row` to a plain dict
 * `print_yaml(data)` — serializes data to YAML and prints to stdout
-* `coerce_value(field, raw)` — converts CLI string values to the right Python type (`time` → int, `supervision` → bool, `NA` → None)
+* `coerce_value(field, raw)` — field-name-specific coercion (`time` → int, `supervision` → bool, `NA` → None); retained for callers that use it directly
+* `get_table_columns(conn, table)` — reads `PRAGMA table_info(table)`, returns `{column_name: sql_type}`; used by `db_list`, `db_purge`, `db_update` to validate field names against the live DB schema
+* `coerce_for_type(field, raw, sql_type)` — schema-agnostic CLI coercion: `NA`/`None` → `NULL`; `INTEGER` accepts bool-like (`true/yes/1` → 1, `false/no/0` → 0) or numeric strings; `REAL` → float; `TEXT` passthrough
 
 ---
 
@@ -188,6 +190,7 @@ python db_list.py <db_path> <table> field=regex [field=regex ...]
 ```
 
 * At least one filter is required.
+* Field names are validated against the live table schema via `PRAGMA table_info` — any schema column works, not just a hardcoded list.
 * Filters use Python `re.search` semantics via the registered `REGEXP` SQLite function.
 * Outputs a count and list of matching records.
 
@@ -203,7 +206,8 @@ python db_update.py <db_path> <table> <uuid> field=value [field=value ...]
 
 * `uuid` is immutable and cannot be updated.
 * Use `field=NA` to set a field to NULL.
-* `time` is coerced to int; `supervision` accepts `true/false/yes/no/0/1`.
+* Field names are validated against the live table schema via `PRAGMA table_info` — any schema column works, not just a hardcoded list.
+* `INTEGER` columns accept bool-like strings (`true/yes/1`, `false/no/0`) or plain integers; `REAL` columns accept float strings.
 * Returns the full updated record on success.
 
 ---
@@ -230,6 +234,7 @@ python db_purge.py <db_path> <table> field=regex [field=regex ...]
 ```
 
 * At least one filter is required to prevent accidental full-table deletion.
+* Field names are validated against the live table schema via `PRAGMA table_info` — any schema column works, not just a hardcoded list.
 * Outputs the count and list of deleted records.
 
 ---
