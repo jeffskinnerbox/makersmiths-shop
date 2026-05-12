@@ -65,3 +65,19 @@ def test_delete_existing(fresh_db):
 def test_delete_missing(fresh_db):
     result = db_delete(fresh_db, TABLE, "00000000-0000-0000-0000-000000000000")
     assert result["status"] == "error"
+
+
+def test_update_unknown_field_rejected(fresh_db):
+    uuid = _first_uuid(fresh_db)
+    result = db_update(fresh_db, TABLE, uuid, {"nonexistent_column": "value"})
+    assert result["status"] == "error"
+    assert "nonexistent_column" in result["message"]
+
+
+def test_update_schema_column_not_in_task_fields(fresh_db):
+    # shop_steward is in the schema-generated table but absent from TASK_FIELDS.
+    # Before this fix, db_update would reject it. After, it must return ok.
+    uuid = _first_uuid(fresh_db)
+    result = db_update(fresh_db, TABLE, uuid, {"shop_steward": "New Steward"})
+    assert result["status"] == "ok"
+    assert result["record"]["shop_steward"] == "New Steward"

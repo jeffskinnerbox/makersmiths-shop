@@ -18,7 +18,13 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent))
-from db_utils import TASK_FIELDS, coerce_value, get_connection, print_yaml, row_to_dict
+from db_utils import (
+    coerce_for_type,
+    get_connection,
+    get_table_columns,
+    print_yaml,
+    row_to_dict,
+)
 
 IMMUTABLE = {"uuid"}
 
@@ -29,12 +35,13 @@ def db_update(
     if not updates:
         return {"status": "error", "message": "no fields provided to update"}
 
-    bad = [f for f in updates if f not in TASK_FIELDS or f in IMMUTABLE]
-    if bad:
-        return {"status": "error", "message": f"unknown or immutable fields: {bad}"}
-
     conn = get_connection(db_path)
     try:
+        columns = get_table_columns(conn, table)
+        bad = [f for f in updates if f not in columns or f in IMMUTABLE]
+        if bad:
+            return {"status": "error", "message": f"unknown or immutable fields: {bad}"}
+
         exists = conn.execute(
             f"SELECT 1 FROM {table} WHERE uuid = ?", (uuid,)
         ).fetchone()
@@ -63,13 +70,18 @@ def main() -> None:
                         help="Fields to update (e.g. last_date=2026-05-06 or frequency=NA)")
     args = parser.parse_args()
 
+    conn_tmp = get_connection(args.db_path)
+    columns = get_table_columns(conn_tmp, args.table)
+    conn_tmp.close()
+
     updates: dict[str, Any] = {}
     for token in args.fields:
         if "=" not in token:
             print(f"error: expected field=value, got '{token}'", file=sys.stderr)
             sys.exit(1)
         field, _, raw_val = token.partition("=")
-        updates[field] = coerce_value(field, raw_val)
+        sql_type = columns.get(field, "TEXT")
+        updates[field] = coerce_for_type(field, raw_val, sql_type)
 
     result = db_update(args.db_path, args.table, args.uuid, updates)
     print_yaml(result)
