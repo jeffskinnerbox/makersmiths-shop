@@ -1,5 +1,5 @@
 # Eliminate Hardcoded TASK_FIELDS — Design Spec
-_Date: 2026-05-12_
+_Date: 2026-05-12 | Status: **COMPLETE** — merged to `main` 2026-05-12, 57/57 tests passing_
 
 ## Goal
 
@@ -155,30 +155,32 @@ seen across every item at that intermediate level.
 
 ---
 
-## Impact on Tests
+## Impact on Tests (as implemented)
 
 ### `tests/test_db_table_create.py`
 
-No changes required. `db_table_create.py` is unaffected.
+No changes. `db_table_create.py` unaffected. ✅
+
+### `tests/test_db_utils.py` _(new file)_
+
+9 tests for the two new `db_utils.py` helpers. ✅
 
 ### `tests/test_create_db_schema.py`
 
-Add one new test:
+Added `test_unions_intermediate_fields` — synthetic YAML with two intermediate items having different scalar fields; verifies both appear in `promote`. ✅
 
-| Test | What it checks |
-|---|---|
-| `test_unions_intermediate_fields` | If two items at the same intermediate level each have a unique scalar field, both appear in the level's `promote` dict |
+### `tests/test_bulk_ops.py`
 
-### `tests/test_db_list.py` / `tests/test_db_purge.py` / `tests/test_db_update.py`
+Added for `db_list`: `test_list_unknown_field_rejected`, `test_list_schema_column_not_in_task_fields`. ✅
+Added for `db_purge`: `test_purge_unknown_field_rejected`, `test_purge_schema_column_not_in_task_fields`. ✅
 
-Existing behaviour tests are unaffected (same valid/invalid field semantics).
+### `tests/test_crud.py`
 
-Add two new tests per script:
+Added for `db_update`: `test_update_unknown_field_rejected`, `test_update_schema_column_not_in_task_fields`. ✅
 
-| Test | What it checks |
-|---|---|
-| `test_unknown_field_rejected` | Filter/update with a column that does not exist in the table → `status: error` |
-| `test_valid_field_accepted` | Filter/update using a column present in the schema-generated table but absent from `TASK_FIELDS` (e.g. `shop_steward`, `location_steward`) → `status: ok` (proves `TASK_FIELDS` is no longer the gatekeeper; uses the existing `fresh_db` fixture, no extra setup needed) |
+### Deviation from spec
+
+Tests landed in `test_bulk_ops.py` and `test_crud.py` (existing files) rather than the spec's hypothetical `test_db_list.py` / `test_db_purge.py` / `test_db_update.py` — those separate files don't exist; the existing test layout was followed instead.
 
 ---
 
@@ -187,3 +189,13 @@ Add two new tests per script:
 - Removing `TASK_FIELDS` from `db_utils.py` — left in place; not imported by the three scripts after this change.
 - Making `coerce_value()` generic — it is kept as-is; `coerce_for_type()` is a new, parallel function.
 - Extending `db_replicate`, `db_read`, `db_delete`, `task_id_to_uuid`, or `db_validate_task_table` — none use `TASK_FIELDS` for field validation.
+
+---
+
+## Implementation Notes
+
+One deviation from the spec was flagged during code review and fixed before merge:
+
+- **`coerce_for_type` signature**: spec said `raw: str`; corrected to `raw: str | None` during review to make the `None` guard honest (`commit 1e90329`).
+
+The two-connection path in `db_update.main()` (one for PRAGMA type lookup, one for the write) was flagged as an efficiency wart by the final reviewer but deemed non-blocking. Logged as a potential follow-up.
