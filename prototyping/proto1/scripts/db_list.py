@@ -18,22 +18,22 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent))
-from db_utils import TASK_FIELDS, get_connection, print_yaml, row_to_dict
+from db_utils import get_connection, get_table_columns, print_yaml, row_to_dict
 
 
 def db_list(db_path: str, table: str, filters: dict[str, str]) -> dict[str, Any]:
     if not filters:
         return {"status": "error", "message": "at least one filter is required"}
 
-    bad = [f for f in filters if f not in TASK_FIELDS]
-    if bad:
-        return {"status": "error", "message": f"unknown fields: {bad}"}
-
-    where = " AND ".join(f"{f} REGEXP ?" for f in filters)
-    params = list(filters.values())
-
     conn = get_connection(db_path)
     try:
+        columns = get_table_columns(conn, table)
+        bad = [f for f in filters if f not in columns]
+        if bad:
+            return {"status": "error", "message": f"unknown fields: {bad}"}
+
+        where = " AND ".join(f"{f} REGEXP ?" for f in filters)
+        params = list(filters.values())
         rows = conn.execute(
             f"SELECT * FROM {table} WHERE {where}", params
         ).fetchall()

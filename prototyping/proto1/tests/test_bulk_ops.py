@@ -70,3 +70,16 @@ def test_replicate_error_if_dst_exists(fresh_db):
 def test_replicate_error_if_src_missing(fresh_db):
     result = db_replicate(fresh_db, "nonexistent_table", "backup_table")
     assert result["status"] == "error"
+
+
+def test_list_unknown_field_rejected(fresh_db):
+    result = db_list(fresh_db, TABLE, {"nonexistent_column": "val"})
+    assert result["status"] == "error"
+    assert "nonexistent_column" in result["message"]
+
+
+def test_list_schema_column_not_in_task_fields(fresh_db):
+    # shop_steward is in the schema-generated table but absent from TASK_FIELDS.
+    # Before this fix, db_list would reject it. After, it must return ok.
+    result = db_list(fresh_db, TABLE, {"shop_steward": ".*"})
+    assert result["status"] == "ok"
