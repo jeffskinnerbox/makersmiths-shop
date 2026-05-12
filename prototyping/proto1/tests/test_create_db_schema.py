@@ -28,8 +28,10 @@ def test_generates_root_promote():
 def test_generates_intermediate_promotes():
     result = _schema()
     levels = {lv["key"]: lv for lv in result["hierarchy"]["levels"]}
-    assert levels["area"].get("promote") == {"name": "name"}
-    assert levels["location"].get("promote") == {"name": "name", "steward": "steward"}
+    assert "promote" in levels["area"]
+    assert levels["area"]["promote"] == {"name": "name"}
+    assert "promote" in levels["location"]
+    assert levels["location"]["promote"] == {"name": "name", "steward": "steward"}
 
 
 def test_infers_int_type():
@@ -66,8 +68,10 @@ def test_uuid_column_prepended():
 def test_bad_root():
     result = _schema(root="nonexistent.path")
     assert result["status"] == "error"
+    assert "nonexistent.path" in result["message"]
 
 
 def test_bad_leaf():
     result = _schema(leaf="nonexistent_leaf")
     assert result["status"] == "error"
+    assert "nonexistent_leaf" in result["message"]
