@@ -1,6 +1,6 @@
 # Eliminate Hardcoded TASK_FIELDS Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **Status: COMPLETE** — all 5 tasks implemented, reviewed, and merged to `main` on 2026-05-12. 57/57 tests passing.
 
 **Goal:** Remove hardcoded `TASK_FIELDS` from `db_list`, `db_purge`, and `db_update` by reading valid column names directly from the live SQLite table via `PRAGMA table_info`, and fix `create_db_schema.py` to union scalar fields across all items at each intermediate hierarchy level instead of sampling only the first.
 
@@ -28,13 +28,13 @@ All test commands run from `prototyping/proto1/` with `uv run pytest`.
 
 ---
 
-## Task 1: Add `get_table_columns` and `coerce_for_type` to `db_utils.py`
+## Task 1: Add `get_table_columns` and `coerce_for_type` to `db_utils.py` ✅ `5d31761` + `1e90329`
 
 **Files:**
 - Create: `tests/test_db_utils.py`
 - Modify: `scripts/db_utils.py`
 
-- [ ] **Step 1: Create `tests/test_db_utils.py` with failing tests**
+- [x] **Step 1: Create `tests/test_db_utils.py` with failing tests**
 
 ```python
 """Tests for new db_utils helpers: get_table_columns, coerce_for_type."""
@@ -101,7 +101,7 @@ def test_coerce_bad_real_exits():
         coerce_for_type("x", "notafloat", "REAL")
 ```
 
-- [ ] **Step 2: Run to confirm all tests fail**
+- [x] **Step 2: Run to confirm all tests fail**
 
 ```bash
 uv run pytest tests/test_db_utils.py -v
@@ -109,7 +109,7 @@ uv run pytest tests/test_db_utils.py -v
 
 Expected: `ImportError` or `AttributeError` — `get_table_columns` and `coerce_for_type` don't exist yet.
 
-- [ ] **Step 3: Back up `db_utils.py` and add the two new functions**
+- [x] **Step 3: Back up `db_utils.py` and add the two new functions**
 
 ```bash
 cp -f scripts/db_utils.py scripts/db_utils.py.bak
@@ -148,7 +148,7 @@ def coerce_for_type(field: str, raw: str, sql_type: str) -> Any:
     return raw
 ```
 
-- [ ] **Step 4: Run tests to confirm they pass**
+- [x] **Step 4: Run tests to confirm they pass**
 
 ```bash
 uv run pytest tests/test_db_utils.py -v
@@ -156,7 +156,7 @@ uv run pytest tests/test_db_utils.py -v
 
 Expected: all 9 tests PASS.
 
-- [ ] **Step 5: Run full suite to confirm no regressions**
+- [x] **Step 5: Run full suite to confirm no regressions**
 
 ```bash
 uv run pytest ./tests/ -v
@@ -164,7 +164,7 @@ uv run pytest ./tests/ -v
 
 Expected: all existing tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add scripts/db_utils.py tests/test_db_utils.py
@@ -173,13 +173,13 @@ git commit -m "feat: add get_table_columns and coerce_for_type to db_utils"
 
 ---
 
-## Task 2: Update `db_list.py` to use SQLite introspection
+## Task 2: Update `db_list.py` to use SQLite introspection ✅ `9c1169b`
 
 **Files:**
 - Modify: `tests/test_bulk_ops.py`
 - Modify: `scripts/db_list.py`
 
-- [ ] **Step 1: Add failing tests to `tests/test_bulk_ops.py`**
+- [x] **Step 1: Add failing tests to `tests/test_bulk_ops.py`**
 
 Append to the end of `tests/test_bulk_ops.py`:
 
@@ -197,7 +197,7 @@ def test_list_schema_column_not_in_task_fields(fresh_db):
     assert result["status"] == "ok"
 ```
 
-- [ ] **Step 2: Run new tests to confirm they fail**
+- [x] **Step 2: Run new tests to confirm they fail**
 
 ```bash
 uv run pytest tests/test_bulk_ops.py::test_list_unknown_field_rejected tests/test_bulk_ops.py::test_list_schema_column_not_in_task_fields -v
@@ -207,7 +207,7 @@ Expected:
 - `test_list_unknown_field_rejected` — PASS (coincidentally, existing code already rejects unknown fields; this stays passing)
 - `test_list_schema_column_not_in_task_fields` — FAIL (`status: error` because `shop_steward` is not in `TASK_FIELDS`)
 
-- [ ] **Step 3: Back up `db_list.py` and rewrite it**
+- [x] **Step 3: Back up `db_list.py` and rewrite it**
 
 ```bash
 cp -f scripts/db_list.py scripts/db_list.py.bak
@@ -293,7 +293,7 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 4: Run new tests to confirm they pass**
+- [x] **Step 4: Run new tests to confirm they pass**
 
 ```bash
 uv run pytest tests/test_bulk_ops.py::test_list_unknown_field_rejected tests/test_bulk_ops.py::test_list_schema_column_not_in_task_fields -v
@@ -301,7 +301,7 @@ uv run pytest tests/test_bulk_ops.py::test_list_unknown_field_rejected tests/tes
 
 Expected: both PASS.
 
-- [ ] **Step 5: Run full suite to confirm no regressions**
+- [x] **Step 5: Run full suite to confirm no regressions**
 
 ```bash
 uv run pytest ./tests/ -v
@@ -309,7 +309,7 @@ uv run pytest ./tests/ -v
 
 Expected: all tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add scripts/db_list.py tests/test_bulk_ops.py
@@ -318,13 +318,13 @@ git commit -m "feat: db_list validates fields via PRAGMA table_info instead of T
 
 ---
 
-## Task 3: Update `db_purge.py` to use SQLite introspection
+## Task 3: Update `db_purge.py` to use SQLite introspection ✅ `609946c`
 
 **Files:**
 - Modify: `tests/test_bulk_ops.py`
 - Modify: `scripts/db_purge.py`
 
-- [ ] **Step 1: Add failing tests to `tests/test_bulk_ops.py`**
+- [x] **Step 1: Add failing tests to `tests/test_bulk_ops.py`**
 
 Append to the end of `tests/test_bulk_ops.py`:
 
@@ -341,7 +341,7 @@ def test_purge_schema_column_not_in_task_fields(fresh_db):
     assert result["status"] == "ok"
 ```
 
-- [ ] **Step 2: Run new tests to confirm expected failure**
+- [x] **Step 2: Run new tests to confirm expected failure**
 
 ```bash
 uv run pytest tests/test_bulk_ops.py::test_purge_unknown_field_rejected tests/test_bulk_ops.py::test_purge_schema_column_not_in_task_fields -v
@@ -351,7 +351,7 @@ Expected:
 - `test_purge_unknown_field_rejected` — PASS (existing code already rejects)
 - `test_purge_schema_column_not_in_task_fields` — FAIL (`shop_steward` not in `TASK_FIELDS`)
 
-- [ ] **Step 3: Back up `db_purge.py` and rewrite it**
+- [x] **Step 3: Back up `db_purge.py` and rewrite it**
 
 ```bash
 cp -f scripts/db_purge.py scripts/db_purge.py.bak
@@ -436,7 +436,7 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 4: Run new tests to confirm they pass**
+- [x] **Step 4: Run new tests to confirm they pass**
 
 ```bash
 uv run pytest tests/test_bulk_ops.py::test_purge_unknown_field_rejected tests/test_bulk_ops.py::test_purge_schema_column_not_in_task_fields -v
@@ -444,7 +444,7 @@ uv run pytest tests/test_bulk_ops.py::test_purge_unknown_field_rejected tests/te
 
 Expected: both PASS.
 
-- [ ] **Step 5: Run full suite to confirm no regressions**
+- [x] **Step 5: Run full suite to confirm no regressions**
 
 ```bash
 uv run pytest ./tests/ -v
@@ -452,7 +452,7 @@ uv run pytest ./tests/ -v
 
 Expected: all tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add scripts/db_purge.py tests/test_bulk_ops.py
@@ -461,13 +461,13 @@ git commit -m "feat: db_purge validates fields via PRAGMA table_info instead of 
 
 ---
 
-## Task 4: Update `db_update.py` to use SQLite introspection + `coerce_for_type`
+## Task 4: Update `db_update.py` to use SQLite introspection + `coerce_for_type` ✅ `b2b28e2`
 
 **Files:**
 - Modify: `tests/test_crud.py`
 - Modify: `scripts/db_update.py`
 
-- [ ] **Step 1: Add failing tests to `tests/test_crud.py`**
+- [x] **Step 1: Add failing tests to `tests/test_crud.py`**
 
 Append to the end of `tests/test_crud.py`:
 
@@ -488,7 +488,7 @@ def test_update_schema_column_not_in_task_fields(fresh_db):
     assert result["record"]["shop_steward"] == "New Steward"
 ```
 
-- [ ] **Step 2: Run new tests to confirm expected failure**
+- [x] **Step 2: Run new tests to confirm expected failure**
 
 ```bash
 uv run pytest tests/test_crud.py::test_update_unknown_field_rejected tests/test_crud.py::test_update_schema_column_not_in_task_fields -v
@@ -498,7 +498,7 @@ Expected:
 - `test_update_unknown_field_rejected` — PASS (existing code already rejects)
 - `test_update_schema_column_not_in_task_fields` — FAIL (`shop_steward` not in `TASK_FIELDS`)
 
-- [ ] **Step 3: Back up `db_update.py` and rewrite it**
+- [x] **Step 3: Back up `db_update.py` and rewrite it**
 
 ```bash
 cp -f scripts/db_update.py scripts/db_update.py.bak
@@ -602,7 +602,7 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 4: Run new tests to confirm they pass**
+- [x] **Step 4: Run new tests to confirm they pass**
 
 ```bash
 uv run pytest tests/test_crud.py::test_update_unknown_field_rejected tests/test_crud.py::test_update_schema_column_not_in_task_fields -v
@@ -610,7 +610,7 @@ uv run pytest tests/test_crud.py::test_update_unknown_field_rejected tests/test_
 
 Expected: both PASS.
 
-- [ ] **Step 5: Run full suite to confirm no regressions**
+- [x] **Step 5: Run full suite to confirm no regressions**
 
 ```bash
 uv run pytest ./tests/ -v
@@ -618,7 +618,7 @@ uv run pytest ./tests/ -v
 
 Expected: all tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add scripts/db_update.py tests/test_crud.py
@@ -627,13 +627,13 @@ git commit -m "feat: db_update validates fields and coerces types via PRAGMA tab
 
 ---
 
-## Task 5: Fix `create_db_schema.py` intermediate-level field union
+## Task 5: Fix `create_db_schema.py` intermediate-level field union ✅ `3d92b54`
 
 **Files:**
 - Modify: `tests/test_create_db_schema.py`
 - Modify: `scripts/create_db_schema.py`
 
-- [ ] **Step 1: Add a failing test to `tests/test_create_db_schema.py`**
+- [x] **Step 1: Add a failing test to `tests/test_create_db_schema.py`**
 
 Add at the end of `tests/test_create_db_schema.py`:
 
@@ -662,7 +662,7 @@ def test_unions_intermediate_fields(tmp_path):
     assert "owner" in levels["sections"]["promote"]
 ```
 
-- [ ] **Step 2: Run new test to confirm it fails**
+- [x] **Step 2: Run new test to confirm it fails**
 
 ```bash
 uv run pytest tests/test_create_db_schema.py::test_unions_intermediate_fields -v
@@ -670,7 +670,7 @@ uv run pytest tests/test_create_db_schema.py::test_unions_intermediate_fields -v
 
 Expected: FAIL — `assert "owner" in levels["sections"]["promote"]` fails because only Alpha is sampled.
 
-- [ ] **Step 3: Back up `create_db_schema.py` and apply the fix**
+- [x] **Step 3: Back up `create_db_schema.py` and apply the fix**
 
 ```bash
 cp -f scripts/create_db_schema.py scripts/create_db_schema.py.bak
@@ -716,7 +716,7 @@ With:
         levels.append(entry)
 ```
 
-- [ ] **Step 4: Run new test to confirm it passes**
+- [x] **Step 4: Run new test to confirm it passes**
 
 ```bash
 uv run pytest tests/test_create_db_schema.py::test_unions_intermediate_fields -v
@@ -724,7 +724,7 @@ uv run pytest tests/test_create_db_schema.py::test_unions_intermediate_fields -v
 
 Expected: PASS.
 
-- [ ] **Step 5: Run full suite to confirm no regressions**
+- [x] **Step 5: Run full suite to confirm no regressions**
 
 ```bash
 uv run pytest ./tests/ -v
@@ -732,7 +732,7 @@ uv run pytest ./tests/ -v
 
 Expected: all tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add scripts/create_db_schema.py tests/test_create_db_schema.py
