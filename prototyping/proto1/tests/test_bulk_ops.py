@@ -83,3 +83,15 @@ def test_list_schema_column_not_in_task_fields(fresh_db):
     # Before this fix, db_list would reject it. After, it must return ok.
     result = db_list(fresh_db, TABLE, {"shop_steward": ".*"})
     assert result["status"] == "ok"
+
+
+def test_purge_unknown_field_rejected(fresh_db):
+    result = db_purge(fresh_db, TABLE, {"nonexistent_column": "val"})
+    assert result["status"] == "error"
+    assert "nonexistent_column" in result["message"]
+
+
+def test_purge_schema_column_not_in_task_fields(fresh_db):
+    # shop_steward is in the schema-generated table but absent from TASK_FIELDS.
+    result = db_purge(fresh_db, TABLE, {"shop_steward": ".*"})
+    assert result["status"] == "ok"
